@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edges xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/edges_file.xsd">
+    <edge id="WC" from="W" to="C" speed="13.89" numLanes="1" shape="-250,0 -125,0 0,0"/>
+    <edge id="CW" from="C" to="W" speed="13.89" numLanes="1" shape="0,0 -125,0 -250,0"/>
+    <edge id="EC" from="E" to="C" speed="13.89" numLanes="1" shape="250,0 125,0 0,0"/>
+    <edge id="CE" from="C" to="E" speed="13.89" numLanes="1" shape="0,0 125,0 250,0"/>
+    <edge id="NC" from="N" to="C" speed="13.89" numLanes="1" shape="0,250 0,125 0,0"/>
+    <edge id="CN" from="C" to="N" speed="13.89" numLanes="1" shape="0,0 0,125 0,250"/>
+    <edge id="SC" from="S" to="C" speed="13.89" numLanes="1" shape="0,-250 0,-125 0,0"/>
+    <edge id="CS" from="C" to="S" speed="13.89" numLanes="1" shape="0,0 0,-125 0,-250"/>
+</edges>

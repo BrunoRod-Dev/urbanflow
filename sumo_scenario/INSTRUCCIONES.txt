@@ -1,0 +1,21 @@
+=== Escenario SUMO minimo (una interseccion) ===
+
+Correccion (que estaba mal):
+- La camara en gui.settings.xml estaba fija en (0,0) con zoom; tras el offset de netconvert el cruce queda cerca de (200,200), asi que solo se veia un trozo del mapa (a menudo como una linea). Ahora gui solo fija el retardo y sumo-gui encuadra solo la red.
+
+Archivos:
+- nodes.nod.xml       Nodos del cruce; C con semaforo; brazos W,E,N,S a +/- 250 m.
+- edges.edg.xml       8 aristas con polilinea (shape) en cada eje para geometria clara.
+- build_network.ps1   netconvert -> intersection.net.xml
+- intersection.rou.xml  Flujos WE, EW, NS, SN
+- intersection.sumocfg  Configuracion
+- gui.settings.xml    Solo retardo entre pasos (ms)
+
+PASO 1 - Regenerar la red (obligatorio tras cambiar nodos/aristas):
+  cd sumo_scenario
+  .\build_network.ps1
+
+PASO 2 - Abrir:
+  sumo-gui -c intersection.sumocfg
+
+Play (Ctrl+A) para simular.

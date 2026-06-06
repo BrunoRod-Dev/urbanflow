@@ -1,0 +1,33 @@
+# Entorno virtual
+.venv/
+venv/
+env/
+
+# Bytecode y caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Herramientas / artefactos
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Modelos (evita subir binarios pesados)
+*.zip
+*.pkl
+
+# Salidas de eval.py (graficos)
+results/
