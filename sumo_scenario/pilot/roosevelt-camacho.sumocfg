@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <input>
+        <net-file value="roosevelt-camacho.net.xml"/>
+        <route-files value="roosevelt-camacho.rou.xml"/>
+    </input>
+    <time>
+        <begin value="0"/>
+        <end value="360"/>
+        <step-length value="0.5"/>
+    </time>
+    <processing>
+        <time-to-teleport value="-1"/>
+    </processing>
+    <random_number>
+        <seed value="42"/>
+    </random_number>
+</configuration>

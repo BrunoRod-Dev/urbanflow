@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='utf-8'?>
+<osm version="0.6" generator="UrbanFlow" copyright="OpenStreetMap contributors" attribution="https://www.openstreetmap.org/copyright" license="https://opendatacommons.org/licenses/odbl/1-0/">
+  <node id="1161502532" lat="-34.9160249" lon="-54.9594108" />
+  <node id="1161502571" lat="-34.9166096" lon="-54.9587297" />
+  <node id="1161502597" lat="-34.9158881" lon="-54.9593463" />
+  <node id="1161502663" lat="-34.9157762" lon="-54.9594233" />
+  <node id="1161502678" lat="-34.9161015" lon="-54.9594171" />
+  <node id="1161502688" lat="-34.9156456" lon="-54.9599865" />
+  <node id="1161502690" lat="-34.9166749" lon="-54.9588060" />
+  <node id="1161502783" lat="-34.9156626" lon="-54.9596618" />
+  <node id="1161502802" lat="-34.9157447" lon="-54.9595644" />
+  <node id="1161502841" lat="-34.9162448" lon="-54.9592262" />
+  <node id="1161502858" lat="-34.9160652" lon="-54.9595222" />
+  <node id="1161502900" lat="-34.9158122" lon="-54.9598109" />
+  <node id="1161502913" lat="-34.9157802" lon="-54.9596666" />
+  <node id="1161502952" lat="-34.9151441" lon="-54.9602406" />
+  <node id="1359997752" lat="-34.9161697" lon="-54.9591159" />
+  <node id="1360039487" lat="-34.9150380" lon="-54.9594703" />
+  <node id="1360039545" lat="-34.9162498" lon="-54.9598773" />
+  <node id="1884964056" lat="-34.9152215" lon="-54.9604378" />
+  <node id="1884964059" lat="-34.9157559" lon="-54.9594665" />
+  <node id="1884964072" lat="-34.9157564" lon="-54.9596186" />
+  <node id="1884964073" lat="-34.9158141" lon="-54.9597044" />
+  <node id="1884964075" lat="-34.9159007" lon="-54.9597383" />
+  <node id="1884964077" lat="-34.9159309" lon="-54.9597358" />
+  <node id="1884964079" lat="-34.9160523" lon="-54.9594626" />
+  <node id="1884964082" lat="-34.9160551" lon="-54.9596128" />
+  <node id="1884964084" lat="-34.9161092" lon="-54.9597047" />
+  <node id="1884964086" lat="-34.9161475" lon="-54.9597461" />
+  <node id="1918169067" lat="-34.9167749" lon="-54.9602996" />
+  <node id="1918169073" lat="-34.9168758" lon="-54.9585804" />
+  <node id="1918169087" lat="-34.9171438" lon="-54.9605895" />
+  <node id="1957821444" lat="-34.9158455" lon="-54.9593591" />
+  <node id="1957821446" lat="-34.9159857" lon="-54.9593718" />
+  <node id="1957821447" lat="-34.9160003" lon="-54.9597001" />
+  <node id="1957821448" lat="-34.9160328" lon="-54.9596612" />
+  <node id="1957821449" lat="-34.9160645" lon="-54.9595682" />
+  <node id="2225631741" lat="-34.9154564" lon="-54.9594408" />
+  <node id="2375592994" lat="-34.9143266" lon="-54.9614104" />
+  <node id="2375593003" lat="-34.9144822" lon="-54.9609742" />
+  <node id="2379470539" lat="-34.9157849" lon="-54.9598358" />
+  <node id="2379470540" lat="-34.9160088" lon="-54.9592514" />
+  <node id="2642871289" lat="-34.9156334" lon="-54.9596947" />
+  <node id="4530940955" lat="-34.9175189" lon="-54.9577599" />
+  <node id="4539925083" lat="-34.9158072" lon="-54.9593854" />
+  <node id="4539925084" lat="-34.9157452" lon="-54.9595146" />
+  <node id="4539925085" lat="-34.9158554" lon="-54.9597289" />
+  <node id="4539925086" lat="-34.9159386" lon="-54.9593496" />
+  <node id="4684415064" lat="-34.9155727" lon="-54.9594398" />
+  <node id="4684415065" lat="-34.9156386" lon="-54.9594359" />
+  <node id="5335651580" lat="-34.9160945" lon="-54.9596793" />
+  <node id="5335651581" lat="-34.9160127" lon="-54.9597565" />
+  <node id="5335651605" lat="-34.9149573" lon="-54.9607195" />
+  <node id="5345649365" lat="-34.9176872" lon="-54.9576836" />
+  <node id="9445939460" lat="-34.9159820" lon="-54.9592724" />
+  <node id="11397096430" lat="-34.9156947" lon="-54.9594308" />
+  <node id="11397096503" lat="-34.9161627" lon="-54.9593214" />
+  <node id="11397096505" lat="-34.9160854" lon="-54.9597884" />
+  <node id="11397096506" lat="-34.9159705" lon="-54.9597183" />
+  <node id="11397096507" lat="-34.9162031" lon="-54.9598699" />
+  <node id="11397096508" lat="-34.9162193" lon="-54.9598213" />
+  <way id="100473841">
+    <nd ref="1161502802" />
+    <nd ref="1161502783" />
+    <nd ref="2642871289" />
+    <nd ref="1161502952" />
+    <tag k="highway" v="secondary" />
+    <tag k="lanes" v="2" />
+    <tag k="name" v="Avenida Franklin Delano Roosevelt" />
+    <tag k="oneway" v="yes" />
+    <tag k="maxspeed" v="45" />
+  </way>
+  <way id="100473863">
+    <nd ref="1161502532" />
+    <nd ref="1957821446" />
+    <nd ref="4539925086" />
+    <nd ref="1161502597" />
+    <nd ref="1957821444" />
+    <nd ref="4539925083" />
+    <nd ref="1161502663" />
+    <nd ref="1884964059" />
+    <nd ref="4539925084" />
+    <nd ref="1161502802" />
+    <nd ref="1884964072" />
+    <nd ref="1161502913" />
+    <nd ref="1884964073" />
+    <nd ref="4539925085" />
+    <nd ref="1884964075" />
+    <nd ref="1884964077" />
+    <nd ref="11397096506" />
+    <nd ref="1957821447" />
+    <nd ref="1957821448" />
+    <nd ref="1884964082" />
+    <nd ref="1957821449" />
+    <nd ref="1161502858" />
+    <nd ref="1884964079" />
+    <nd ref="1161502532" />
+    <tag k="highway" v="secondary" />
+    <tag k="junction" v="roundabout" />
+    <tag k="lanes" v="1" />
+    <tag k="name" v="Rotonda de Roosevelt y Camancho" />
+    <tag k="maxspeed" v="25" />
+  </way>
+  <way id="121506103">
+    <nd ref="1360039545" />
+    <nd ref="11397096508" />
+    <nd ref="1884964086" />
+    <nd ref="1884964084" />
+    <nd ref="5335651580" />
+    <nd ref="1884964082" />
+    <tag k="highway" v="tertiary" />
+    <tag k="name" v="Avenida Antonio Camacho" />
+    <tag k="oneway" v="yes" />
+    <tag k="maxspeed" v="40" />
+  </way>
+  <way id="121506106">
+    <nd ref="1161502663" />
+    <nd ref="11397096430" />
+    <nd ref="4684415065" />
+    <nd ref="4684415064" />
+    <nd ref="2225631741" />
+    <tag k="highway" v="tertiary" />
+    <tag k="maxspeed" v="40" />
+    <tag k="name" v="Avenida Antonio Camacho" />
+    <tag k="oneway" v="yes" />
+  </way>
+  <way id="178119718">
+    <nd ref="1884964077" />
+    <nd ref="5335651581" />
+    <nd ref="11397096505" />
+    <nd ref="11397096507" />
+    <nd ref="1360039545" />
+    <tag k="highway" v="tertiary" />
+    <tag k="name" v="Avenida Antonio Camacho" />
+    <tag k="oneway" v="yes" />
+    <tag k="maxspeed" v="40" />
+  </way>
+  <way id="178119926">
+    <nd ref="1360039545" />
+    <nd ref="1918169067" />
+    <nd ref="1918169087" />
+    <tag k="highway" v="tertiary" />
+    <tag k="lanes" v="4" />
+    <tag k="name" v="Avenida Antonio Camacho" />
+    <tag k="oneway" v="no" />
+    <tag k="maxspeed" v="40" />
+  </way>
+  <way id="181384674">
+    <nd ref="2375592994" />
+    <nd ref="5335651605" />
+    <nd ref="1884964056" />
+    <nd ref="1161502688" />
+    <nd ref="2379470539" />
+    <nd ref="1161502900" />
+    <nd ref="1884964075" />
+    <tag k="highway" v="secondary" />
+    <tag k="lanes" v="2" />
+    <tag k="maxspeed" v="45" />
+    <tag k="name" v="Avenida Franklin Delano Roosevelt" />
+    <tag k="oneway" v="yes" />
+  </way>
+  <way id="239821866">
+    <nd ref="1161502858" />
+    <nd ref="1161502678" />
+    <nd ref="11397096503" />
+    <nd ref="1161502841" />
+    <nd ref="1161502690" />
+    <nd ref="1918169073" />
+    <nd ref="5345649365" />
+    <tag k="highway" v="secondary" />
+    <tag k="lanes" v="2" />
+    <tag k="name" v="Avenida Franklin Delano Roosevelt" />
+    <tag k="oneway" v="yes" />
+    <tag k="maxspeed" v="45" />
+  </way>
+  <way id="426635856">
+    <nd ref="1161502952" />
+    <nd ref="2375593003" />
+    <tag k="highway" v="secondary" />
+    <tag k="lanes" v="2" />
+    <tag k="name" v="Avenida Franklin Delano Roosevelt" />
+    <tag k="oneway" v="yes" />
+    <tag k="maxspeed" v="45" />
+  </way>
+  <way id="553842606">
+    <nd ref="4530940955" />
+    <nd ref="1161502571" />
+    <nd ref="1359997752" />
+    <nd ref="2379470540" />
+    <nd ref="9445939460" />
+    <nd ref="1161502597" />
+    <tag k="highway" v="secondary" />
+    <tag k="lanes" v="2" />
+    <tag k="name" v="Avenida Franklin Delano Roosevelt" />
+    <tag k="oneway" v="yes" />
+    <tag k="maxspeed" v="45" />
+  </way>
+  <way id="815625574">
+    <nd ref="2225631741" />
+    <nd ref="1360039487" />
+    <tag k="highway" v="tertiary" />
+    <tag k="lanes" v="2" />
+    <tag k="maxspeed" v="40" />
+    <tag k="name" v="Avenida Antonio Camacho" />
+    <tag k="oneway" v="yes" />
+  </way>
+</osm>

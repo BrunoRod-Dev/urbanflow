@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes>
+    <vType id="car" length="5" maxSpeed="13.89" accel="1.2" decel="4.5" sigma="0.5"/>
+
+    <route id="nw-se" edges="181384674 100473863#4 100473863#5 100473863#6 239821866"/>
+    <route id="nw-sw" edges="181384674 100473863#4 178119718 178119926"/>
+    <route id="nw-n" edges="181384674 100473863#4 100473863#5 100473863#6 100473863#7 100473863#1 121506106 815625574"/>
+    <route id="se-nw" edges="553842606 100473863#1 100473863#2 100473841"/>
+    <route id="se-sw" edges="553842606 100473863#1 100473863#2 100473863#3 100473863#4 178119718 178119926"/>
+    <route id="se-n" edges="553842606 100473863#1 121506106 815625574"/>
+    <route id="sw-se" edges="-178119926 121506103 100473863#6 239821866"/>
+    <route id="sw-nw" edges="-178119926 121506103 100473863#6 100473863#7 100473863#1 100473863#2 100473841"/>
+    <route id="sw-n" edges="-178119926 121506103 100473863#6 100473863#7 100473863#1 121506106 815625574"/>
+
+    <flow id="nw_se" type="car" route="nw-se" begin="0" end="360" vehsPerHour="450" departLane="best" departSpeed="max"/>
+    <flow id="se_nw" type="car" route="se-nw" begin="1" end="360" vehsPerHour="450" departLane="best" departSpeed="max"/>
+    <flow id="sw_se" type="car" route="sw-se" begin="2" end="360" vehsPerHour="190" departLane="best" departSpeed="max"/>
+    <flow id="nw_sw" type="car" route="nw-sw" begin="3" end="360" vehsPerHour="160" departLane="best" departSpeed="max"/>
+    <flow id="se_sw" type="car" route="se-sw" begin="4" end="360" vehsPerHour="100" departLane="best" departSpeed="max"/>
+    <flow id="sw_nw" type="car" route="sw-nw" begin="5" end="360" vehsPerHour="160" departLane="best" departSpeed="max"/>
+    <flow id="nw_n" type="car" route="nw-n" begin="6" end="360" vehsPerHour="90" departLane="best" departSpeed="max"/>
+    <flow id="se_n" type="car" route="se-n" begin="7" end="360" vehsPerHour="100" departLane="best" departSpeed="max"/>
+    <flow id="sw_n" type="car" route="sw-n" begin="8" end="360" vehsPerHour="100" departLane="best" departSpeed="max"/>
+</routes>

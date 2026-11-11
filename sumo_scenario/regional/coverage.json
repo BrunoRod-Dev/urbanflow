@@ -1,0 +1,8 @@
+{
+  "name": "Punta del Este, Maldonado, Solanas y La Barra",
+  "bounds": [-55.075, -34.977, -54.849, -34.867],
+  "sourceBounds": [-55.093, -34.994, -54.824, -34.844],
+  "outline": [[-55.075,-34.880],[-54.978,-34.867],[-54.849,-34.902],[-54.849,-34.918],[-54.943,-34.977],[-54.961,-34.974],[-55.016,-34.924],[-55.055,-34.920],[-55.075,-34.894],[-55.075,-34.880]],
+  "source": "https://download.geofabrik.de/south-america/uruguay.html",
+  "license": "https://www.openstreetmap.org/copyright"
+}
