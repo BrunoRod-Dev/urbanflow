@@ -10,20 +10,30 @@ from pathlib import Path
 import re
 from threading import Lock
 import traceback
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 from uuid import uuid4
+from xml.etree import ElementTree as ET
 
 from sumo_scenario.study import StudyError, generate_study, rerun_study, saved_traffic, write_json
 from sumo_scenario.regional_map import coverage
+from sumo_scenario.junction_index import confirmed_junction, resolve_junctions, search_junctions
+from sumo_scenario.street_scene import street_scene
+from sumo_scenario.study_comparison import ComparisonError, compare_studies
 
 
 WORKSPACE = Path(__file__).resolve().parents[1]
 STUDIES = WORKSPACE / 'results' / 'studies'
+PROJECTS = WORKSPACE / 'results' / 'projects'
+API_VERSION = 10
 STUDY_ID = r'[a-f0-9]{32}'
 STUDY_ROUTE = re.compile(rf'/api/studies/({STUDY_ID})(/replay)?')
+STREET_SCENE_ROUTE = re.compile(rf'/api/studies/({STUDY_ID})/street-scene')
 RUN_ROUTE = re.compile(rf'/api/studies/({STUDY_ID})/runs')
+COMPARE_ROUTE = re.compile(rf'/api/studies/({STUDY_ID})/compare/({STUDY_ID})')
+PROJECT_RUN_ROUTE = re.compile(rf'/api/projects/({STUDY_ID})/runs')
 WORKER = ThreadPoolExecutor(max_workers=1, thread_name_prefix='urbanflow-study')
 STATUS_LOCK = Lock()
+PROJECT_LOCK = Lock()
 ACTIVE_RUNS = set()
 
 
@@ -43,8 +53,8 @@ def run_job(directory, build):
         update('error', 'Ocurrió un error al preparar el estudio. Los detalles quedaron en sumo.log.')
 
 
-def run_study(directory, lon, lat):
-    run_job(directory, partial(generate_study, directory, lon, lat, cache=directory.parent / 'osm-cache'))
+def run_study(directory, lon, lat, target=None):
+    run_job(directory, partial(generate_study, directory, lon, lat, cache=directory.parent / 'osm-cache', target=target))
 
 
 def read_json(file):
@@ -83,14 +93,33 @@ def list_studies():
             }
             entries.append({
                 'id': directory.name, 'title': data['title'], 'location': data.get('location'),
+                'bounds': data.get('bounds'), 'roundabout': data.get('roundabout'),
+                'accesses': data.get('accesses'), 'accessLines': data.get('accessLines'),
                 'traffic': {key: traffic[key] for key in ('source', 'durationMinutes')},
-                'parentId': info.get('parentId'), 'createdAt': info['createdAt'],
+                'parentId': info.get('parentId'), 'projectId': info.get('projectId'), 'createdAt': info['createdAt'],
                 'trips': data.get('trips'), 'inserted': data.get('inserted'), 'arrived': data.get('arrived'),
             })
         except (OSError, ValueError, KeyError, TypeError, OverflowError):
             # A missing or damaged run should not hide the other saved studies.
             continue
     return sorted(entries, key=lambda entry: (entry['createdAt'], entry['id']), reverse=True)
+
+
+def project_file(identifier):
+    return PROJECTS / f'{identifier}.json'
+
+
+def list_projects():
+    projects = []
+    for file in PROJECTS.glob('*.json'):
+        if re.fullmatch(STUDY_ID, file.stem):
+            try:
+                project = read_json(file)
+                if project.get('id') == file.stem and isinstance(project.get('target'), dict):
+                    projects.append(project)
+            except (OSError, ValueError):
+                continue
+    return projects
 
 
 class StudyHandler(SimpleHTTPRequestHandler):
@@ -104,15 +133,38 @@ class StudyHandler(SimpleHTTPRequestHandler):
         self.wfile.write(payload)
 
     def do_GET(self):
-        path = urlsplit(self.path).path
+        url = urlsplit(self.path)
+        path = url.path
         if path == '/api/health':
-            return self.respond(200, {'app': 'urbanflow', 'apiVersion': 3, 'workspace': str(WORKSPACE)})
+            return self.respond(200, {'app': 'urbanflow', 'apiVersion': API_VERSION, 'workspace': str(WORKSPACE)})
         if path == '/api/region':
             return self.respond(200, coverage())
+        if path == '/api/junctions':
+            return self.find_junctions(url.query)
+        if path == '/api/projects':
+            return self.respond(200, {'projects': list_projects()})
         if path == '/api/studies':
             return self.respond(200, {'studies': list_studies()})
         if not path.startswith('/api/'):
             return super().do_GET()
+        scene = STREET_SCENE_ROUTE.fullmatch(path)
+        if scene:
+            directory = STUDIES / scene[1]
+            if not (directory / 'replay.json').is_file():
+                return self.respond(404, {'message': 'La corrida aún no está disponible.'})
+            try:
+                return self.respond(200, street_scene(directory))
+            except (OSError, ValueError, ET.ParseError):
+                return self.respond(422, {'message': 'Esta corrida no conserva los datos viales para la vista 3D.'})
+        comparison = COMPARE_ROUTE.fullmatch(path)
+        if comparison:
+            first, second = (STUDIES / identifier for identifier in comparison.groups())
+            if not all((run / 'replay.json').is_file() for run in (first, second)):
+                return self.respond(404, {'message': 'Una de las corridas aún no está disponible.'})
+            try:
+                return self.respond(200, compare_studies(first, second))
+            except ComparisonError as error:
+                return self.respond(409, {'message': str(error)})
         match = STUDY_ROUTE.fullmatch(path)
         if not match:
             return self.respond(404, {'message': 'Estudio no encontrado.'})
@@ -144,6 +196,58 @@ class StudyHandler(SimpleHTTPRequestHandler):
             raise ValueError
         return json.loads(self.rfile.read(length))
 
+    def find_junctions(self, query):
+        try:
+            params = parse_qs(query, keep_blank_values=True, max_num_fields=2)
+            if 'q' in params and len(params['q'][0]) <= 160:
+                data = search_junctions(params['q'][0])
+            else:
+                lon, lat = float(params['lng'][0]), float(params['lat'][0])
+                if not math.isfinite(lon) or not math.isfinite(lat):
+                    raise ValueError
+                data = resolve_junctions(lon, lat)
+        except (KeyError, ValueError):
+            return self.respond(400, {'message': 'Ingresá una calle o elegí un punto válido en el mapa.'})
+        except StudyError as error:
+            return self.respond(422, {'message': str(error)})
+        return self.respond(200, data)
+
+    def create_project(self):
+        try:
+            data = self.read_payload(1024)
+            junction_id = data['junctionId']
+            if not isinstance(junction_id, str) or not re.fullmatch(r'[nr]\d{1,20}', junction_id):
+                raise ValueError
+            target = confirmed_junction(junction_id)
+        except (KeyError, TypeError, ValueError):
+            return self.respond(400, {'message': 'Elegí un cruce de la lista antes de guardar.'})
+        except StudyError as error:
+            return self.respond(422, {'message': str(error)})
+        project = {'id': uuid4().hex, 'createdAt': datetime.now(timezone.utc).isoformat(), 'target': target}
+        try:
+            PROJECTS.mkdir(parents=True, exist_ok=True)
+            write_json(project_file(project['id']), project)
+        except OSError:
+            return self.respond(500, {'message': 'No se pudo guardar el estudio. Revisá los permisos de la carpeta del proyecto.'})
+        return self.respond(201, project)
+
+    def start_project_run(self, identifier):
+        with PROJECT_LOCK:
+            try:
+                project = read_json(project_file(identifier))
+                target = project['target']
+                lon, lat = target['location']
+            except (OSError, ValueError, KeyError, TypeError):
+                return self.respond(404, {'message': 'El estudio guardado no está disponible.'})
+            prior = project.get('baseRunId')
+            if prior:
+                directory = STUDIES / prior
+                with STATUS_LOCK:
+                    active = prior in ACTIVE_RUNS and read_json(directory / 'status.json').get('stage') != 'error'
+                if active or (directory / 'replay.json').is_file():
+                    return self.respond(202, {'id': prior})
+            return self.queue_study(partial(run_study, lon=lon, lat=lat, target=target), project=project)
+
     def start_study(self):
         try:
             point = self.read_payload(1024)
@@ -161,8 +265,12 @@ class StudyHandler(SimpleHTTPRequestHandler):
         try:
             traffic = self.read_payload(128 * 1024)
             duration, source, counts = traffic['durationMinutes'], traffic['source'], traffic['counts']
+            sample_terminal_bus = traffic.get('sampleTerminalBus', False)
+            sample_mixed_fleet = traffic.get('sampleMixedFleet', False)
             if (type(duration) is not int or not 1 <= duration <= 60
                     or source not in ('sample', 'observed') or not isinstance(counts, dict)
+                    or type(sample_terminal_bus) is not bool or type(sample_mixed_fleet) is not bool
+                    or ((sample_terminal_bus or sample_mixed_fleet) and source != 'sample')
                     or not counts or not all(type(count) is int and count >= 0 for count in counts.values())
                     or not any(counts.values())):
                 raise ValueError
@@ -170,20 +278,25 @@ class StudyHandler(SimpleHTTPRequestHandler):
             return self.respond(400, {'message': 'Ingresá un período de 1 a 60 minutos y conteos enteros, con al menos un vehículo.'})
 
         def run(directory):
-            run_job(directory, partial(rerun_study, directory, base_directory, traffic))
+            run_job(directory, partial(rerun_study, directory, base_directory, traffic,
+                                       sample_terminal_bus=sample_terminal_bus, sample_mixed_fleet=sample_mixed_fleet))
 
-        return self.queue_study(run, parent_id=base_id)
+        info = run_info(base_directory, base_directory / 'replay.json')
+        return self.queue_study(run, parent_id=base_id, project_id=info.get('projectId'))
 
-    def queue_study(self, build, parent_id=None):
+    def queue_study(self, build, parent_id=None, project_id=None, project=None):
         identifier = uuid4().hex
         directory = STUDIES / identifier
         try:
             directory.mkdir(parents=True)
-            write_json(directory / 'run-info.json', {
-                'parentId': parent_id, 'createdAt': datetime.now(timezone.utc).isoformat(),
-            })
+            info = {'parentId': parent_id, 'createdAt': datetime.now(timezone.utc).isoformat()}
+            if project or project_id:
+                info['projectId'] = project['id'] if project else project_id
+            write_json(directory / 'run-info.json', info)
             with STATUS_LOCK:
                 write_json(directory / 'status.json', {'stage': 'queued', 'message': 'Preparando el estudio…', 'target': None})
+                if project:
+                    write_json(project_file(project['id']), {**project, 'baseRunId': identifier})
                 ACTIVE_RUNS.add(identifier)
         except OSError:
             return self.respond(500, {'message': 'No se pudo guardar el estudio. Revisá que la carpeta del proyecto permita escritura.'})
@@ -206,8 +319,13 @@ class StudyHandler(SimpleHTTPRequestHandler):
     def do_POST(self):
         path = urlsplit(self.path).path
         run = RUN_ROUTE.fullmatch(path)
-        if path != '/api/studies' and not run:
+        project_run = PROJECT_RUN_ROUTE.fullmatch(path)
+        if path not in {'/api/studies', '/api/projects'} and not run and not project_run:
             return self.respond(404, {'message': 'Acción no disponible.'})
         if self.headers.get_content_type() != 'application/json':
             return self.respond(415, {'message': 'Los datos deben enviarse como JSON.'})
+        if project_run:
+            return self.start_project_run(project_run[1])
+        if path == '/api/projects':
+            return self.create_project()
         return self.start_rerun(run[1]) if run else self.start_study()

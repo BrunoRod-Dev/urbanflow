@@ -29,7 +29,18 @@ MAX_TRIPS = 10_000
 DRAIN_SECONDS = 60
 SEED = 42
 MAX_OSM_SIZE = 8 * 1024 * 1024
-VEHICLE_LENGTHS = {'car': 5, 'bus': 12}
+VEHICLE_TYPES = {
+    'car': {'vClass': 'passenger', 'length': 5, 'width': 1.8, 'height': 1.5},
+    'bus': {'vClass': 'bus', 'length': 12, 'width': 2.5, 'height': 3.4},
+    'terminal-bus': {'vClass': 'bus', 'length': 8.54, 'width': 2.55, 'height': 3},
+    'motorcycle': {'vClass': 'motorcycle', 'length': 2.2, 'width': .9, 'height': 1.5,
+                   'accel': 3.5, 'decel': 5, 'minGap': 1.5, 'maxSpeed': 25},
+    'pickup': {'vClass': 'passenger', 'length': 5.3, 'width': 1.9, 'height': 1.85,
+               'accel': 2.2, 'decel': 4.5, 'minGap': 2.5, 'maxSpeed': 33.33},
+}
+VEHICLE_LENGTHS = {kind: spec['length'] for kind, spec in VEHICLE_TYPES.items()}
+VEHICLE_LABELS = {'bus': 'ómnibus', 'terminal-bus': 'ómnibus', 'motorcycle': 'moto', 'pickup': 'camioneta'}
+SAMPLE_FLEET = {'terminal-bus': 1, 'motorcycle': 2, 'pickup': 2}
 MOTOR_ROADS = {
     'motorway', 'trunk', 'primary', 'secondary', 'tertiary', 'unclassified',
     'residential', 'service', 'living_street', 'road',
@@ -81,12 +92,11 @@ def tags(element):
     return {tag.get('k'): tag.get('v') for tag in element.findall('tag')}
 
 
-def identify_junction(osm, clicked):
-    points = {node.get('id'): (float(node.get('lon')), float(node.get('lat'))) for node in osm.findall('node')}
+def junction_candidates(points, ways):
     neighbors = defaultdict(set)
     ring_neighbors = defaultdict(set)
-    names = defaultdict(set)
-    for way in osm.findall('way'):
+    access_names = defaultdict(set)
+    for way in ways:
         info = tags(way)
         if info.get('highway') not in MOTOR_ROADS or info.get('area') == 'yes':
             continue
@@ -100,9 +110,24 @@ def identify_junction(osm, clicked):
             if info.get('junction') == 'roundabout':
                 ring_neighbors[first].add(second)
                 ring_neighbors[second].add(first)
-        if info.get('name') and info.get('junction') != 'roundabout':
-            for node in refs:
-                names[node].add(info['name'])
+            else:
+                name = info.get('name', 'Vía sin nombre')
+                access_names[first, second].add(name)
+                access_names[second, first].add(name)
+
+    def candidate(center, nodes, ring):
+        arms = [(node, adjacent) for node in sorted(nodes) for adjacent in sorted(neighbors[node] - nodes)]
+        accesses = sorted({name for arm in arms for name in access_names[arm]})
+        roads = [name for name in accesses if name != 'Vía sin nombre']
+        label = ' y '.join(name.removeprefix('Avenida ') for name in roads[:2])
+        kind = 'Rotonda' if ring else 'Cruce'
+        return {
+            'junctionId': f'{"r" if ring else "n"}{min(nodes, key=int)}',
+            'title': f'{kind} de {label}' if label else f'{kind} seleccionado',
+            'location': center, 'osmNodes': sorted(nodes), 'roundabout': ring,
+            'bounds': bounds_at(*center, STUDY_RADIUS), 'accesses': accesses,
+            'accessLines': [[points[node], points[adjacent]] for node, adjacent in arms],
+        }
 
     candidates = []
     remaining = set(ring_neighbors)
@@ -115,23 +140,32 @@ def identify_junction(osm, clicked):
             remaining -= attached
             group.update(attached)
             stack.extend(attached)
-        center = tuple(sum(points[node][i] for node in group) / len(group) for i in (0, 1))
-        if len(group) >= 3:
-            roads = sorted({name for node in group for name in names[node]})
-            score = min(distance(center, clicked), *(distance(points[node], clicked) for node in group))
-            candidates.append((score, True, center, group, roads))
+        if len(group) >= 3 and any(neighbors[node] - group for node in group):
+            center = tuple(sum(points[node][i] for node in sorted(group)) / len(group) for i in (0, 1))
+            candidates.append(candidate(center, group, True))
 
     for node, adjacent in neighbors.items():
         if len(adjacent) >= 3 and node not in ring_neighbors:
-            candidates.append((distance(points[node], clicked), False, points[node], {node}, sorted(names[node])))
+            candidates.append(candidate(points[node], {node}, False))
+    return candidates
 
-    if not candidates or min(candidate[0] for candidate in candidates) > SNAP_DISTANCE:
+
+def nearby_junctions(candidates, points, clicked):
+    nearby = []
+    for target in candidates:
+        anchors = [target['location'], *(points[node] for node in target['osmNodes'])] if target['roundabout'] else [target['location']]
+        score = min(distance(point, clicked) for point in anchors)
+        if score <= SNAP_DISTANCE:
+            nearby.append((score, not target['roundabout'], target['junctionId'], target))
+    return [{**target, 'distanceMeters': round(score)} for score, _, _, target in sorted(nearby)]
+
+
+def identify_junction(osm, clicked):
+    points = {node.get('id'): (float(node.get('lon')), float(node.get('lat'))) for node in osm.findall('node')}
+    candidates = nearby_junctions(junction_candidates(points, osm.findall('way')), points, clicked)
+    if not candidates:
         raise StudyError('No encontramos un cruce vehicular a menos de 55 m. Marcá un punto más cerca de la intersección.')
-    _, ring, center, nodes, roads = min(candidates, key=lambda item: (item[0], not item[1], item[2]))
-    label = ' y '.join(name.removeprefix('Avenida ') for name in roads[:2])
-    kind = 'Rotonda' if ring else 'Cruce'
-    return {'title': f'{kind} de {label}' if label else f'{kind} seleccionado', 'location': center,
-            'osmNodes': sorted(nodes), 'roundabout': ring, 'bounds': bounds_at(*center, STUDY_RADIUS)}
+    return candidates[0]
 
 
 def sumo_tools():
@@ -291,7 +325,7 @@ def group_movements(network, edges, samples):
             movement_id = f'{entry}:{exit_edge}:{kind}'
             origin = side_name(entry)
             destination = side_name(exit_edge, outgoing=True)
-            qualifier = ' (ómnibus)' if kind == 'bus' else ''
+            qualifier = f' ({VEHICLE_LABELS[kind]})' if kind in VEHICLE_LABELS else ''
             grouped[key] = {'id': movement_id, 'label': f'{origin} → {destination}{qualifier}', 'from': origin,
                             'to': destination, 'entry': entry, 'kind': kind, 'routes': []}
             counts[movement_id] = 0
@@ -313,6 +347,19 @@ def create_catalog(network, target):
     samples = [(route, entry, exit_edge, 'car', per_route) for route, (entry, exit_edge) in routes.items()]
     samples += [(route, entry, exit_edge, 'bus', per_route) for route, (entry, exit_edge) in bus_only.items()]
     return group_movements(network, bus_edges | edges, samples)
+
+
+def terminal_sample_movement(network, target, kind):
+    if target.get('junctionId') != 'r1161502532':
+        raise StudyError('La flota de muestra corresponde al estudio de Roosevelt y Camacho.')
+    edges, routes = find_routes(network, target, VEHICLE_TYPES[kind]['vClass'])
+    approach = ('230055789#7', '783169882#0', '553842606#1', '100473863#1')
+    for route, (entry, exit_edge) in sorted(routes.items()):
+        crosses_terminal = any(route[index:index + len(approach)] == approach for index in range(len(route)))
+        if crosses_terminal and exit_edge == '100473841#0':
+            movements, _ = group_movements(network, edges, [(route, entry, exit_edge, kind, 1)])
+            return movements[0]
+    raise StudyError(f'La red guardada no tiene un recorrido permitido para el tipo {VEHICLE_LABELS[kind]} desde la Terminal hasta Roosevelt.')
 
 
 def traffic_details(catalog, counts, duration, source):
@@ -352,8 +399,8 @@ def write_demand(catalog, traffic, destination):
                 samples.append((route, movement['kind'], count))
 
     root = ET.Element('routes')
-    ET.SubElement(root, 'vType', id='car', vClass='passenger', length=str(VEHICLE_LENGTHS['car']))
-    ET.SubElement(root, 'vType', id='bus', vClass='bus', length=str(VEHICLE_LENGTHS['bus']))
+    for kind, spec in VEHICLE_TYPES.items():
+        ET.SubElement(root, 'vType', id=kind, **{key: str(value) for key, value in spec.items()})
     used = {edge for path, _, _ in samples for edge in path}
     for index, (path, _, _) in enumerate(samples):
         ET.SubElement(root, 'route', id=f'r{index}', edges=' '.join(path))
@@ -403,12 +450,14 @@ def saved_catalog(directory, metadata):
         network = ET.parse(directory / 'network.net.xml')
         demand = ET.parse(directory / 'routes.rou.xml')
         nodes = target_nodes(network, metadata)
-        cars, _, _ = read_network(network, 'passenger')
-        buses, _, _ = read_network(network, 'bus')
-        edges = buses | cars
+        flows = demand.findall('flow')
+        classes = {VEHICLE_TYPES.get(flow.get('type'), VEHICLE_TYPES['car'])['vClass'] for flow in flows}
+        edges = {}
+        for vclass in classes:
+            edges.update(read_network(network, vclass)[0])
         paths = {route.get('id'): route.get('edges').split() for route in demand.findall('route')}
         samples = []
-        for flow in demand.findall('flow'):
+        for flow in flows:
             route = paths[flow.get('route')]
             entry = next(edge for edge in route if edges[edge].origin not in nodes and edges[edge].destination in nodes)
             exit_edge = next(edge for edge in route if edges[edge].origin in nodes and edges[edge].destination not in nodes)
@@ -446,8 +495,9 @@ def simulate_study(directory, sumo, env, target, catalog, traffic, seconds, upda
     if not int(summary.get('inserted', '0')):
         raise StudyError('SUMO no pudo ingresar vehículos en esta red. Revisá los movimientos y los volúmenes del escenario.')
     motion = replay_geometry(network, directory / 'map.nod.xml')
+    vehicles = []
     frames = fcd_frames(directory / 'trajectories.xml', {'incoming': {key: key for key in approaches}},
-                        geographic=True, vehicle_lengths=VEHICLE_LENGTHS if motion else None)
+                        geographic=True, vehicle_lengths=VEHICLE_LENGTHS if motion else None, vehicle_index=vehicles)
     geo_network = map_network(directory, used)
     diagnostics = {'reversedStraightConnections': reversed_straights(network)}
     write_json(directory / 'network-diagnostics.json', diagnostics)
@@ -456,6 +506,7 @@ def simulate_study(directory, sumo, env, target, catalog, traffic, seconds, upda
         'arrived': int(summary.get('arrived')), 'inserted': int(summary.get('inserted')), 'usedEdges': sorted(used),
         'traffic': traffic, 'networkDiagnostics': diagnostics,
     }, {'network': geo_network, 'approaches': approaches, 'frames': frames, 'laneMotion': motion,
+        'vehicleTypes': VEHICLE_TYPES, 'vehicleIndex': vehicles,
         'signalReplay': signal_replay(directory, network)}
 
 
@@ -493,16 +544,26 @@ def build_network(directory, netconvert, env, target):
     return network
 
 
-def generate_study(directory, lon, lat, update, cache, osm_file=None):
+def generate_study(directory, lon, lat, update, cache, osm_file=None, target=None):
     sumo, netconvert, env = sumo_tools()
     update('download', 'Cargando calles de OpenStreetMap…')
-    if osm_file is None:
-        source, fetch_bounds, region = download_osm(lon, lat, directory / 'recorte.osm.xml', cache)
+    extract = directory / 'recorte.osm.xml'
+    if target is not None and osm_file is None:
+        fetch_bounds = bounds_at(*target['location'], FETCH_RADIUS)
+        region = write_local_extract(fetch_bounds, extract)
+        if not region or region.get('snapshot') != target.get('snapshot'):
+            raise StudyError('La base regional cambió desde que guardaste este estudio. Elegí el cruce de nuevo.')
+        source = region['source']
+    elif osm_file is None:
+        source, fetch_bounds, region = download_osm(lon, lat, extract, cache)
     else:
-        (directory / 'recorte.osm.xml').write_bytes(Path(osm_file).read_bytes())
+        extract.write_bytes(Path(osm_file).read_bytes())
         source, fetch_bounds, region = 'Recorte de OpenStreetMap', None, None
-    osm = ET.parse(directory / 'recorte.osm.xml')
-    target = identify_junction(osm, (lon, lat))
+    osm = ET.parse(extract)
+    if target is None:
+        target = identify_junction(osm, (lon, lat))
+    elif not set(target['osmNodes']) <= {node.get('id') for node in osm.findall('node')}:
+        raise StudyError('La red disponible cambió y ya no contiene el cruce guardado. Volvé a seleccionarlo para generar otro estudio.')
     update('network', 'Identificamos el cruce. Preparando la red vial…', target)
     network = build_network(directory, netconvert, env, target)
     catalog, counts = create_catalog(network, target)
@@ -521,13 +582,27 @@ def generate_study(directory, lon, lat, update, cache, osm_file=None):
     return save_study(directory, metadata, output, catalog)
 
 
-def rerun_study(directory, base_directory, traffic, update):
+def rerun_study(directory, base_directory, traffic, update, *, sample_terminal_bus=False, sample_mixed_fleet=False):
     """Run edited counts on the saved road network and keep the source run intact."""
     try:
         base_metadata = json.loads((base_directory / 'metadata.json').read_text(encoding='utf-8'))
         catalog, _ = saved_catalog(base_directory, base_metadata)
     except (OSError, ValueError) as error:
         raise StudyError('No se pudo abrir la red del estudio guardado. Volvé a generarla desde el mapa.') from error
+    if sample_terminal_bus or sample_mixed_fleet:
+        if traffic['source'] != 'sample':
+            raise StudyError('La flota de muestra se puede agregar a corridas con tráfico de muestra.')
+        network = ET.parse(base_directory / 'network.net.xml')
+        counts = dict(traffic['counts'])
+        additions = SAMPLE_FLEET if sample_mixed_fleet else {'terminal-bus': 1}
+        for kind, count in additions.items():
+            movement = terminal_sample_movement(network, base_metadata, kind)
+            if all(item['id'] != movement['id'] for item in catalog):
+                catalog.append(movement)
+            identifier = movement['id']
+            if not sample_mixed_fleet or counts.get(identifier, 0) == 0:
+                counts[identifier] = count
+        traffic = {**traffic, 'counts': counts}
     traffic = validate_traffic(traffic, catalog)
     sumo, _, env = sumo_tools()
     target = {key: base_metadata[key] for key in ('title', 'location', 'osmNodes', 'roundabout', 'bounds')}

@@ -127,7 +127,7 @@ def sample_frames(scenario, flows, duration):
     return frames
 
 
-def fcd_frames(path, scenario, *, geographic=False, vehicle_lengths=None):
+def fcd_frames(path, scenario, *, geographic=False, vehicle_lengths=None, vehicle_index=None):
     ids = {}
     frames = []
     root = None
@@ -138,7 +138,11 @@ def fcd_frames(path, scenario, *, geographic=False, vehicle_lengths=None):
             continue
         cars = []
         for car in element.findall("vehicle"):
-            identifier = ids.setdefault(car.get("id"), len(ids))
+            sumo_id = car.get("id")
+            kind = car.get("type")
+            identifier = ids.setdefault(sumo_id, len(ids))
+            if vehicle_index is not None and identifier == len(vehicle_index):
+                vehicle_index.append({"sumoId": sumo_id, "type": kind})
             angle = float(car.get("angle"))
             radians = math.radians(angle)
             x, y = float(car.get("x")), float(car.get("y"))
@@ -153,7 +157,7 @@ def fcd_frames(path, scenario, *, geographic=False, vehicle_lengths=None):
                 scenario["incoming"].get(edge, ""),
             ]
             if vehicle_lengths is not None:
-                sample.extend((car.get("lane"), float(car.get("pos")), vehicle_lengths[car.get("type")]))
+                sample.extend((car.get("lane"), float(car.get("pos")), vehicle_lengths[kind]))
             cars.append(sample)
         frames.append([float(element.get("time")), cars])
         root.remove(element)

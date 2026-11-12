@@ -2,26 +2,27 @@
 
 const element = id => document.getElementById(id);
 const pilotScenario = window.urbanflowPilot;
-const geographicMap = createMaldonadoMap(pilotScenario, onSelection);
+const geographicMap = createMaldonadoMap(onMapSelection);
+const replayViews = createReplayViews(geographicMap, draw);
 const canvas = element("traffic-map");
 const timeline = element("timeline");
 const highlight = element("highlight");
 const simulation = element("simulador");
 const mapSection = element("maldonado");
 const librarySection = element("estudios");
-const studySearch = element("study-search");
-const studyButton = element("study-action");
-const studyStatus = element("study-status");
+const comparisonSection = element("comparacion");
 const routeFeedback = element("route-feedback");
 const trafficEditor = element("traffic-editor");
 const trafficForm = element("traffic-form");
 const trafficFields = element("traffic-fields");
 const trafficDuration = element("traffic-duration");
 const trafficSource = element("traffic-source");
+const trafficFleetOption = element("traffic-fleet-option");
+const trafficMixedFleet = element("traffic-mixed-fleet");
 const trafficFile = element("traffic-file");
 const trafficFeedback = element("traffic-feedback");
 const number = new Intl.NumberFormat("es-UY");
-const studyDate = new Intl.DateTimeFormat("es-UY", { dateStyle: "short", timeStyle: "short", timeZone: "America/Montevideo" });
+const studyDate = new Intl.DateTimeFormat("es-UY", { dateStyle: "short", timeStyle: "medium", timeZone: "America/Montevideo" });
 const generatorAddressError = "Esta dirección sirve la página, pero no tiene el generador actualizado. Usá la dirección que imprime la ventana nueva de UrbanFlow, que puede ser la del puerto 8765.";
 let scenario;
 let frames;
@@ -37,24 +38,8 @@ let animation = 0;
 let lastTick = null;
 let lastFrame = -1;
 let lastPhase = "";
-let selectedPoint;
-let selectionVersion = 0;
-let generatedStudyId = null;
 let viewVersion = 0;
 let trafficInputs = new Map();
-let savedGroups = [];
-
-function onSelection(point) {
-  selectedPoint = { lat: point.lat, lng: point.lng };
-  selectionVersion++;
-  generatedStudyId = null;
-  studyStatus.textContent = "";
-  studyButton.textContent = "Estudiar este cruce →";
-  studyButton.disabled = false;
-  element("selection-instruction").textContent = "UrbanFlow buscará el cruce vehicular más cercano al punto marcado.";
-  geographicMap.preview(null);
-  studyButton.focus();
-}
 
 async function apiRequest(path, options) {
   let response;
@@ -80,7 +65,7 @@ async function verifyGenerator() {
     throw new Error("Este archivo está abierto directamente desde la carpeta. Usá la dirección que imprime Abrir UrbanFlow.cmd.");
   }
   const health = await apiRequest("/api/health");
-  if (health.app !== "urbanflow" || health.apiVersion !== 3) throw new Error(generatorAddressError);
+  if (health.app !== "urbanflow" || health.apiVersion !== 10) throw new Error(generatorAddressError);
 }
 
 function postStudy(path, data) {
@@ -95,40 +80,10 @@ async function waitForStudy(id, isCurrent, onStatus) {
     onStatus(status);
     if (status.stage === "error") throw new Error(status.message);
     if (status.stage === "ready") return true;
-    if (Date.now() >= deadline) throw new Error("La corrida está tardando más de lo esperado. Podés buscarla en Estudios guardados cuando termine.");
+    if (Date.now() >= deadline) throw new Error("La corrida está tardando más de lo esperado. Podés volver a abrir el estudio desde Estudios para revisar el avance.");
     await new Promise(resolve => setTimeout(resolve, 600));
   }
   return false;
-}
-
-async function generateSelectedStudy() {
-  if (!selectedPoint) return;
-  if (generatedStudyId) {
-    location.hash = `#estudio/${generatedStudyId}`;
-    return;
-  }
-  const version = selectionVersion;
-  const point = selectedPoint;
-  const isCurrent = () => version === selectionVersion;
-  studyButton.disabled = true;
-  studyStatus.textContent = "Preparando el estudio…";
-  try {
-    await verifyGenerator();
-    if (!isCurrent()) return;
-    const { id } = await postStudy("", point);
-    const ready = await waitForStudy(id, isCurrent, status => {
-      studyStatus.textContent = status.target ? `${status.target.title}. ${status.message}` : status.message;
-      geographicMap.preview(status.target);
-    });
-    if (!ready || !isCurrent()) return;
-    generatedStudyId = id;
-    studyButton.textContent = "Abrir estudio →";
-    if (!mapSection.hidden) location.hash = `#estudio/${id}`;
-  } catch (error) {
-    if (isCurrent()) studyStatus.textContent = error.message;
-  } finally {
-    if (isCurrent()) studyButton.disabled = false;
-  }
 }
 
 function groupSavedStudies(studies) {
@@ -151,78 +106,12 @@ function searchable(text) {
   return text.normalize("NFD").replace(/\p{M}/gu, "").toLocaleLowerCase("es-UY");
 }
 
-function renderSavedStudies() {
-  const list = element("saved-studies");
-  const status = element("saved-status");
-  const query = searchable(studySearch.value.trim());
-  const groups = savedGroups.filter(({ original, runs }) => searchable(original.title).includes(query)
-    || runs.some(run => searchable(run.title).includes(query)));
-  list.replaceChildren();
-  for (const { original, runs } of groups) {
-    const group = document.createElement("li");
-    const heading = document.createElement("h2");
-    heading.textContent = original.title;
-    const entries = document.createElement("ul");
-    entries.className = "saved-runs";
-    const originalAvailable = !original.parentId;
-    group.append(heading);
-    if (!originalAvailable) {
-      const note = document.createElement("p");
-      note.className = "muted";
-      note.textContent = "El estudio original ya no está disponible.";
-      group.append(note);
-    }
-    group.append(entries);
-    const ordered = originalAvailable ? [original, ...runs.filter(run => run !== original)] : runs;
-    for (const saved of ordered) {
-      const row = document.createElement("li");
-      const label = document.createElement("strong");
-      label.textContent = saved.parentId ? "Corrida" : "Estudio original";
-      const link = document.createElement("a");
-      link.href = `#estudio/${saved.id}`;
-      link.className = "button button-secondary";
-      link.textContent = "Abrir";
-      const details = document.createElement("span");
-      details.className = "muted";
-      const source = saved.traffic?.source === "observed" ? "Conteos observados" : "Tráfico de muestra";
-      const period = saved.traffic?.durationMinutes ? `${saved.traffic.durationMinutes} min` : "";
-      const date = new Date(saved.createdAt ?? NaN);
-      details.textContent = [source, period, Number.isFinite(saved.trips) ? `${number.format(saved.trips)} viajes` : "",
-        Number.isNaN(date.valueOf()) ? "" : studyDate.format(date)].filter(Boolean).join(" · ");
-      link.setAttribute("aria-label", `Abrir ${label.textContent.toLowerCase()} de ${original.title}. ${details.textContent}`);
-      const info = document.createElement("div");
-      info.append(label, details);
-      row.append(info, link);
-      entries.append(row);
-    }
-    list.append(group);
-  }
-  status.textContent = groups.length ? "" : savedGroups.length ? "No encontramos cruces con ese nombre."
-    : "Todavía no hay estudios. Elegí un cruce en el mapa para empezar.";
-}
-
-async function showSavedStudies() {
-  const version = viewVersion;
-  const tools = element("library-tools");
-  const status = element("saved-status");
-  savedGroups = [];
-  element("saved-studies").replaceChildren();
-  tools.hidden = true;
-  if (location.protocol === "file:") {
-    status.textContent = "Abrí UrbanFlow desde su servidor local para recuperar tus estudios.";
-    return;
-  }
-  status.textContent = "Cargando estudios…";
-  try {
-    await verifyGenerator();
-    const { studies } = await studyRequest("");
-    if (version !== viewVersion) return;
-    savedGroups = groupSavedStudies(studies);
-    tools.hidden = !savedGroups.length;
-    renderSavedStudies();
-  } catch (error) {
-    if (version === viewVersion) status.textContent = error.message;
-  }
+function studyDetails(study) {
+  const source = study.traffic?.source === "observed" ? "Conteos observados" : "Tráfico de muestra";
+  const period = study.traffic?.durationMinutes ? `${study.traffic.durationMinutes} min` : "";
+  const date = new Date(study.createdAt ?? NaN);
+  return [source, period, Number.isFinite(study.trips) ? `${number.format(study.trips)} viajes programados` : "",
+    Number.isNaN(date.valueOf()) ? "" : studyDate.format(date)].filter(Boolean).join(" · ");
 }
 
 function showTrafficFeedback(message, error = false) {
@@ -233,7 +122,14 @@ function showTrafficFeedback(message, error = false) {
 
 function updateTrafficTotal() {
   const total = [...trafficInputs.values()].reduce((sum, input) => sum + (Number(input.value) || 0), 0);
-  element("traffic-total").textContent = `${number.format(total)} vehículos en el período`;
+  const description = trafficMixedFleet.checked ? "vehículos configurados, más la flota faltante" : "vehículos en el período";
+  element("traffic-total").textContent = `${number.format(total)} ${description}`;
+}
+
+function updateTrafficSource() {
+  trafficFleetOption.hidden = scenario.junctionId !== "r1161502532" || trafficSource.value !== "sample";
+  if (trafficFleetOption.hidden) trafficMixedFleet.checked = false;
+  updateTrafficTotal();
 }
 
 function showInspectorPanel(editing) {
@@ -250,6 +146,7 @@ function configureTraffic(data) {
   trafficFields.hidden = !movements.length;
   trafficFields.disabled = false;
   trafficFile.value = "";
+  trafficMixedFleet.checked = false;
   showTrafficFeedback(data.trafficMessage ?? "");
   const list = element("traffic-movements");
   list.replaceChildren();
@@ -274,7 +171,7 @@ function configureTraffic(data) {
     label.append(name, input);
     list.append(label);
   }
-  updateTrafficTotal();
+  updateTrafficSource();
 }
 
 async function applyTrafficFile() {
@@ -289,7 +186,7 @@ async function applyTrafficFile() {
     const counts = parseTrafficCsv(csv, scenario.traffic.movements);
     for (const [id, count] of counts) trafficInputs.get(id).value = count;
     trafficSource.value = "observed";
-    updateTrafficTotal();
+    updateTrafficSource();
     showTrafficFeedback("Conteos cargados. Revisá la duración y elegí Guardar y simular.");
   } catch (error) {
     if (version === viewVersion) showTrafficFeedback(error.message, true);
@@ -313,6 +210,7 @@ async function saveTraffic(event) {
     return;
   }
   const traffic = { durationMinutes: Number(trafficDuration.value), source: trafficSource.value, counts };
+  if (trafficMixedFleet.checked) traffic.sampleMixedFleet = true;
   setRunning(false);
   trafficFields.disabled = true;
   showTrafficFeedback("Guardando y preparando la nueva corrida…");
@@ -340,7 +238,7 @@ function loadScenario(nextScenario) {
   cycle = scenario.phases?.reduce((sum, phase) => sum + phase.duration, 0) ?? 0;
   trafficMap = scenario.geographic ? null : createTrafficMap(canvas, scenario);
   laneMotion = scenario.laneMotion ? createLaneMotion(scenario.laneMotion) : null;
-  currentTime = Math.min(scenario.geographic ? 20 : 72, duration);
+  currentTime = Math.min(scenario.pedestrianReplay ? 10 : scenario.geographic ? 20 : 72, duration);
   lastFrame = -1;
   lastPhase = "";
   routes = {};
@@ -372,20 +270,28 @@ function loadScenario(nextScenario) {
     ? "Corrida de SUMO con rutas y volúmenes ilustrativos."
     : scenario.source === "sumo" ? "Trayectorias exportadas desde SUMO. Vista esquemática del cruce."
       : "Recorridos ilustrativos basados en la red y el ciclo del escenario. Vista esquemática.";
+  if (scenario.pedestrianReplay) {
+    element("source-note").textContent += ` ${scenario.pedestrianReplay.personIndex.length} peatones de muestra.`;
+  }
   element("source-credit").hidden = !isPilot && !isGeographic;
   const signals = Object.keys(scenario.signalReplay?.states ?? {}).length;
   element("signal-legend").hidden = !signals;
   const signalNote = element("signal-note");
   signalNote.hidden = !signals;
-  signalNote.textContent = `${signals} ${signals === 1 ? "controlador" : "controladores"} en el área. Los colores muestran las fases de SUMO. El violeta indica giros con estados distintos en el mismo carril. Los tiempos son estimados.`;
+  signalNote.textContent = `${signals} ${signals === 1 ? "controlador" : "controladores"} en el área. En el mapa 2D, los colores muestran las fases de SUMO. El violeta indica giros con estados distintos en el mismo carril. Los tiempos son estimados.`;
   const assumptions = element("model-assumptions");
   assumptions.hidden = !isGeographic;
   assumptions.textContent = scenario.assumptions?.join(" ") ?? "";
   element("signal-dot").hidden = !cycle;
   if (!cycle) {
     const roundabout = isPilot || scenario.roundabout;
-    element("phase-name").textContent = roundabout ? "Prioridad de la rotonda" : "Control vial importado";
-    element("phase-remaining").textContent = roundabout ? "Ceda el paso al ingresar." : "Giros, prioridades y señales de la red de SUMO.";
+    if (scenario.pedestrianReplay) {
+      element("phase-name").textContent = "Prioridad peatonal";
+      element("phase-remaining").textContent = "Los vehículos ceden el paso en la cebra de Burnett.";
+    } else {
+      element("phase-name").textContent = roundabout ? "Prioridad de la rotonda" : "Control vial importado";
+      element("phase-remaining").textContent = roundabout ? "Ceda el paso al ingresar." : "Giros, prioridades y señales de la red de SUMO.";
+    }
   }
   element("sim-in").disabled = false;
   element("sim-out").disabled = false;
@@ -488,8 +394,10 @@ function draw() {
   const [signals, remaining] = cycle ? phaseAt(time) : [{}];
   const cars = interpolate(index, time);
   if (scenario.geographic) {
-    geographicMap.drawVehicles(cars, highlight.checked, running);
-    geographicMap.drawSignals(time);
+    if (!replayViews.draw(cars, highlight.checked, time, frames[index][1])) {
+      geographicMap.drawVehicles(cars, highlight.checked, running);
+      geographicMap.drawSignals(time);
+    }
   } else trafficMap.draw(cars, signals, highlight.checked);
   if (index !== lastFrame) {
     updateMetrics(frames[index][1]);
@@ -525,29 +433,56 @@ function setView(view) {
   simulation.hidden = view !== "simulador";
   mapSection.hidden = view !== "maldonado";
   librarySection.hidden = view !== "estudios";
-  if (view === "simulador") {
+  comparisonSection.hidden = view !== "comparacion";
+  element("proyecto").hidden = view !== "proyecto";
+  element("ejemplos").hidden = view !== "ejemplos";
+  const replay = view === "simulador" && studyIdentifier(location.hash);
+  if (replay) {
     const currentRun = element("current-run");
     currentRun.href = location.hash;
     currentRun.hidden = false;
   }
+  const activeNavigation = replay ? "simulador" : view === "simulador" || view === "ejemplos" ? null : "estudios";
   for (const link of document.querySelectorAll("[data-view]")) {
-    if (link.dataset.view === view) link.setAttribute("aria-current", "page");
+    if (link.dataset.view === activeNavigation) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
   }
 }
 
 function studyIdentifier(hash) {
-  return /^#estudio\/([a-f0-9]{32})$/.exec(hash)?.[1];
+  return /^#estudio\/([a-f0-9]{32})(?:\?t=\d+(?:\.\d+)?)?$/.exec(hash)?.[1];
 }
 
 async function showView() {
   const version = ++viewVersion;
   const hash = location.hash;
   const identifier = studyIdentifier(hash);
+  const project = /^#proyecto\/([a-f0-9]{32})$/.exec(hash)?.[1];
+  const comparison = /^#comparar\/([a-f0-9]{32})\/([a-f0-9]{32})$/.exec(hash);
   const showPilot = hash === "#estudio-roosevelt-camacho";
   routeFeedback.hidden = true;
+  replayViews.configure(null);
+  geographicMap.hide();
+  setRunning(false);
+  if (project) {
+    setView("proyecto");
+    element("project-title").focus({ preventScroll: true });
+    window.scrollTo(0, 0);
+    await showProject(project, version);
+    return;
+  }
+  if (comparison) {
+    setView("comparacion");
+    const back = element("comparison-back");
+    const fromProject = comparison.slice(1).every(id => lastOpenedProject?.runs.some(run => run.id === id));
+    back.href = fromProject ? `#proyecto/${lastOpenedProject.id}` : "#estudios";
+    back.textContent = fromProject ? "Volver al estudio" : "Volver a Estudios";
+    element("comparison-title").focus({ preventScroll: true });
+    window.scrollTo(0, 0);
+    await showComparison(comparison[1], comparison[2], version);
+    return;
+  }
   if (identifier) {
-    setRunning(false);
     trafficFields.disabled = true;
     try {
       routeFeedback.textContent = "Abriendo el estudio guardado…";
@@ -556,16 +491,22 @@ async function showView() {
       if (version !== viewVersion) return;
       routeFeedback.hidden = true;
       setView("simulador");
+      const back = element("return-to-project");
+      const projectId = data.projectId || (lastOpenedProject?.runs.some(run => run.id === identifier) ? lastOpenedProject.id : null);
+      back.hidden = !projectId;
+      if (projectId) back.href = `#proyecto/${projectId}`;
       element("demo-map-frame").hidden = true;
       element("study-map-host").hidden = false;
       geographicMap.showStudy(data);
       loadScenario(data);
+      replayViews.configure(data, identifier);
+      const peakTime = Number(hash.split("?t=")[1]);
+      if (Number.isFinite(peakTime)) currentTime = Math.max(0, Math.min(duration, peakTime - firstTime));
       draw();
       window.scrollTo(0, 0);
     } catch (error) {
       if (version !== viewVersion) return;
       setView("estudios");
-      geographicMap.restoreSelection();
       routeFeedback.textContent = error.message;
       routeFeedback.hidden = false;
       showSavedStudies();
@@ -574,18 +515,21 @@ async function showView() {
     return;
   }
   const showSimulation = showPilot || hash === "#simulador";
-  const view = showSimulation ? "simulador" : hash === "#estudios" ? "estudios" : "maldonado";
+  const view = showSimulation ? "simulador" : hash === "#maldonado" ? "maldonado" : hash === "#ejemplos" ? "ejemplos" : "estudios";
   setView(view);
-  geographicMap.restoreSelection();
   element("demo-map-frame").hidden = false;
   element("study-map-host").hidden = true;
   if (showSimulation) {
+    element("return-to-project").hidden = true;
     loadScenario(showPilot ? pilotScenario : window.urbanflowScenario);
     draw();
+  } else if (view === "maldonado") {
+    geographicMap.showPicker(selectedJunction);
+    element("maldonado-title").focus({ preventScroll: true });
+  } else if (view === "estudios") {
+    showSavedStudies();
   } else {
-    setRunning(false);
-    if (view === "estudios") showSavedStudies();
-    else geographicMap.refresh();
+    element("examples-title").focus({ preventScroll: true });
   }
   window.scrollTo(0, 0);
 }
@@ -616,11 +560,30 @@ for (const [id, amount] of [["sim-in", .25], ["sim-out", -.25], ["sim-center", 0
     draw();
   });
 }
-studyButton.addEventListener("click", generateSelectedStudy);
-studySearch.addEventListener("input", renderSavedStudies);
+bindJunctionPicker();
+element("study-search").addEventListener("input", renderStudyList);
+element("project-run").addEventListener("click", startProjectRun);
+element("examples-link").addEventListener("click", () => { element("help-menu").open = false; });
+const comparisonB = element("comparison-b");
+for (const id of ["comparison-a", "comparison-b"]) {
+  element(id).addEventListener("change", () => comparisonB.setCustomValidity(""));
+}
+element("comparison-form").addEventListener("submit", event => {
+  event.preventDefault();
+  const first = element("comparison-a").value;
+  const second = comparisonB.value;
+  if (first === second) {
+    comparisonB.setCustomValidity("Elegí dos corridas distintas.");
+    comparisonB.reportValidity();
+    return;
+  }
+  location.hash = comparisonHash(first, second);
+});
 element("show-summary").addEventListener("click", () => showInspectorPanel(false));
 element("edit-traffic").addEventListener("click", () => showInspectorPanel(true));
 element("traffic-movements").addEventListener("input", updateTrafficTotal);
+trafficSource.addEventListener("change", updateTrafficSource);
+trafficMixedFleet.addEventListener("change", updateTrafficTotal);
 element("traffic-upload").addEventListener("click", () => trafficFile.click());
 trafficFile.addEventListener("change", applyTrafficFile);
 trafficForm.addEventListener("submit", saveTraffic);

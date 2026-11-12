@@ -3,21 +3,16 @@
 const mapLibreDist = "https://unpkg.com/maplibre-gl@6.17.0/dist/";
 const mapStyle = "https://tiles.openfreemap.org/styles/liberty";
 
-function createMaldonadoMap(pilot, onSelection) {
+function createMaldonadoMap(onSelection) {
   const container = document.querySelector("#geo-map");
   const baseMap = document.querySelector("#base-map");
+  const referenceOverlay = document.querySelector("#pilot-map-references");
   const message = document.querySelector("#geo-message");
   const messageText = document.querySelector("#geo-message-text");
   const actions = document.querySelector("#geo-message-actions");
-  const pin = document.querySelector("#map-pin");
-  const pilotMarker = document.querySelector("#pilot-marker");
-  const locatePilot = document.querySelector("#locate-pilot");
   const selectionHost = document.querySelector("#selection-map-host");
+  const projectHost = document.querySelector("#project-map-host");
   const studyHost = document.querySelector("#study-map-host");
-  const selectButton = document.querySelector("#select-point");
-  const placementHint = document.querySelector("#placement-hint");
-  const selection = document.querySelector("#selection");
-  const selectionLink = document.querySelector("#selection-link");
   const zoomIn = document.querySelector("#geo-in");
   const zoomOut = document.querySelector("#geo-out");
   const reset = document.querySelector("#geo-center");
@@ -29,16 +24,17 @@ function createMaldonadoMap(pilot, onSelection) {
   let map;
   let ready = false;
   let loading = false;
-  let selected = null;
-  let placing = false;
+  let selectable = false;
   let area = null;
   let study = null;
   let queuedVehicles = [];
   let lastVehicleDraw = 0;
-  let fitStudy = false;
+  let fitArea = false;
   let region = null;
   let lastSignalTime = 0;
   let lastSignalState = null;
+  let references = [];
+  let referenceBadges = [];
 
   const collection = features => ({ type: "FeatureCollection", features });
 
@@ -51,6 +47,9 @@ function createMaldonadoMap(pilot, onSelection) {
       filter: ["==", ["geometry-type"], "Polygon"], paint: {
         "line-color": "#2459cb", "line-dasharray": [3, 2], "line-opacity": .7, "line-width": 2,
       } });
+    map.addLayer({ id: "study-accesses", type: "line", source: "study-area",
+      filter: ["==", ["geometry-type"], "LineString"], layout: { "line-cap": "round" },
+      paint: { "line-color": "#2459cb", "line-opacity": .78, "line-width": 4 } });
     map.addLayer({ id: "study-junction", type: "circle", source: "study-area",
       filter: ["==", ["geometry-type"], "Point"], paint: {
         "circle-radius": 5, "circle-color": "#2459cb", "circle-stroke-color": "#fff", "circle-stroke-width": 2,
@@ -109,7 +108,7 @@ function createMaldonadoMap(pilot, onSelection) {
       showRegion.hidden = false;
       document.querySelector("#region-label").textContent = "Solanas · Maldonado · Punta del Este · La Barra";
       drawArea();
-      if (!study && !selected) showRegionOverview();
+      if (selectable && !area) showRegionOverview();
     } catch (error) {
       console.warn("UrbanFlow: no se pudo cargar la vista regional.", error);
     }
@@ -146,7 +145,12 @@ function createMaldonadoMap(pilot, onSelection) {
       features.push({ type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [
         [[west, south], [east, south], [east, north], [west, north], [west, south]],
       ] } });
-      if (!study) features.push({ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: target.location } });
+      if (!study) {
+        features.push({ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: target.location } });
+        for (const coordinates of target.accessLines ?? []) {
+          features.push({ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates } });
+        }
+      }
     }
     map.getSource("study-area").setData(collection(features));
   }
@@ -160,62 +164,36 @@ function createMaldonadoMap(pilot, onSelection) {
     lastSignalState = null;
     drawSignals(lastSignalTime);
     map.resize();
-    if (study && fitStudy) map.fitBounds(study.bounds, { padding: 42, duration: 0 });
-    fitStudy = false;
-    positionMarkers();
+    const target = study ?? area;
+    if (target && fitArea) map.fitBounds(target.bounds, { padding: 42, duration: 0 });
+    fitArea = false;
+    positionReferences();
+  }
+
+  function positionReferences() {
+    const width = baseMap.clientWidth;
+    const height = baseMap.clientHeight;
+    for (const [index, reference] of references.entries()) {
+      const { x, y } = map.project(reference.location);
+      const badge = referenceBadges[index];
+      badge.hidden = x < 0 || x > width || y < 0 || y > height;
+      if (!badge.hidden) {
+        badge.style.left = `${x}px`;
+        badge.style.top = `${y}px`;
+      }
+    }
   }
 
   function updateControls() {
     zoomIn.disabled = !ready || map.getZoom() >= maxZoom;
     zoomOut.disabled = !ready || map.getZoom() <= minZoom;
     reset.disabled = !ready;
-    selectButton.disabled = !ready;
-    locatePilot.disabled = !ready;
   }
 
   function showMessage(text, retry) {
     message.hidden = false;
     messageText.textContent = text;
     actions.hidden = !retry;
-  }
-
-  function positionMarkers() {
-    if (study) {
-      pilotMarker.hidden = true;
-      pin.hidden = true;
-      return;
-    }
-    const marker = map.project([pilot.location.lng, pilot.location.lat]);
-    pilotMarker.style.left = `${marker.x}px`;
-    pilotMarker.style.top = `${marker.y}px`;
-    pilotMarker.hidden = marker.x < 0 || marker.x > baseMap.clientWidth || marker.y < 0 || marker.y > baseMap.clientHeight;
-    if (selected) {
-      const point = map.project([selected.lng, selected.lat]);
-      pin.style.left = `${point.x}px`;
-      pin.style.top = `${point.y}px`;
-      pin.hidden = false;
-    }
-  }
-
-  function togglePlacement(enabled) {
-    placing = enabled;
-    placementHint.hidden = !enabled;
-    selectButton.setAttribute("aria-pressed", String(enabled));
-    selectButton.textContent = enabled ? "Cancelar selección" : selected ? "Cambiar punto" : "Marcar un punto";
-    container.classList.toggle("placing", enabled);
-    if (enabled) container.focus({ preventScroll: true });
-  }
-
-  function select(point) {
-    selected = point;
-    const lat = selected.lat.toFixed(6);
-    const lon = selected.lng.toFixed(6);
-    selectionLink.textContent = `${lat}, ${lon} ↗`;
-    selectionLink.href = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=18/${lat}/${lon}`;
-    selection.hidden = false;
-    togglePlacement(false);
-    positionMarkers();
-    onSelection(selected);
   }
 
   function initialize() {
@@ -272,9 +250,10 @@ function createMaldonadoMap(pilot, onSelection) {
       message.hidden = true;
       updateControls();
       map.on("zoom", updateControls);
-      map.on("move", positionMarkers);
+      map.on("move", positionReferences);
+      map.on("resize", positionReferences);
       map.on("click", event => {
-        if (placing) select(event.lngLat.wrap());
+        if (selectable) onSelection(event.lngLat.wrap());
       });
       drawStudy();
       loadRegion();
@@ -303,54 +282,62 @@ function createMaldonadoMap(pilot, onSelection) {
     else map.jumpTo({ center: maldonado, zoom: defaultZoom });
   });
   showRegion.addEventListener("click", showRegionOverview);
-  selectButton.addEventListener("click", () => togglePlacement(!placing));
-  pilotMarker.addEventListener("click", () => select(pilot.location));
-  locatePilot.addEventListener("click", () => {
-    map.jumpTo({ center: [pilot.location.lng, pilot.location.lat], zoom: 17 });
-    select(pilot.location);
-  });
   container.addEventListener("keydown", event => {
     if (!ready || event.target !== container) return;
     const directions = { ArrowUp: [0, -96], ArrowDown: [0, 96], ArrowLeft: [-96, 0], ArrowRight: [96, 0] };
     if (directions[event.key]) map.panBy(directions[event.key]);
     else if (event.key === "+" || event.key === "=") map.zoomIn();
     else if (event.key === "-") map.zoomOut();
-    else if (event.key === "Enter" && placing) select(map.getCenter().wrap());
-    else if (event.key === "Escape" && placing) {
-      togglePlacement(false);
-      selectButton.focus();
-    }
+    else if (event.key === "Enter" && selectable) onSelection(map.getCenter().wrap());
     else return;
     event.preventDefault();
   });
 
+  function mount(host, target, replay = false) {
+    const previous = study ?? area;
+    selectable = host === selectionHost;
+    container.classList.toggle("selectable-map", selectable);
+    container.setAttribute("aria-label", selectable
+      ? "Mapa de Maldonado. Usá las flechas para desplazarte y Enter para buscar un cruce en el centro."
+      : "Mapa del estudio. Usá las flechas para desplazarte y más o menos para acercar o alejar.");
+    if (container.parentElement !== host) {
+      if (replay) host.prepend(container);
+      else host.append(container);
+    }
+    fitArea = Boolean(target && (!ready || !previous || target.bounds.some((value, index) => value !== previous.bounds[index])));
+    study = replay ? target : null;
+    area = replay ? null : target;
+    references = pilotSceneFor(study)?.references ?? [];
+    referenceOverlay.hidden = !references.length;
+    referenceBadges = createReferenceBadges(referenceOverlay, references);
+    queuedVehicles = [];
+    lastVehicleDraw = 0;
+    if (ready) drawStudy();
+    else if (message.hidden) initialize();
+  }
+
   updateControls();
   return {
-    refresh() {
-      if (map) map.resize();
-      else if (message.hidden) initialize();
+    showPicker(target) {
+      mount(selectionHost, target);
+      if (ready && !target) showRegionOverview();
+    },
+    showProject(target) {
+      mount(projectHost, target);
     },
     preview(target) {
       area = target;
-      drawArea();
+      fitArea = Boolean(target);
+      if (ready) drawStudy();
     },
     showStudy(data) {
-      togglePlacement(false);
-      const sameArea = study?.clicked.every((coordinate, index) => Math.abs(coordinate - data.clicked[index]) < .00001);
-      study = data;
-      queuedVehicles = [];
-      lastVehicleDraw = 0;
-      fitStudy = !sameArea && (!selected || Math.abs(selected.lng - data.clicked[0]) > .00001
-        || Math.abs(selected.lat - data.clicked[1]) > .00001);
-      studyHost.prepend(container);
-      if (ready) drawStudy();
-      else if (message.hidden) initialize();
+      mount(studyHost, data, true);
     },
-    restoreSelection() {
-      if (!study) return;
-      study = null;
-      selectionHost.append(container);
-      if (ready) drawStudy();
+    hide() {
+      selectable = false;
+    },
+    resize() {
+      if (ready) map.resize();
     },
     drawSignals,
     drawVehicles(cars, highlight, playing) {

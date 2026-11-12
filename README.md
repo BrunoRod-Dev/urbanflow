@@ -15,12 +15,15 @@ python abrir_urbanflow.py
 ### Generar un estudio desde el mapa
 
 1. Abrí la dirección que imprime la ventana del servidor, normalmente [UrbanFlow en localhost](http://127.0.0.1:8000/).
-2. Elegí **Marcar un punto** y hacé clic cerca de una intersección. Para ir directo al caso de Roosevelt y Camacho, usá **Ubicar rotonda**.
-3. Elegí **Estudiar este cruce**. La web indica cuándo descarga calles, arma la red y ejecuta SUMO. Al terminar abre el estudio con el mismo mapa. Usá **Reproducir** para seguir los vehículos y el botón de encuadre del mapa para ver toda el área.
+2. En **Estudios**, elegí **Nuevo estudio**. Buscá una o dos calles o hacé clic cerca de una intersección. Con el teclado, podés centrar el mapa con las flechas y buscar un cruce con Enter.
+3. Revisá el nombre del cruce, sus accesos y el contorno azul. Elegí **Guardar estudio**. Podés volver a abrirlo desde **Estudios** antes de simular.
+4. Elegí **Simular con tráfico de muestra**. Cuando termine, abrí la corrida con **Reproducir** y usá los controles del visor para seguir a los vehículos.
+
+Los estudios guardados abren con el mapa, el escenario base y las corridas en la misma pantalla. Las reproducciones de demostración se abren desde **Ayuda → Ejemplos**.
 
 ### Base vial regional y semáforos
 
-**Ver región** encuadra la zona de trabajo desde Solanas y Punta Ballena, pasando por Maldonado y Punta del Este, hasta La Barra. Los estudios dentro de la cobertura usan el mismo recorte local de OpenStreetMap, con fecha **10 de noviembre de 2026**. El recorte incluye un margen alrededor de la zona visible para conservar los accesos y restricciones cerca del borde. SUMO toma una parte de esa base para cada estudio. El mapa de fondo carga desde OpenFreeMap. Fuera de la cobertura el servidor puede consultar el API de OpenStreetMap. [Fuente del recorte](https://download.geofabrik.de/south-america/uruguay.html) · [Atribución y licencia](https://www.openstreetmap.org/copyright)
+**Ver región** encuadra la zona de trabajo desde Solanas y Punta Ballena, pasando por Maldonado y Punta del Este, hasta La Barra. La búsqueda por calles, la selección en el mapa y la simulación de un cruce confirmado usan el recorte local de OpenStreetMap, con fecha **10 de noviembre de 2026**. El recorte incluye un margen para conservar los accesos y restricciones cerca del borde. El mapa de fondo carga desde OpenFreeMap. [Fuente del recorte](https://download.geofabrik.de/south-america/uruguay.html) · [Atribución y licencia](https://www.openstreetmap.org/copyright)
 
 En las redes nuevas SUMO usa las señales registradas en OpenStreetMap, reconoce las señales marcadas en los accesos y agrupa las muy próximas que pertenecen a cruces compuestos. En Roosevelt y Honduras, los cuatro nodos del cruce pasan a un controlador. SUMO ajusta las fases a la demanda simulada. Los colores en el mapa muestran los estados de cada acceso durante la corrida. Violeta indica que hay giros con estados distintos en el mismo carril. Las fases son estimadas y quedan pendientes los tiempos municipales para calibrar el escenario.
 
@@ -34,7 +37,7 @@ El generador necesita `sumo` y `netconvert` disponibles en el PATH o en `SUMO_HO
 
 El generador busca un cruce vehicular a hasta 55 m del punto y toma un área de aproximadamente 650 × 650 m alrededor de la intersección. Descarga un recorte más grande para dar contexto a los accesos y a la conversión de la red. Conserva la geometría y los controles disponibles en OpenStreetMap. SUMO completa los carriles, velocidades y conexiones con los datos de cada tipo de vía cuando faltan datos. El área puede necesitar revisión si hay cortes, giros, accesos privados o prioridades que el mapa no refleje.
 
-Cada estudio se guarda en `results/studies/` con el recorte, la red, las rutas, la semilla, los resultados y la reproducción. En **Estudios guardados**, buscá por calle y abrí el estudio original o una corrida de la lista. La primera corrida usa **tráfico de muestra** durante cuatro minutos.
+Los cruces confirmados se guardan en `results/projects/`. Las corridas se guardan en `results/studies/` con el recorte, la red, las rutas, la semilla, los resultados y la reproducción. La primera corrida usa **tráfico de muestra** durante cuatro minutos.
 
 Para repetir la prueba, generá Roosevelt–Camacho (`-34.915848, -54.959516`) y luego 18 de Julio–Burnett (`-34.9149968, -54.9585164`). En el primero se puede seguir a los vehículos desde el ramal de la Terminal hasta la rotonda. En el segundo, la red y los recorridos se construyen para la intersección de 18 de Julio y Enrique G. Burnett.
 
@@ -47,11 +50,21 @@ Las corridas nuevas exportan la posición longitudinal de cada vehículo y la ge
 1. Abrí un estudio generado y elegí **Configurar tráfico** en el panel al lado del mapa. Podés volver a **Resumen** durante la reproducción.
 2. Indicá la duración del período observado, entre 1 y 60 minutos. Ingresá el total de vehículos por giro, de un acceso a una salida, y elegí el origen de los datos. La capacidad de esta versión es de 10.000 vehículos por corrida.
 3. Para importar un archivo, descargá la plantilla CSV del estudio y completá la columna `vehiculos` en todas las filas. Poné `0` donde no hubo tránsito y conservá los códigos de `movimiento`. Al cargar el CSV la corrida queda identificada como **Conteos observados**.
-4. Elegí **Guardar y simular**. UrbanFlow guarda una nueva corrida en **Estudios guardados** con la misma red y los conteos ingresados. El escenario base queda disponible en la misma lista.
+4. Elegí **Guardar y simular**. UrbanFlow agrega una nueva corrida al estudio con la misma red y los conteos ingresados.
 
 SUMO reparte los conteos durante el período indicado entre los recorridos válidos de cada movimiento. La corrida editada agrega un minuto para que salgan los vehículos que siguen en la red. Para evaluar si reproduce la congestión real, contrastá el resultado con colas y tiempos medidos en la calle.
 
+### Comparar dos corridas
+
+1. Entrá a **Estudios**, abrí el estudio del cruce y elegí **Comparar corridas**. Si el estudio tiene una sola, creá una segunda desde **Configurar tráfico**.
+2. Seleccioná las corridas A y B. La tabla muestra el cambio de A a B por acceso. La espera, la cola y los viajes completados se miden hasta el mismo instante en ambas corridas. Los viajes programados corresponden al período cargado en cada corrida.
+3. Tocá la hora que figura junto a una cola máxima para abrir la reproducción en ese instante.
+
+La espera es el `waitingTime` de SUMO durante todo el recorrido, promediado entre quienes completaron el viaje dentro de la ventana común. La cola máxima se estima a partir de las muestras de trayectoria en el último tramo de cada acceso. Se toma el carril con mayor longitud de cola, se usan vehículos detenidos a 0,1 m/s o menos y una separación máxima de 8 m para considerar que están en la misma cola. Si se acerca al inicio del tramo, puede seguir aguas arriba. Los estudios guardados se pueden comparar si conservan la misma red y los archivos de demanda, viajes y trayectorias. [Definición de `waitingTime` en SUMO](https://sumo.dlr.de/docs/Simulation/Output/TripInfo.html)
+
 ### Piloto guardado de Roosevelt y Antonio Camacho
+
+La [corrida de referencia para el visor 3D](docs/piloto-3d-roosevelt-camacho.md) documenta la incorporación desde la Terminal, el cambio de fase en Roosevelt y Honduras y los datos disponibles para construir la escena.
 
 La geometría proviene de un [recorte de OpenStreetMap](https://www.openstreetmap.org/way/100473863), con atribución a sus colaboradores y licencia [ODbL](https://www.openstreetmap.org/copyright). La Junta Departamental identifica el sitio como la [rotonda José Batlle y Ordóñez](https://www.juntamaldonado.gub.uy/index.php/documentos/versiones-taquigraficas/versiones-2009/oct0609).
 

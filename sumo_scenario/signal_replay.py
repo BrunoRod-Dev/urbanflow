@@ -4,6 +4,19 @@ from collections import defaultdict
 from xml.etree import ElementTree as ET
 
 
+def signal_links(network):
+    return [
+        {
+            'controller': link.attrib['tl'], 'index': int(link.attrib['linkIndex']),
+            'fromLane': f"{link.attrib['from']}_{link.attrib['fromLane']}",
+            'toLane': f"{link.attrib['to']}_{link.attrib['toLane']}",
+            'via': link.get('via'), 'direction': link.get('dir', 's'),
+        }
+        for link in network.findall('connection[@tl][@linkIndex]')
+        if int(link.attrib['linkIndex']) >= 0
+    ]
+
+
 def prepare_signal_recording(network, directory):
     if network.find('tlLogic') is None:
         return []

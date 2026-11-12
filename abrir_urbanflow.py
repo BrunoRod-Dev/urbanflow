@@ -10,7 +10,7 @@ from http.server import ThreadingHTTPServer
 from pathlib import Path
 from threading import Thread
 
-from src.study_server import StudyHandler
+from src.study_server import API_VERSION, StudyHandler
 
 
 PROJECT = Path(__file__).resolve().parent
@@ -37,7 +37,7 @@ def is_urbanflow(port):
         if response.status != 200 or response.headers.get_content_type() != "application/json":
             return False
         health = json.loads(response.read(4096))
-        if not isinstance(health, dict) or health.get("app") != "urbanflow" or health.get("apiVersion") != 3:
+        if not isinstance(health, dict) or health.get("app") != "urbanflow" or health.get("apiVersion") != API_VERSION:
             return False
         workspace = health.get("workspace")
         return isinstance(workspace, str) and Path(workspace) == PROJECT
