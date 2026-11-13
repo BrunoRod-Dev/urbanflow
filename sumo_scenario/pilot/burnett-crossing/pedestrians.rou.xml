@@ -1,0 +1,12 @@
+<routes>
+    <vType id="persona-muestra" vClass="pedestrian" maxSpeed="1.35" speedFactor="1"/>
+    <person id="peaton-01" type="persona-muestra" depart="0">
+        <walk edges="vereda-burnett-sur vereda-burnett-norte" arrivalPos="13"/>
+    </person>
+    <person id="peaton-02" type="persona-muestra" depart="35" departPos="14">
+        <walk edges="vereda-burnett-norte vereda-burnett-sur" arrivalPos="2"/>
+    </person>
+    <person id="peaton-03" type="persona-muestra" depart="70">
+        <walk edges="vereda-burnett-sur vereda-burnett-norte" arrivalPos="15"/>
+    </person>
+</routes>

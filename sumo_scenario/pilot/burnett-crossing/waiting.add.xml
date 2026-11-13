@@ -1,0 +1,9 @@
+<additional>
+    <busStop id="espera-cebra" lane="vereda-burnett-sur_0" startPos="15.4" endPos="15.8"
+             personCapacity="1" color="0,0,0,0">
+        <param key="waitingDepth" value="0.1"/>
+        <param key="waitingWidth" value="0.3"/>
+    </busStop>
+    <poly id="ensanche-espera-cebra" type="sidewalk" color="194,187,170" fill="true" layer="1"
+          shape="997.64,1090.67 999.60,1090.81 999.68,1089.98 997.70,1089.84"/>
+</additional>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+    <!-- Compact boundary around the Camacho split, in the OSM geographic projection. -->
+    <node id="1360039545" shape="-54.9598224,-34.9163260 -54.9597715,-34.9162674 -54.9599322,-34.9161736 -54.9599831,-34.9162322"/>
+</nodes>

@@ -1,0 +1,62 @@
+{
+  "type": "FeatureCollection",
+  "title": "Cecilia Burgueño · 18 de Julio a Sarandí",
+  "reviewedAt": "2026-11-12",
+  "bounds": [-54.95868, -34.91683, -54.95718, -34.91617],
+  "road": {
+    "osmWay": "121504384",
+    "width": 6.4,
+    "coordinates": [[-54.9584952, -34.9163392], [-54.9583009, -34.9163516], [-54.9575986, -34.9163367], [-54.957351, -34.9163286]]
+  },
+  "sources": {
+    "street": {"title": "OpenStreetMap · Cecilia Burgueño", "date": "2024-01-30", "url": "https://www.openstreetmap.org/way/121504384"},
+    "west-access": {"title": "OpenStreetMap · acceso oeste", "date": "2022-06-20", "url": "https://www.openstreetmap.org/way/253350938"},
+    "east-access": {"title": "OpenStreetMap · acceso este", "date": "2022-06-20", "url": "https://www.openstreetmap.org/way/253350940"},
+    "west-parking": {"title": "OpenStreetMap · playa oeste", "date": "2022-06-20", "url": "https://www.openstreetmap.org/way/253350937"},
+    "east-parking": {"title": "OpenStreetMap · playa este", "date": "2022-06-20", "url": "https://www.openstreetmap.org/way/253350939"},
+    "terminal": {"title": "URUBUS · estacionamiento de la Terminal", "url": "https://urubus.com.uy/blog/terminal-de-maldonado/#como-llegar-a-la-terminal-maldonado"},
+    "rule": {"title": "IMPO · Reglamento de circulación, art. 18.2(h)", "url": "https://www.impo.com.uy/bases/decretos-reglamento/118-1984/18"}
+  },
+  "features": [
+    {
+      "type": "Feature", "id": "west-access",
+      "properties": {"kind": "access", "title": "Entrada vehicular oeste", "width": 3.6, "osmWay": "253350938", "location": [-54.9583009, -34.9163516], "detail": "Conexión mapeada con la playa oeste. Abertura del cordón representada con ancho estimado. Rebaje y altura pendientes de verificar.", "sources": ["west-access"]},
+      "geometry": {"type": "LineString", "coordinates": [[-54.9583009, -34.9163516], [-54.9582792, -34.9166074]]}
+    },
+    {
+      "type": "Feature", "id": "west-parking",
+      "properties": {"kind": "parking", "title": "Playa oeste habilitada", "location": [-54.958244, -34.916465], "detail": "Estacionamiento público gratuito dentro de la Terminal. El contorno corresponde a la playa mapeada.", "sources": ["west-parking", "terminal"]},
+      "geometry": {"type": "Polygon", "coordinates": [[[-54.9583585, -34.9164159], [-54.9583694, -34.9166356], [-54.9582037, -34.9166525], [-54.9582253, -34.9164098], [-54.958316, -34.9164144], [-54.9583585, -34.9164159]]]}
+    },
+    {
+      "type": "Feature", "id": "west-restriction",
+      "properties": {"kind": "prohibited", "title": "Prohibido frente al acceso oeste", "location": [-54.9583009, -34.916375], "detail": "Prohibición por tratarse de una entrada vehicular. La banda roja indica su ubicación aproximada en el visor. Pintura y carteles pendientes de verificar.", "sources": ["west-access", "rule"]},
+      "geometry": {"type": "LineString", "coordinates": [[-54.958324, -34.916375], [-54.958278, -34.9163747]]}
+    },
+    {
+      "type": "Feature", "id": "east-access",
+      "properties": {"kind": "access", "title": "Entrada vehicular este", "width": 3.6, "osmWay": "253350940", "location": [-54.9575986, -34.9163367], "detail": "Conexión mapeada con la playa este. Abertura del cordón representada con ancho estimado. Rebaje y altura pendientes de verificar.", "sources": ["east-access"]},
+      "geometry": {"type": "LineString", "coordinates": [[-54.9575986, -34.9163367], [-54.9575858, -34.9165723]]}
+    },
+    {
+      "type": "Feature", "id": "east-parking",
+      "properties": {"kind": "parking", "title": "Playa este habilitada", "location": [-54.957548, -34.916521], "detail": "Playa de superficie mapeada con acceso público y gratuito. El contorno corresponde al área registrada.", "sources": ["east-parking", "terminal"]},
+      "geometry": {"type": "Polygon", "coordinates": [[[-54.9577904, -34.9164932], [-54.9577942, -34.9166514], [-54.9574091, -34.9166601], [-54.957408, -34.9165028], [-54.9577904, -34.9164932]]]}
+    },
+    {
+      "type": "Feature", "id": "east-restriction",
+      "properties": {"kind": "prohibited", "title": "Prohibido frente al acceso este", "location": [-54.9575986, -34.9163606], "detail": "Prohibición por tratarse de una entrada vehicular. La banda roja indica su ubicación aproximada en el visor. Pintura y carteles pendientes de verificar.", "sources": ["east-access", "rule"]},
+      "geometry": {"type": "LineString", "coordinates": [[-54.957622, -34.916361], [-54.957575, -34.91636]]}
+    },
+    {
+      "type": "Feature", "id": "curb-pending",
+      "properties": {"kind": "unverified", "title": "Cordones pendientes de verificar", "location": [-54.95795, -34.91632], "detail": "Revisar en campo el estacionamiento sobre la calle, ambos cordones, los límites de las restricciones y su señalización.", "sources": ["street"]},
+      "geometry": {"type": "MultiLineString", "coordinates": [
+        [[-54.958453, -34.916313], [-54.9583009, -34.9163265], [-54.9575986, -34.9163116], [-54.957401, -34.916306]],
+        [[-54.958453, -34.916367], [-54.958334, -34.916376]],
+        [[-54.958269, -34.916376], [-54.957632, -34.916363]],
+        [[-54.957566, -34.916361], [-54.9574, -34.916355]]
+      ]}
+    }
+  ]
+}

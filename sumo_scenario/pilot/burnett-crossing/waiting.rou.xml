@@ -1,0 +1,7 @@
+<routes>
+    <person id="peaton-04" type="persona-muestra" depart="105">
+        <walk edges="vereda-burnett-sur" busStop="espera-cebra" arrivalPos="15.6"/>
+        <stop busStop="espera-cebra" duration="4" actType="espera de muestra"/>
+        <walk edges="vereda-burnett-sur vereda-burnett-norte" arrivalPos="13"/>
+    </person>
+</routes>

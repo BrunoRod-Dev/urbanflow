@@ -2,6 +2,9 @@
 .venv/
 venv/
 env/
+.env
+.env.*
+!.env.example
 
 # Bytecode y caches
 __pycache__/
@@ -17,6 +20,7 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+node_modules/
 
 # Jupyter
 .ipynb_checkpoints/
@@ -28,6 +32,7 @@ Thumbs.db
 # Modelos (evita subir binarios pesados)
 *.zip
 *.pkl
+checkpoints/
 
-# Salidas de eval.py (graficos)
+# Corridas, auditorías y gráficos locales
 results/

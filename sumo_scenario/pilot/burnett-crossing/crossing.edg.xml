@@ -1,0 +1,10 @@
+<edges>
+    <edge id="184791610#2">
+        <lane index="0" disallow="pedestrian tram rail_urban rail rail_electric rail_fast ship container cable_car subway aircraft wheelchair scooter drone"/>
+        <split id="1961589755" pos="95.613" idAfter="184791610#2.peatonal" type="priority" radius="1"/>
+    </edge>
+    <edge id="vereda-burnett-sur" from="burnett-sur" to="1961589755" numLanes="1" allow="pedestrian"
+          width="2" speed="1.5" spreadType="center" shape="982.80,1090.25 999.56,1091.46 999.36,1094.24"/>
+    <edge id="vereda-burnett-norte" from="1961589755" to="burnett-norte" numLanes="1" allow="pedestrian"
+          width="2" speed="1.5" spreadType="center" shape="999.36,1094.24 999.16,1097.02 982.45,1095.65"/>
+</edges>
