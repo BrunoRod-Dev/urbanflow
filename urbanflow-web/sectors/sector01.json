@@ -16,6 +16,7 @@
   "landmarks": [],
   "dressing": {
     "geography": "assets/sector01-williman-geography.json?v=2",
+    "geographyExtension": "assets/sector01-williman-south-geography.json?v=1",
     "note": "Piloto Williman · suelo según OpenStreetMap · con plantas, altura estimada · sin plantas, solo la huella",
     "group": "geography"
   },

@@ -241,13 +241,14 @@ function createReplayViews(geographicMap, redraw) {
       const firstOpen = !viewer;
       if (firstOpen) {
         const [{ createViewer3D }, street] = await Promise.all([
-          import("./viewer3d.js?v=16"),
+          import("./viewer3d.js?v=17"),
           studyRequest(`/${runId}/street-scene`),
         ]);
         if (version !== request) return false;
         const assets = ready?.assets ?? { buildings: [], survey: null, geography: null };
         const badges = createReferenceBadges(referenceHost, config.references);
-        const nextViewer = await createViewer3D(canvasHost, data, config, badges, street, assets.buildings, assets.survey, assets.geography);
+        const nextViewer = await createViewer3D(canvasHost, data, config, badges, street,
+          assets.buildings, assets.survey, assets.geography, assets.geographyExtension);
         nextViewer.setVehiclePick(target => {
           if (target?.kind === "signal") signalSelect?.(target);
           else if (Number.isInteger(target?.index)) vehicleSelect?.(target.index);

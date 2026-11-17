@@ -224,13 +224,16 @@ async function loadDeclaredAssets(study, config) {
       throw new Error("No se pudo cargar el contorno de los edificios.");
     })
     : null;
-  const [buildingsFile, survey, geographyFile] = await Promise.all([
+  const [buildingsFile, survey, geographyFile, extensionFile] = await Promise.all([
     buildings,
     optional(dressing.curbSurvey),
     optional(dressing.geography),
+    optional(dressing.geographyExtension),
   ]);
   const geography = geographyFile && geographicOverlap(study?.bounds, geographyFile.meta?.bounds) ? geographyFile : null;
-  return { buildings: buildingsFile?.features ?? [], survey, geography, demo: geography?.demo ?? null };
+  const geographyExtension = geography && extensionFile &&
+    geographicOverlap(study?.bounds, extensionFile.meta?.bounds) ? extensionFile : null;
+  return { buildings: buildingsFile?.features ?? [], survey, geography, geographyExtension, demo: geography?.demo ?? null };
 }
 
 function prepareStudySector(study) {

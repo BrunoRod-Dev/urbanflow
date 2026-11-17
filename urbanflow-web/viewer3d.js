@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { createSceneCoordinates, sceneBounds, vehicleScenePose } from "./scene-coordinates.js?v=2";
 import { addStreetMeshes, roadHeight } from "./street-meshes.js";
-import { addGeography, pilotGroundHole } from "./geography-layer.js?v=3";
+import { addGeography, pilotGroundHole } from "./geography-layer.js?v=4";
 import { addVehicleModels } from "./vehicle-models.js?v=3";
 import { addSignals3D } from "./signals3d.js?v=1";
 import { addPedestrianModels } from "./pedestrian-models.js";
@@ -45,7 +45,8 @@ function disposeScene(scene, extraMaterials) {
   resources.forEach(resource => resource.dispose());
 }
 
-export async function createViewer3D(host, data, config, badges, street, buildings, survey, geography = null) {
+export async function createViewer3D(host, data, config, badges, street, buildings, survey, geography = null,
+  geographyExtension = null) {
   const coordinates = createSceneCoordinates(data.laneMotion.projection, data.sceneOrigin ?? data.location);
   const geographicBounds = [...config.bounds];
   if (!config.pilot) {
@@ -88,11 +89,21 @@ export async function createViewer3D(host, data, config, badges, street, buildin
   scene.add(roads, carsLayer, signalLayer);
   try {
     fleet = await addVehicleModels(carsLayer, data, coordinates, roadHeight);
-    const groundHole = geography ? pilotGroundHole(geography.meta.bounds, coordinates) : null;
+    const pilotBounds = geography?.meta.bounds;
+    const extra = geographyExtension?.meta.bounds;
+    const adjacent = pilotBounds && extra && extra[0] === pilotBounds[0] &&
+      extra[2] === pilotBounds[2] && extra[3] === pilotBounds[1] && extra[1] < extra[3];
+    const groundBounds = adjacent ? [pilotBounds[0], extra[1], pilotBounds[2], pilotBounds[3]] : pilotBounds;
+    const groundHole = groundBounds ? pilotGroundHole(groundBounds, coordinates) : null;
     const { heightAt, onRoad } = addStreetMeshes(roads, data, street, buildings, coordinates, bounds, survey, groundHole);
     if (geography) {
       try {
         geographySummary = addGeography(scene, geography, coordinates, lanes, street, onRoad);
+        if (adjacent) {
+          const owned = new Set(geography.features.filter(f => f.properties.class === "building")
+            .map(f => String(f.properties.osmId)));
+          geographySummary.extension = addGeography(scene, geographyExtension, coordinates, lanes, street, onRoad, owned);
+        }
       } catch (error) {
         console.warn("UrbanFlow: la ambientación del piloto no se pudo dibujar.", error);
       }

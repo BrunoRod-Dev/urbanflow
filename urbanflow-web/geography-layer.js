@@ -217,7 +217,7 @@ export function pilotGroundHole(bounds, coordinates) {
   return [[west, south], [east, south], [east, north], [west, north]].map(point => coordinates.fromGeo(point));
 }
 
-export function addGeography(scene, geography, coordinates, lanes, street, onRoad) {
+export function addGeography(scene, geography, coordinates, lanes, street, onRoad, ownedBuildings = null) {
   const group = new THREE.Group();
   group.name = "geography";
   const features = geography.features ?? [];
@@ -237,7 +237,9 @@ export function addGeography(scene, geography, coordinates, lanes, street, onRoa
   const scrub = subtract(toScenePolygons(ofClass("scrub"), coordinates));
   const roads = carriageway(lanes, street, coordinates, geography.meta.bounds);
 
-  addMesh(group, "geography-earth", polygonSurface(earthPolygon, .004), plain(0xb7a48a));
+  const earth = overlay(ClipType.ctDifference, asPaths(earthPolygon),
+    [...coverPaths, ...asPaths(grass), ...asPaths(scrub)]);
+  addMesh(group, "geography-earth", polygonSurface(earth, .004), plain(0xb7a48a));
   addMesh(group, "geography-water", polygonSurface(water, .008), plain(0x3c86b0));
   addMesh(group, "geography-sand", polygonSurface(sand, .012), plain(0xe4d2a4));
   addMesh(group, "geography-grass", polygonSurface(grass, .016), plain(0x7d9a58));
@@ -295,13 +297,15 @@ export function addGeography(scene, geography, coordinates, lanes, street, onRoa
   const seenBuildings = new Set();
   for (const polygon of toScenePolygons(ofClass("building"), coordinates)) {
     const osmId = String(polygon.feature.properties.osmId ?? polygon.feature.id ?? "");
-    if (seenBuildings.has(osmId)) continue;
+    if (seenBuildings.has(osmId) || ownedBuildings?.has(osmId)) continue;
     seenBuildings.add(osmId);
     const visual = buildingHeight(polygon.feature.properties, geography.meta.heightRule);
     if (visual.meters == null) {
       heights.provisional += 1;
-      footprints.push(...polygonSurface([polygon], .022));
-      outlines.push(...outlineRibbon(polygon.outer, .8, .18));
+      const provisional = ownedBuildings
+        ? overlay(ClipType.ctDifference, [orient(polygon.outer)], roads) : [polygon];
+      footprints.push(...polygonSurface(provisional, .022));
+      for (const part of provisional) outlines.push(...outlineRibbon(part.outer, .8, .18));
       continue;
     }
     const clipped = overlay(ClipType.ctDifference, [orient(polygon.outer)], roads)
