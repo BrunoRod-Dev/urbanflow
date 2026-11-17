@@ -1,0 +1,4 @@
+# Preserve the SHA-256 values declared for the published Sector 01.
+/urbanflow-web/assets/sector01-williman-* -text whitespace=cr-at-eol
+/results/etapa1c5-sector01/candidata/** -text whitespace=cr-at-eol
+/results/etapa1c5-sector01/qa/qa-events.json -text whitespace=cr-at-eol

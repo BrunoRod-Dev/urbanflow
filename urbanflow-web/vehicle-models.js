@@ -1,13 +1,13 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
-import { busPose, terminalBusPaths } from "./vehicle-path.js";
+import { vehicleScenePose } from "./scene-coordinates.js?v=2";
 import { createMotorcycleModel } from "./motorcycle-model.js";
 import { addContactShadows } from "./contact-shadows.js";
 
 const assetDefinitions = {
   car: { url: new URL("./assets/vehicles/sedan.glb", import.meta.url), yaw: Math.PI },
-  bus: { url: new URL("./assets/vehicles/urban-bus.glb", import.meta.url), yaw: Math.PI, axleRatios: [.2391, -.2189] },
+  bus: { url: new URL("./assets/vehicles/urban-bus.glb", import.meta.url), yaw: Math.PI },
   motorcycle: { create: createMotorcycleModel, yaw: 0 },
   pickup: { url: new URL("./assets/vehicles/pickup.glb", import.meta.url), yaw: Math.PI },
 };
@@ -75,10 +75,9 @@ function stoppedOutline() {
   return geometry;
 }
 
-export async function addVehicleModels(scene, data, coordinates, bounds, roadHeight, createMotion) {
+export async function addVehicleModels(scene, data, coordinates, roadHeight) {
   const kindFor = id => data.vehicleIndex?.[id]?.type ?? "car";
   const specFor = kind => data.vehicleTypes?.[kind] ?? fallbackCar;
-  const busPaths = terminalBusPaths(data, createMotion, coordinates);
   const assetFor = kind => {
     if (Object.hasOwn(assetDefinitions, kind)) return kind;
     const vClass = specFor(kind).vClass;
@@ -118,21 +117,37 @@ export async function addVehicleModels(scene, data, coordinates, bounds, roadHei
   const shadows = addContactShadows(scene, "vehicle-contact-shadows", Math.max(markerCapacity, 1));
   const pose = new THREE.Object3D();
   const marker = new THREE.Object3D();
+  const slots = new Map();
   return {
-    draw(cars, highlightStopped, time) {
+    vehicleAt(object, instanceId) {
+      if (!object?.isInstancedMesh || !Number.isInteger(instanceId) || instanceId < 0) return null;
+      const list = slots.get(object);
+      const index = list?.[instanceId];
+      return Number.isInteger(index) ? index : null;
+    },
+    draw(cars, highlightStopped) {
+      slots.clear();
       for (const batch of batches.values()) batch.count = 0;
       let stoppedCount = 0;
       let shadowCount = 0;
-      for (const [id, lng, lat, heading, speed] of cars) {
+      for (const car of cars) {
+        const [id, , , , speed] = car;
         const batch = batches.get(kindFor(id));
-        const track = busPaths.get(id);
-        const chassis = track && busPose(track, time, batch.spec.length, assetDefinitions.bus.axleRatios);
-        const [x, y, yaw] = chassis ?? [...coordinates.fromGeo([lng, lat]), coordinates.bearing(lat, heading)];
-        if (x < bounds[0][0] || x > bounds[0][1] || y < bounds[1][0] || y > bounds[1][1]) continue;
+        // The normalized bus mesh is one rigid body. Its axle spacing follows its model scale.
+        const [x, y, yaw] = vehicleScenePose(car, coordinates);
         pose.position.set(x, roadHeight, -y);
         pose.rotation.y = yaw;
         pose.updateMatrix();
-        for (const instances of batch.parts) instances.setMatrixAt(batch.count, pose.matrix);
+        const slot = batch.count;
+        for (const instances of batch.parts) {
+          instances.setMatrixAt(slot, pose.matrix);
+          let list = slots.get(instances);
+          if (!list) {
+            list = [];
+            slots.set(instances, list);
+          }
+          list[slot] = id;
+        }
         batch.count++;
         marker.position.set(x + .11, roadHeight + .006, -y - .09);
         marker.rotation.y = yaw;

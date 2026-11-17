@@ -1,0 +1,1070 @@
+{
+  "schemaVersion": 1,
+  "studyId": "01c5b202611140000000000000000001",
+  "sourceHashes": {
+    "network.net.xml": "05889e643344613c7af6fd0d354f9bffc5323ab064364f8456edc3e032de4a37",
+    "map.nod.xml": "b8aeab2a92f1e3118080528c8d2f7c4a10310cca92589876c5c5929941dfb010",
+    "routes.rou.xml": "f34741d86140eb4ec780ce12eb97d4c5181fe1a28b8671af58df8852a145655b",
+    "sumo.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "trajectories.xml": "d6f15df05917c5325861291ff93b7025181d32a525fadfec1961d863dc269d4c",
+    "trips.xml": "3a69c8f20edaf79aa0f896bb5104061c574141ac61befee319147d40ac2bb081",
+    "summary.xml": "f225db773645de85560200d5d8f52521607e04274eeca4cc6cdfe5530ed3d882",
+    "signal-states.xml": "5616f966d633acf5421ce0b87b75b1563f3d01bbfc2c1a0724da60ba1b8cac68",
+    "collisions.xml": "01294ad97782e0a0661a90d914af4ae4efd18c6aa350f1d1ae2eb3d124f78439"
+  },
+  "events": [
+    {
+      "id": "qa-0001",
+      "kind": "prolonged_stop",
+      "severity": "info",
+      "validation": "observed",
+      "label": "Detención prolongada muestreada",
+      "vehicleId": "mansa-2",
+      "time": 185.0,
+      "coordinates": [
+        -54.9399917,
+        -34.9515826
+      ],
+      "edge": "482520536#8",
+      "lane": "482520536#8_0",
+      "node": "2480679879",
+      "evidence": {
+        "source": "trajectories.xml",
+        "samples": [
+          {
+            "time": 185.0,
+            "lane": "482520536#8_0",
+            "positionMeters": 60.64,
+            "speedMetersPerSecond": 0.0,
+            "angleDegrees": 2.12,
+            "coordinates": [
+              -54.9399917,
+              -34.9515826
+            ]
+          },
+          {
+            "time": 219.5,
+            "lane": "482520536#8_0",
+            "positionMeters": 60.64,
+            "speedMetersPerSecond": 0.0,
+            "angleDegrees": 2.12,
+            "coordinates": [
+              -54.9399917,
+              -34.9515826
+            ]
+          }
+        ],
+        "sampledSeconds": 34.5
+      }
+    },
+    {
+      "id": "qa-0002",
+      "kind": "prolonged_stop",
+      "severity": "info",
+      "validation": "observed",
+      "label": "Detención prolongada muestreada",
+      "vehicleId": "miami-entre-calzadas-1",
+      "time": 96.5,
+      "coordinates": [
+        -54.9401619,
+        -34.9508146
+      ],
+      "edge": "164559876#19",
+      "lane": "164559876#19_1",
+      "node": "2392290784",
+      "evidence": {
+        "source": "trajectories.xml",
+        "samples": [
+          {
+            "time": 96.5,
+            "lane": "164559876#19_1",
+            "positionMeters": 1.66,
+            "speedMetersPerSecond": 0.0,
+            "angleDegrees": 174.44,
+            "coordinates": [
+              -54.9401619,
+              -34.9508146
+            ]
+          },
+          {
+            "time": 131.5,
+            "lane": "164559876#19_1",
+            "positionMeters": 1.66,
+            "speedMetersPerSecond": 0.0,
+            "angleDegrees": 174.44,
+            "coordinates": [
+              -54.9401619,
+              -34.9508146
+            ]
+          }
+        ],
+        "sampledSeconds": 35.0
+      }
+    },
+    {
+      "id": "qa-0003",
+      "kind": "prolonged_stop",
+      "severity": "info",
+      "validation": "observed",
+      "label": "Detención prolongada muestreada",
+      "vehicleId": "peninsula-carril-1-1",
+      "time": 88.5,
+      "coordinates": [
+        -54.9401968,
+        -34.9508173
+      ],
+      "edge": "164559876#19",
+      "lane": "164559876#19_0",
+      "node": "2392290784",
+      "evidence": {
+        "source": "trajectories.xml",
+        "samples": [
+          {
+            "time": 88.5,
+            "lane": "164559876#19_0",
+            "positionMeters": 1.66,
+            "speedMetersPerSecond": 0.0,
+            "angleDegrees": 174.48,
+            "coordinates": [
+              -54.9401968,
+              -34.9508173
+            ]
+          },
+          {
+            "time": 131.5,
+            "lane": "164559876#19_0",
+            "positionMeters": 1.66,
+            "speedMetersPerSecond": 0.0,
+            "angleDegrees": 174.48,
+            "coordinates": [
+              -54.9401968,
+              -34.9508173
+            ]
+          }
+        ],
+        "sampledSeconds": 43.0
+      }
+    },
+    {
+      "id": "qa-0004",
+      "kind": "prolonged_stop",
+      "severity": "info",
+      "validation": "observed",
+      "label": "Detención prolongada muestreada",
+      "vehicleId": "salida-miami-3",
+      "time": 305.5,
+      "coordinates": [
+        -54.9399917,
+        -34.9515826
+      ],
+      "edge": "482520536#8",
+      "lane": "482520536#8_0",
+      "node": "2480679879",
+      "evidence": {
+        "source": "trajectories.xml",
+        "samples": [
+          {
+            "time": 305.5,
+            "lane": "482520536#8_0",
+            "positionMeters": 60.64,
+            "speedMetersPerSecond": 0.09,
+            "angleDegrees": 2.12,
+            "coordinates": [
+              -54.9399917,
+              -34.9515826
+            ]
+          },
+          {
+            "time": 341.5,
+            "lane": "482520536#8_0",
+            "positionMeters": 60.64,
+            "speedMetersPerSecond": 0.0,
+            "angleDegrees": 2.12,
+            "coordinates": [
+              -54.9399917,
+              -34.9515826
+            ]
+          }
+        ],
+        "sampledSeconds": 36.0
+      }
+    },
+    {
+      "id": "qa-0005",
+      "kind": "prolonged_stop",
+      "severity": "info",
+      "validation": "observed",
+      "label": "Detención prolongada muestreada",
+      "vehicleId": "salida-pirineos-2",
+      "time": 247.5,
+      "coordinates": [
+        -54.9399917,
+        -34.9515826
+      ],
+      "edge": "482520536#8",
+      "lane": "482520536#8_0",
+      "node": "2480679879",
+      "evidence": {
+        "source": "trajectories.xml",
+        "samples": [
+          {
+            "time": 247.5,
+            "lane": "482520536#8_0",
+            "positionMeters": 60.64,
+            "speedMetersPerSecond": 0.0,
+            "angleDegrees": 2.12,
+            "coordinates": [
+              -54.9399917,
+              -34.9515826
+            ]
+          },
+          {
+            "time": 280.5,
+            "lane": "482520536#8_0",
+            "positionMeters": 60.64,
+            "speedMetersPerSecond": 0.0,
+            "angleDegrees": 2.12,
+            "coordinates": [
+              -54.9399917,
+              -34.9515826
+            ]
+          }
+        ],
+        "sampledSeconds": 33.0
+      }
+    },
+    {
+      "id": "qa-0006",
+      "kind": "prolonged_stop",
+      "severity": "info",
+      "validation": "observed",
+      "label": "Detención prolongada muestreada",
+      "vehicleId": "salida-servicio-2",
+      "time": 250.5,
+      "coordinates": [
+        -54.939993,
+        -34.9516506
+      ],
+      "edge": "482520536#8",
+      "lane": "482520536#8_0",
+      "node": "2480679879",
+      "evidence": {
+        "source": "trajectories.xml",
+        "samples": [
+          {
+            "time": 250.5,
+            "lane": "482520536#8_0",
+            "positionMeters": 53.09,
+            "speedMetersPerSecond": 0.09,
+            "angleDegrees": 2.12,
+            "coordinates": [
+              -54.939993,
+              -34.9516506
+            ]
+          },
+          {
+            "time": 281.0,
+            "lane": "482520536#8_0",
+            "positionMeters": 53.14,
+            "speedMetersPerSecond": 0.0,
+            "angleDegrees": 2.12,
+            "coordinates": [
+              -54.939993,
+              -34.9516502
+            ]
+          }
+        ],
+        "sampledSeconds": 30.5
+      }
+    },
+    {
+      "id": "qa-0007",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 1155355178",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9369005,
+        -34.949556
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "1155355178",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "1155355178",
+        "nodes": [
+          "1155355178"
+        ],
+        "program": {
+          "id": "1155355178",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0008",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 1761803371",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9408578,
+        -34.9475313
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "1761803371",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "1761803371",
+        "nodes": [
+          "1761803371"
+        ],
+        "program": {
+          "id": "1761803371",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0009",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 1761803376",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9419084,
+        -34.9460551
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "1761803376",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "1761803376",
+        "nodes": [
+          "1761803376"
+        ],
+        "program": {
+          "id": "1761803376",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0010",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 2376278112",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9375135,
+        -34.9515127
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "2376278112",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "2376278112",
+        "nodes": [
+          "2376278112"
+        ],
+        "program": {
+          "id": "2376278112",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0011",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 2376278113",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9378188,
+        -34.951424
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "2376278113",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "2376278113",
+        "nodes": [
+          "2376278113"
+        ],
+        "program": {
+          "id": "2376278113",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0012",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 2376278115",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9380277,
+        -34.9515766
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "2376278115",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "2376278115",
+        "nodes": [
+          "2376278115"
+        ],
+        "program": {
+          "id": "2376278115",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0013",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 2480679871",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9410675,
+        -34.9475481
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "2480679871",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "2480679871",
+        "nodes": [
+          "2480679871"
+        ],
+        "program": {
+          "id": "2480679871",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0014",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 2480679872",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9407833,
+        -34.9478804
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "2480679872",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "2480679872",
+        "nodes": [
+          "2480679872"
+        ],
+        "program": {
+          "id": "2480679872",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0015",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 2535807410",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9403783,
+        -34.9563299
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "2535807410",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "2535807410",
+        "nodes": [
+          "2535807410"
+        ],
+        "program": {
+          "id": "2535807410",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0016",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 2804978501",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9404929,
+        -34.9559115
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "2804978501",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "2804978501",
+        "nodes": [
+          "2804978501"
+        ],
+        "program": {
+          "id": "2804978501",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0017",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 2804978502",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9403448,
+        -34.9559253
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "2804978502",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "2804978502",
+        "nodes": [
+          "2804978502"
+        ],
+        "program": {
+          "id": "2804978502",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0018",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 4462688320",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9376476,
+        -34.9516238
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "4462688320",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "4462688320",
+        "nodes": [
+          "4462688320"
+        ],
+        "program": {
+          "id": "4462688320",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0019",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 840834656",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9413145,
+        -34.9585762
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "840834656",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "840834656",
+        "nodes": [
+          "840834656"
+        ],
+        "program": {
+          "id": "840834656",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0020",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 840834748",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9430492,
+        -34.9601222
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "840834748",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "840834748",
+        "nodes": [
+          "840834748"
+        ],
+        "program": {
+          "id": "840834748",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0021",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 840834856",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9395215,
+        -34.9585045
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "840834856",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "840834856",
+        "nodes": [
+          "840834856"
+        ],
+        "program": {
+          "id": "840834856",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0022",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 840835188",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9421772,
+        -34.95935
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "840835188",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "840835188",
+        "nodes": [
+          "840835188"
+        ],
+        "program": {
+          "id": "840835188",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0023",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · 840835262",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.943918,
+        -34.9608916
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "840835262",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "840835262",
+        "nodes": [
+          "840835262"
+        ],
+        "program": {
+          "id": "840835262",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0024",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · GS_1156780565",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9365687,
+        -34.9555322
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "1156780565",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "GS_1156780565",
+        "nodes": [
+          "1156780565"
+        ],
+        "program": {
+          "id": "GS_1156780565",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0025",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · GS_1761803556",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9418634,
+        -34.9458952
+      ],
+      "edge": null,
+      "lane": null,
+      "node": "1761803556",
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "GS_1761803556",
+        "nodes": [
+          "1761803556"
+        ],
+        "program": {
+          "id": "GS_1761803556",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0026",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · joinedS_1918169992_2480679880",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.940121,
+        -34.9533945
+      ],
+      "edge": null,
+      "lane": null,
+      "node": null,
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "joinedS_1918169992_2480679880",
+        "nodes": [
+          "1918169992",
+          "2480679880"
+        ],
+        "program": {
+          "id": "joinedS_1918169992_2480679880",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0027",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · joinedS_1957626365_2480679875_2535807399_2626589240",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9401811,
+        -34.9498757
+      ],
+      "edge": null,
+      "lane": null,
+      "node": null,
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "joinedS_1957626365_2480679875_2535807399_2626589240",
+        "nodes": [
+          "1957626365",
+          "2480679875",
+          "2535807399",
+          "2626589240"
+        ],
+        "program": {
+          "id": "joinedS_1957626365_2480679875_2535807399_2626589240",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0028",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · joinedS_2376296722_840834919",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.9403584,
+        -34.9576844
+      ],
+      "edge": null,
+      "lane": null,
+      "node": null,
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "joinedS_2376296722_840834919",
+        "nodes": [
+          "2376296722",
+          "840834919"
+        ],
+        "program": {
+          "id": "joinedS_2376296722_840834919",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0029",
+      "kind": "inferred_signal",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Programa inferido · joinedS_2392290784_2480679878_2480679879_2535807404",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": [
+        -54.940171,
+        -34.9508901
+      ],
+      "edge": null,
+      "lane": null,
+      "node": null,
+      "evidence": {
+        "sources": [
+          "network.net.xml",
+          "signal-states.xml"
+        ],
+        "controller": "joinedS_2392290784_2480679878_2480679879_2535807404",
+        "nodes": [
+          "2392290784",
+          "2480679878",
+          "2480679879",
+          "2535807404"
+        ],
+        "program": {
+          "id": "joinedS_2392290784_2480679878_2480679879_2535807404",
+          "type": "actuated",
+          "programID": "0",
+          "offset": "0"
+        },
+        "recordedSamples": 1080
+      }
+    },
+    {
+      "id": "qa-0030",
+      "kind": "inferred_priority",
+      "severity": "info",
+      "validation": "field_unverified",
+      "label": "Prioridades sin corroboración física",
+      "vehicleId": null,
+      "time": null,
+      "coordinates": null,
+      "edge": null,
+      "lane": null,
+      "node": null,
+      "evidence": {
+        "source": "network.net.xml",
+        "junctionTypes": {
+          "right_before_left": 55,
+          "priority": 191
+        },
+        "scope": "aggregate; some constraints may be sourced from OSM"
+      }
+    }
+  ],
+  "geometryInvestigation": []
+}

@@ -90,7 +90,21 @@ function insideRing(x, y, ring) {
   return inside;
 }
 
-export function addStreetMeshes(scene, data, street, buildings, coordinates, bounds, survey) {
+function groundGeometry(width, depth, hole) {
+  if (!hole) return new THREE.PlaneGeometry(width, depth);
+  const shape = new THREE.Shape([
+    new THREE.Vector2(-width / 2, -depth / 2),
+    new THREE.Vector2(width / 2, -depth / 2),
+    new THREE.Vector2(width / 2, depth / 2),
+    new THREE.Vector2(-width / 2, depth / 2),
+  ]);
+  const holePoints = hole.map(([x, y]) => new THREE.Vector2(x, y));
+  if (!THREE.ShapeUtils.isClockWise(holePoints)) holePoints.reverse();
+  shape.holes.push(new THREE.Path(holePoints));
+  return new THREE.ShapeGeometry(shape);
+}
+
+export function addStreetMeshes(scene, data, street, buildings, coordinates, bounds, survey, groundHole = null) {
   const layout = buildStreetLayout(data.laneMotion.lanes, street, buildings, coordinates, bounds, survey);
   const material = (color, options = {}) => new THREE.MeshStandardMaterial({
     color, roughness: .97, side: THREE.DoubleSide, ...options,
@@ -100,10 +114,13 @@ export function addStreetMeshes(scene, data, street, buildings, coordinates, bou
   const terrainDepth = north - south + 320;
   const grass = surfaceTexture(223, 25);
   grass.repeat.set(terrainWidth / 16, terrainDepth / 16);
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(terrainWidth, terrainDepth), material(0x8d9e73, { map: grass }));
+  const centerX = (west + east) / 2;
+  const centerY = (south + north) / 2;
+  const localHole = groundHole?.map(([x, y]) => [x - centerX, y - centerY]);
+  const ground = new THREE.Mesh(groundGeometry(terrainWidth, terrainDepth, localHole), material(0x8d9e73, { map: grass }));
   ground.name = "street-ground";
   ground.rotation.x = -Math.PI / 2;
-  ground.position.set((west + east) / 2, 0, -(south + north) / 2);
+  ground.position.set(centerX, 0, -centerY);
   scene.add(ground);
 
   const curbTop = streetDimensions.curb;

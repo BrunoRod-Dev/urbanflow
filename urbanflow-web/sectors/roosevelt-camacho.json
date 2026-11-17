@@ -1,0 +1,64 @@
+{
+  "id": "roosevelt-camacho",
+  "title": "Rotonda de Roosevelt y Camacho",
+  "bounds": [-54.962, -34.91665, -54.95815, -34.91395],
+  "frame": "declared",
+  "scene": "pilot",
+  "match": {
+    "junctionIds": ["r1161502532"],
+    "pedestrianCrossing": true,
+    "hashes": ["#estudio-roosevelt-camacho"]
+  },
+  "features": ["sampleFleet"],
+  "schematic": {
+    "label": "Vista de la rotonda y los accesos de las avenidas Roosevelt y Antonio Camacho con vehículos simulados"
+  },
+  "messages": {
+    "legacyControl": "Corrida histórica con el control anterior de Roosevelt y Honduras. Creá un estudio nuevo para simular el cruce corregido."
+  },
+  "cameras": {
+    "initial": "oblique",
+    "beforeFollow": "street",
+    "followWithDressing": "oblique",
+    "followWithoutDressing": "street",
+    "streetLane": "783169882#0_0",
+    "signalsLabel": "Roosevelt y Honduras",
+    "crossing": {
+      "preset": "crossing",
+      "label": "Cebra de Burnett",
+      "bounds": [-54.962, -34.91665, -54.95675, -34.91395]
+    },
+    "curb": {
+      "label": "Accesos y estacionamiento",
+      "origin": "18 de Julio"
+    }
+  },
+  "landmarks": [
+    {"label": "A", "title": "Incorporación a Roosevelt", "location": [-54.958955, -34.9162702]},
+    {"label": "B", "title": "Entrada a la rotonda", "location": [-54.9593847, -34.9158082]}
+  ],
+  "dressing": {
+    "buildings": "assets/pilot-roosevelt-buildings.geojson",
+    "curbSurvey": "assets/terminal-curb-survey.geojson",
+    "group": "geography"
+  },
+  "signals": [
+    {
+      "id": "joinedS_1360014840_13966777057_13966777058_2375592994",
+      "label": "Roosevelt y Honduras",
+      "center": [-54.9614, -34.91426],
+      "approach": "1532518649#0_0",
+      "camera": true,
+      "program": "partial",
+      "fieldNote": "El giro simultáneo se basa en la captura de campo. Las otras fases y los tiempos son estimados."
+    }
+  ],
+  "data": {
+    "junctionId": "r1161502532",
+    "osmNodes": ["1360014840", "13966777057", "13966777058", "2375592994"],
+    "crossingControlRevision": 2,
+    "buildings": "urbanflow-web/assets/pilot-roosevelt-buildings.geojson",
+    "curbSurvey": "urbanflow-web/assets/terminal-curb-survey.geojson",
+    "schematic": "urbanflow-web/pilot.js"
+  }
+}

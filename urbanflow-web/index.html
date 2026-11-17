@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Estudiá cruces de Maldonado, configurá el tráfico y reproducí corridas de SUMO con UrbanFlow.">
   <title>UrbanFlow | Simulación vial</title>
-  <link rel="stylesheet" href="styles.css?v=13">
+  <link rel="stylesheet" href="styles.css?v=48">
   <script type="importmap">
     {
       "imports": {
@@ -18,34 +18,66 @@
   <script defer src="scenario.js"></script>
   <script defer src="pilot.js"></script>
   <script defer src="simulation.js"></script>
-  <script defer src="maldonado.js?v=8"></script>
+  <script defer src="maldonado.js?v=19"></script>
   <script defer src="traffic.js?v=2"></script>
-  <script defer src="lane-motion.js?v=3"></script>
+  <script defer src="sumo-projection.js?v=1"></script>
+  <script defer src="sector-config.js?v=2"></script>
+  <script defer src="lane-motion.js?v=6"></script>
   <script defer src="comparison.js"></script>
+  <script defer src="decision-ab.js?v=4"></script>
+  <script defer src="novillo.js?v=3"></script>
+  <script defer src="mapa.js?v=3"></script>
   <script defer src="studies.js"></script>
-  <script defer src="replay-views.js?v=10"></script>
-  <script defer src="app.js?v=17"></script>
+  <script defer src="replay-views.js?v=25"></script>
+  <script defer src="replay-qa.js?v=3"></script>
+  <script defer src="app.js?v=46"></script>
 </head>
-<body>
+<body class="explorer">
   <header class="masthead">
     <div class="masthead-inner">
-      <a class="brand" href="#estudios" aria-label="UrbanFlow, Estudios">
+      <a class="brand" href="#mapa" aria-label="UrbanFlow, Mapa">
         <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
         UrbanFlow
       </a>
       <nav class="navigation" aria-label="Vistas de UrbanFlow">
-        <a href="#estudios" data-view="estudios" aria-current="page">Estudios</a>
+        <a href="#mapa" data-view="mapa" aria-current="page">Mapa</a>
+        <a href="#estudios" data-view="estudios">Estudios</a>
+        <a href="#decision-ab" data-view="comparaciones">Comparaciones</a>
         <a href="#simulador" data-view="simulador" id="current-run" hidden>Simulación</a>
       </nav>
       <details class="help-menu" id="help-menu">
         <summary>Ayuda</summary>
-        <a href="#ejemplos" id="examples-link">Ejemplos</a>
+        <div class="help-panel">
+          <p>Elegí una zona pintada para ver su estado y la acción disponible.</p>
+          <p>El resto del mapa no tiene simulación. Los casos experimentales no usan conteos de la Intendencia.</p>
+          <p>UrbanFlow corre en esta computadora. Cerrar la pestaña no detiene el programa.</p>
+          <button class="text-button" id="close-urbanflow" type="button">Cerrar UrbanFlow</button>
+          <p id="close-urbanflow-note" role="status"></p>
+        </div>
       </details>
     </div>
   </header>
 
   <main class="workspace">
     <p class="route-feedback" id="route-feedback" role="status" hidden></p>
+    <section id="mapa" aria-labelledby="mapa-title">
+      <h1 id="mapa-title" class="sr-only" tabindex="-1">Mapa de Maldonado</h1>
+      <div id="territory-map-host"></div>
+      <div class="explorer-overlay">
+        <h2 id="territory-title" class="sr-only">Casos en el mapa</h2>
+        <p id="territory-status" class="explorer-status" role="status">Cargando casos…</p>
+        <ul class="explorer-legend" id="territory-zones" aria-labelledby="territory-title"></ul>
+        <p class="sr-only">El resto del territorio no tiene simulación disponible.</p>
+        <section class="explorer-sheet" id="territory-detail" hidden>
+          <button id="territory-close" class="explorer-close" type="button" aria-label="Cerrar">×</button>
+          <p class="selection-type" id="territory-state"></p>
+          <h3 id="territory-name"></h3>
+          <p id="territory-summary"></p>
+          <a class="button button-primary" id="territory-action" hidden></a>
+        </section>
+      </div>
+    </section>
+
     <section id="maldonado" aria-labelledby="maldonado-title" hidden>
       <div class="page-heading">
         <div>
@@ -101,11 +133,12 @@
       </div>
     </section>
 
-    <section id="estudios" aria-labelledby="saved-title">
+    <section id="estudios" aria-labelledby="saved-title" hidden>
       <div class="page-heading">
         <div>
           <h1 id="saved-title">Estudios</h1>
           <p class="intro">Abrí un estudio de Maldonado o elegí un cruce nuevo para analizar.</p>
+          <a class="text-link" href="#ejemplos">Ejemplos de demostración</a>
         </div>
         <a class="button button-primary" href="#maldonado">Nuevo estudio</a>
       </div>
@@ -156,6 +189,118 @@
       <div class="card saved-studies">
         <a class="text-link" href="#estudio-roosevelt-camacho">Demo esquemática de Roosevelt y Camacho</a>
         <a class="text-link" href="#simulador">Demo de cruce semaforizado</a>
+        <a class="text-link" href="#decision-ab">Comparación experimental de Roosevelt y Honduras</a>
+        <a class="text-link" href="#novillo">Caso geométrico de la rotonda Roosevelt y Artigas</a>
+      </div>
+    </section>
+
+    <section id="novillo" aria-labelledby="novillo-title" hidden>
+      <div class="geo-frame" id="novillo-frame">
+        <div id="novillo-map"></div>
+      </div>
+      <aside class="analysis-sheet" id="novillo-sheet">
+        <a class="button button-secondary" href="#mapa">Mapa</a>
+        <p class="selection-type">Solo geometría. Comparación detenida.</p>
+        <h1 id="novillo-title" tabindex="-1">Rotonda de Roosevelt y Artigas</h1>
+        <p id="novillo-status" role="status">Cargando el recorte…</p>
+        <p id="novillo-experiment"></p>
+        <details class="technical-details">
+          <summary>Detalles técnicos</summary>
+          <div class="novillo-legend" id="novillo-legend"></div>
+          <h2>Comprobación</h2>
+          <ul id="novillo-verified"></ul>
+          <h2>Pendiente de validación local</h2>
+          <ul id="novillo-pending"></ul>
+          <p id="novillo-technical"></p>
+        </details>
+      </aside>
+    </section>
+
+    <section id="decision" aria-labelledby="decision-title" hidden>
+      <div class="executive-panel">
+        <div class="analysis-actions">
+          <a class="button button-secondary" href="#mapa">Mapa</a>
+          <a class="button button-secondary" id="decision-back" href="#ejemplos">Volver a Ejemplos</a>
+        </div>
+        <p class="comparison-status" id="decision-status" role="status"></p>
+        <div id="decision-executive" hidden>
+          <p id="decision-notice"></p>
+          <h1 id="decision-title" tabindex="-1">Comparación experimental</h1>
+          <p id="decision-intro"></p>
+          <p id="decision-compared"></p>
+          <p id="decision-conclusion"></p>
+          <div id="decision-highlights"></div>
+          <div id="decision-clearance-highlight" hidden></div>
+          <button class="button button-secondary" id="decision-details-toggle" type="button" aria-expanded="false" aria-controls="decision-body">Detalles técnicos</button>
+        </div>
+      <div id="decision-body" hidden>
+        <div class="comparison-runs" id="decision-variants"></div>
+        <div class="card comparison-accesses">
+          <h2>Resultados de SUMO</h2>
+          <div class="comparison-scroll">
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th scope="col">Métrica</th>
+                  <th scope="col">A</th>
+                  <th scope="col">B</th>
+                  <th scope="col">Diferencia B − A</th>
+                  <th scope="col">Diferencia %</th>
+                </tr>
+              </thead>
+              <tbody id="decision-rows"></tbody>
+            </table>
+          </div>
+          <p class="comparison-window" id="decision-queues"></p>
+          <p id="decision-limitation"></p>
+          <details class="comparison-method">
+            <summary>Metodología</summary>
+            <div id="decision-method"></div>
+          </details>
+        </div>
+        <div class="card comparison-accesses" id="decision-demand-card" hidden>
+          <h2>Sensibilidad a la demanda</h2>
+          <p class="comparison-window" id="decision-demand-note"></p>
+          <div class="comparison-scroll">
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th scope="col">Demanda</th>
+                  <th scope="col">Completaron A · B</th>
+                  <th scope="col">Sin terminar A · B</th>
+                  <th scope="col">Viaje de la cohorte</th>
+                  <th scope="col">Espera de la cohorte</th>
+                  <th scope="col">Cortes a 15 s</th>
+                </tr>
+              </thead>
+              <tbody id="decision-demand-rows"></tbody>
+            </table>
+          </div>
+          <p id="decision-demand-conclusion"></p>
+        </div>
+        <div class="card comparison-accesses" id="decision-clearance-card" hidden>
+          <h2>Despeje de la demanda</h2>
+          <p class="comparison-window" id="decision-clearance-note"></p>
+          <div class="comparison-scroll">
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th scope="col">Demanda</th>
+                  <th scope="col">Completaron al 240</th>
+                  <th scope="col">Pendientes al 240</th>
+                  <th scope="col">Despeje</th>
+                  <th scope="col">Viaje de la cohorte</th>
+                  <th scope="col">Espera de la cohorte</th>
+                  <th scope="col">Siguen al límite</th>
+                </tr>
+              </thead>
+              <tbody id="decision-clearance-rows"></tbody>
+            </table>
+          </div>
+          <p id="decision-clearance-warning"></p>
+          <p id="decision-clearance-conclusion"></p>
+        </div>
+      </div>
       </div>
     </section>
 
@@ -201,6 +346,14 @@
     </section>
 
     <section id="simulador" aria-labelledby="sim-title" hidden>
+      <aside class="analysis-sheet" id="analysis-sheet">
+        <a class="button button-secondary" href="#mapa">Mapa</a>
+        <p class="selection-type" id="analysis-state"></p>
+        <h2 id="analysis-name"></h2>
+        <p id="analysis-summary"></p>
+        <a class="text-link" id="decision-demo-link" href="#decision-ab" hidden>Comparación experimental</a>
+        <button id="probar-details" type="button" hidden>Detalles técnicos</button>
+      </aside>
       <div class="page-heading">
         <div>
           <h1 id="sim-title">Cruce semaforizado</h1>
@@ -230,6 +383,30 @@
             </div>
           </div>
           <p class="replay-view-feedback" id="replay-view-feedback" role="status" hidden></p>
+          <p id="experimental-replay" class="experimental-replay" hidden>
+            <span id="experimental-replay-label"></span>
+            <button id="experimental-replay-return" type="button">Volver a la publicación</button>
+          </p>
+          <section class="replay-qa" id="replay-qa" aria-label="Inspección QA" hidden>
+            <div class="replay-qa-controls">
+              <button id="qa-fit" type="button">Encuadrar sector</button>
+              <label><input type="checkbox" data-qa-layer="roads" checked> Vías</label>
+              <label><input type="checkbox" data-qa-layer="connections" checked> Conexiones</label>
+              <label><input type="checkbox" data-qa-layer="signals" checked> Semáforos</label>
+              <label><input type="checkbox" data-qa-layer="cars" checked> Vehículos</label>
+              <label><input type="checkbox" id="qa-raw"> Muestras FCD sin interpolar</label>
+            </div>
+            <div class="replay-qa-controls">
+              <label for="qa-vehicle">Seguir vehículo</label>
+              <select id="qa-vehicle"><option value="">Ninguno</option></select>
+              <label for="qa-event">Alerta</label>
+              <select id="qa-event"><option value="">Elegir alerta</option></select>
+              <button id="qa-locate" type="button" disabled>Ubicar</button>
+              <button id="qa-jump" type="button" disabled>Ir al instante</button>
+            </div>
+            <p id="qa-detail" role="status"></p>
+            <p id="qa-follow-status" role="status"></p>
+          </section>
           <div class="simulation-frame" id="demo-map-frame">
             <canvas id="traffic-map" role="img" aria-label="Vista cenital esquemática de una intersección de cuatro accesos con vehículos en movimiento y semáforos"></canvas>
             <div class="compass" aria-hidden="true">N <span>↑</span></div>
@@ -248,9 +425,9 @@
               <div class="view-switch" role="group" aria-label="Cámara 3D">
                 <button id="camera-oblique" type="button" aria-pressed="true">Vista elevada</button>
                 <button id="camera-street" type="button" aria-pressed="false">Nivel de calle</button>
-                <button id="camera-signals" type="button" aria-pressed="false" hidden>Roosevelt y Honduras</button>
-                <button id="camera-crossing" type="button" aria-pressed="false" hidden>Cebra de Burnett</button>
-                <button id="camera-curb" type="button" aria-pressed="false" hidden>Accesos y estacionamiento</button>
+                <button id="camera-signals" type="button" aria-pressed="false" hidden>Semáforos</button>
+                <button id="camera-crossing" type="button" aria-pressed="false" hidden>Cruce peatonal</button>
+                <button id="camera-curb" type="button" aria-pressed="false" hidden>Cordón</button>
               </div>
               <div class="scene-actions">
                 <a id="scene-street-reference" class="text-link" target="_blank" rel="noopener noreferrer" hidden>Ver cruce en Street View ↗</a>
@@ -263,6 +440,11 @@
             </div>
             <div class="scene-frame" id="scene-frame" tabindex="0" role="region" aria-label="Escena esquemática. Usá las flechas para girar y más o menos para acercar o alejar.">
               <div id="scene-canvas" class="scene-canvas"></div>
+              <div class="camera-modes" role="group" aria-label="Modo de cámara">
+                <button id="camera-chase" type="button" aria-pressed="false" disabled>Seguir vehículo</button>
+                <button id="camera-free" type="button" aria-pressed="false">Cámara libre</button>
+              </div>
+              <p id="geography-note" class="geography-note" hidden></p>
               <div id="scene-references" class="reference-overlay" aria-hidden="true"></div>
               <span class="scene-caption">Carriles según SUMO · Pavimento, veredas y contornos de rotonda estimados según datos disponibles<span id="scene-signal-assumptions" hidden> · Semáforos estimados</span> · © OpenStreetMap</span>
               <div class="map-tools map-tools-light" aria-label="Zoom de la cámara 3D">
@@ -298,9 +480,7 @@
               <span><i class="signal-stop"></i> Tras detenerse</span>
             </div>
           </section>
-          <div class="pilot-reference-legend" id="pilot-reference-legend" aria-label="Referencias del cruce" hidden>
-            <span><b>A</b> Incorporación a Roosevelt</span><span><b>B</b> Entrada a la rotonda</span>
-          </div>
+          <div class="pilot-reference-legend" id="pilot-reference-legend" aria-label="Referencias del cruce" hidden></div>
           <div class="transport">
             <button class="play" id="play" type="button"><span id="play-icon" aria-hidden="true">▶</span> <span id="play-label">Reproducir</span></button>
             <button class="reset" id="reset" type="button" aria-label="Volver al inicio" title="Volver al inicio">↺</button>
@@ -310,6 +490,74 @@
             </div>
             <label class="playback-speed"><span class="sr-only">Velocidad de reproducción</span><select id="speed"><option value="1">1×</option><option value="2" selected>2×</option><option value="4">4×</option><option value="8">8×</option></select></label>
           </div>
+          <aside id="vehicle-inspector" class="vehicle-inspector" hidden>
+            <div class="vehicle-inspector-head">
+              <p class="selection-type" id="vehicle-presence"></p>
+              <button id="vehicle-dismiss" type="button" aria-label="Cerrar inspector">×</button>
+            </div>
+            <h2 id="vehicle-title"></h2>
+            <p class="inspector-kicker" id="vehicle-kicker"></p>
+            <button id="signal-lab-open" class="button button-secondary signal-lab-open" type="button" hidden>Ver configuración</button>
+            <dl class="inspector-facts">
+              <div id="inspector-lane-row"><dt id="inspector-lane-label">Carril</dt><dd id="vehicle-lane"></dd></div>
+              <div id="inspector-speed-row"><dt id="inspector-speed-label">Velocidad</dt><dd><span id="vehicle-speed"></span><small id="vehicle-sample"></small></dd></div>
+              <div id="inspector-size-row"><dt id="inspector-size-label">Dimensiones nominales</dt><dd id="vehicle-size"></dd></div>
+            </dl>
+            <section id="inspector-observed" hidden>
+              <h3>Estado observado</h3>
+              <div id="vehicle-observed"></div>
+            </section>
+            <section id="inspector-upcoming" hidden>
+              <h3>Próximo cambio registrado</h3>
+              <p id="vehicle-upcoming"></p>
+              <div id="vehicle-upcoming-states"></div>
+            </section>
+            <details id="inspector-technical" class="inspector-technical">
+              <summary>Detalles técnicos</summary>
+              <dl>
+                <div><dt id="inspector-id-label">Identificador SUMO</dt><dd id="vehicle-sumo"></dd></div>
+                <div id="inspector-type-row"><dt>Tipo SUMO</dt><dd id="vehicle-kind"></dd></div>
+                <div><dt>Tiempo SUMO</dt><dd id="vehicle-time"></dd></div>
+              </dl>
+            </details>
+            <button id="vehicle-clear" class="inspector-clear" type="button">Quitar selección</button>
+          </aside>
+          <button id="inspector-reopen" class="inspector-reopen" type="button" hidden>Inspeccionar</button>
+          <section id="signal-lab" class="signal-lab" hidden>
+            <header class="signal-lab-banner">
+              <p>Edición experimental</p>
+              <button id="signal-lab-close" type="button" aria-label="Cerrar laboratorio">×</button>
+            </header>
+            <div class="signal-lab-intro">
+              <p id="signal-lab-source"></p>
+              <p id="signal-lab-edit">Los tiempos salen del tlLogic. Editarlos no cambia la reproducción.</p>
+              <p id="signal-lab-limit">Resultados sintéticos de SUMO, sin calibración con conteos municipales. Sin significancia ni mejora del tránsito real. Alcance: static, programID 0, desfase 0, hasta 360 s.</p>
+              <p id="signal-lab-status" class="signal-lab-status" hidden></p>
+              <p id="signal-lab-error" role="alert"></p>
+              <p id="signal-lab-note" role="status"></p>
+            </div>
+            <div class="signal-lab-scroll">
+              <p id="signal-lab-block" class="signal-lab-block" hidden></p>
+              <div id="signal-lab-results" hidden></div>
+              <div id="signal-lab-body" class="signal-lab-columns" hidden>
+                <section>
+                  <h3>BASE PUBLICADA / CONTROL</h3>
+                  <div id="signal-lab-base"></div>
+                </section>
+                <section id="signal-lab-variant-column" hidden>
+                  <h3>VARIANTE EXPERIMENTAL</h3>
+                  <div id="signal-lab-proposed"></div>
+                  <p id="signal-lab-draft"></p>
+                </section>
+              </div>
+            </div>
+            <footer class="signal-lab-actions">
+              <button id="signal-lab-create" class="button" type="button" hidden>Crear variante experimental</button>
+              <button id="signal-lab-save" class="button" type="button" hidden>Guardar borrador</button>
+              <button id="signal-lab-reset" class="button button-secondary" type="button" hidden>Restablecer</button>
+              <button id="signal-lab-execute" class="button" type="button" hidden>Ejecutar variante</button>
+            </footer>
+          </section>
         </article>
         <aside class="card inspector simulation-inspector" aria-label="Información y configuración de la simulación">
           <div class="inspector-switch" id="inspector-switch" role="group" aria-label="Panel de simulación" hidden>

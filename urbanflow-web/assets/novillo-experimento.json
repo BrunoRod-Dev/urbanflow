@@ -1,0 +1,147 @@
+{
+  "stage": "1G.3",
+  "case": "Novillo Alegre",
+  "scope": "Prueba geométrica y operativa con demanda sintética. No es una simulación calibrada del verano.",
+  "experimental": true,
+  "calibrated": false,
+  "seasonal": false,
+  "simulated": null,
+  "comparison": null,
+  "summary": "Los dos recorridos son legales, salen del mismo borde y llegan al mismo cruce. No comparten un borde de destino de SUMO, así que la comparación A/B no se ejecutó.",
+  "speedAssumption": {
+    "kmh": 30,
+    "ms": 8.33,
+    "lanes": 231,
+    "ringMetersPerSecondBefore": [
+      "27.78"
+    ],
+    "appliedToCandidate": true,
+    "usedInSimulation": false,
+    "signage": false,
+    "note": "30 km/h es un supuesto para las dos variantes, aplicado a la candidata para que el predeterminado de 100 km/h del anillo no quede disponible. No es señalización real y ninguna variante llegó a simularse."
+  },
+  "routes": {
+    "originEdge": "983235082",
+    "originNode": "1155355178",
+    "destinationNode": "3175611488",
+    "throughLegal": true,
+    "avoidLegal": true,
+    "throughWays": [
+      "983235082",
+      "983235081",
+      "70521182",
+      "100089295",
+      "100089298",
+      "29235087",
+      "983236122"
+    ],
+    "avoidWays": [
+      "983235082",
+      "983235081",
+      "70521182",
+      "100522079",
+      "252069937",
+      "252069935",
+      "100522100",
+      "100522083",
+      "100473811",
+      "100522118",
+      "101195613",
+      "101105024",
+      "454567064"
+    ],
+    "throughEdges": [
+      "983235082",
+      "983235081",
+      "70521182#0",
+      "70521182#1",
+      "70521182#2",
+      "100089295",
+      "100089298#10",
+      "100089298#0",
+      "100089298#1",
+      "100089298#2",
+      "100089298#3",
+      "100089298#4",
+      "29235087#0",
+      "29235087#1",
+      "983236122"
+    ],
+    "avoidEdges": [
+      "983235082",
+      "983235081",
+      "70521182#0",
+      "100522079",
+      "-252069937",
+      "252069935",
+      "100522100",
+      "100522083",
+      "100473811#6",
+      "100473811#0",
+      "100522118",
+      "101195613",
+      "101105024",
+      "454567064"
+    ],
+    "throughArrivalEdges": [
+      "983236122"
+    ],
+    "avoidArrivalEdges": [
+      "454567064"
+    ],
+    "sharedDestinationEdges": [],
+    "sharedContinuationEdges": [],
+    "sameOriginEdge": true,
+    "samePhysicalNode": true,
+    "bidirectionalPedragosa": true,
+    "franciaConnection": []
+  },
+  "arrivals": [
+    {
+      "edge": "983236122",
+      "from": "6871194567",
+      "to": "3175611488",
+      "lengths": [
+        "0.29",
+        "0.29"
+      ],
+      "continuations": []
+    },
+    {
+      "edge": "454567064",
+      "from": "1918169545",
+      "to": "3175611488",
+      "lengths": [
+        "235.59"
+      ],
+      "continuations": [
+        {
+          "to": "311824953",
+          "dir": "s",
+          "state": "O"
+        }
+      ]
+    }
+  ],
+  "restriction": [
+    {
+      "id": "6890666",
+      "type": "no_left_turn",
+      "from": "983236122",
+      "to": "311824953",
+      "via": "3175611488"
+    }
+  ],
+  "blockage": {
+    "comparison": true,
+    "reason": "El recorrido de la rotonda termina en 983236122 y el desvío en 454567064. Los dos entran al cruce 3175611488. La salida 311824953 está permitida desde Avenida del Mar y prohibida desde Artigas por la restricción OSM 6890666 (no_left_turn). No hay otro borde que ambos puedan usar como destino. No se creó esa conexión ni se inventó un destino común."
+  },
+  "limits": [
+    "La demanda, el porcentaje desviado y el horizonte no se ejecutaron: sin destino común no hay comparación.",
+    "30 km/h queda en la candidata como supuesto. No representa la señal del anillo.",
+    "El enlace faltante entre Francia y Artigas no se construyó.",
+    "La red certificada de 1G.1 sigue sin las dos vías de Pedragosa."
+  ],
+  "netconvertLog": "results/_tmp/etapa1g3/netconvert.log",
+  "candidate": "results/_tmp/etapa1g3"
+}

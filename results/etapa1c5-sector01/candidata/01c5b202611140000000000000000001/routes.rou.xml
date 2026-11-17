@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<routes>
+  <vType id="car" vClass="passenger" length="5" width="1.8" height="1.5" sigma="0" speedFactor="1" />
+  <route id="mansa" edges="70521183#6 70521183#7 99944425#0 99944425#1 99944425#2 482520536#0 482520536#1 482520536#2 482520536#3 482520536#4 482520536#5 482520536#6 482520536#7 482520536#8 482520536#9 482520536#10 482520536#11 482520536#12 482520536#13 482520536#14 482520536#15 1346593267#0 1346593267#1 1346593267#2 1346593267#4 1346593267#5 1346593267#6 1346593267#7 1346593267#8 1346593267#9 1346593267#10 1346593267#11 1346593267#12 1346593267#14 1346593267#15" />
+  <route id="peninsula-carril-0" edges="164559876#1 164559876#2 164559876#3 164559876#6 164559876#7 164559876#8 164559876#9 164559876#10 164559876#11 164559876#12 164559876#13 164559876#14 164559876#15 164559876#17 164559876#18 164559876#19 164559876#20 164559876#21 164559876#22 164559876#23 164559876#25 164559876#26 164559876#27 164559876#28 164559876#29 164559876#30 99944449#0 99944449#1 99944449#2" />
+  <route id="peninsula-carril-1" edges="164559876#1 164559876#2 164559876#3 164559876#6 164559876#7 164559876#8 164559876#9 164559876#10 164559876#11 164559876#12 164559876#13 164559876#14 164559876#15 164559876#17 164559876#18 164559876#19 164559876#20 164559876#21 164559876#22 164559876#23 164559876#25 164559876#26 164559876#27 164559876#28 164559876#29 164559876#30 99944449#0" />
+  <route id="salida-sader" edges="70521183#6 70521183#7 99944425#0 99944425#1 99944425#2 482520536#0 482520536#1 482520536#2 482520536#3 482520536#4 181384679#0 181384679#1 181384679#2 181384679#3 181384679#4 181384679#5" />
+  <route id="entrada-miami" edges="-100522115#2 -100522115#1 1346593267#9 1346593267#10 1346593267#11 1346593267#12 1346593267#14 1346593267#15" />
+  <route id="salida-miami" edges="70521183#6 70521183#7 99944425#0 99944425#1 99944425#2 482520536#0 482520536#1 482520536#2 482520536#3 482520536#4 482520536#5 482520536#6 482520536#7 482520536#8 482520536#9 482520536#10 482520536#11 482520536#12 482520536#13 482520536#14 482520536#15 1346593267#0 1346593267#1 1346593267#2 1346593267#4 1346593267#5 1346593267#6 1346593267#7 1346593267#8 100522115#1 100522115#2" />
+  <route id="miami-entre-calzadas" edges="-100522115#2 -100522115#1 -100522115#0 164559876#8 164559876#9 164559876#10 164559876#11 164559876#12 164559876#13 164559876#14 164559876#15 164559876#17 164559876#18 164559876#19 164559876#20 164559876#21 164559876#22 164559876#23 164559876#25 164559876#26 164559876#27 164559876#28 164559876#29 164559876#30 99944449#0" />
+  <route id="entrada-pinar" edges="102681399#0 102681399#1 102681399#2 102681399#3 1346593267#11 1346593267#12 1346593267#14 1346593267#15" />
+  <route id="entrada-pirineos" edges="148146704#0 148146704#1 148146704#2 1346593267#12 1346593267#14 1346593267#15" />
+  <route id="salida-pirineos" edges="70521183#6 70521183#7 99944425#0 99944425#1 99944425#2 482520536#0 482520536#1 482520536#2 482520536#3 482520536#4 482520536#5 482520536#6 482520536#7 482520536#8 482520536#9 482520536#10 482520536#11 482520536#12 482520536#13 482520536#14 482520536#15 1346593267#0 1346593267#1 1346593267#2 1346593267#4 1346593267#5 1346593267#6 1346593267#7 1346593267#8 1346593267#9 1346593267#10 1346593267#11 -148146704#2 -148146704#1 -148146704#0" />
+  <route id="entrada-servicio" edges="185203633#1 185203633#2 1346593267#0 1346593267#1 1346593267#2 1346593267#4 1346593267#5 1346593267#6 1346593267#7 1346593267#8 1346593267#9 1346593267#10 1346593267#11 1346593267#12 1346593267#14 1346593267#15" />
+  <route id="salida-servicio" edges="70521183#6 70521183#7 99944425#0 99944425#1 99944425#2 482520536#0 482520536#1 482520536#2 482520536#3 482520536#4 482520536#5 482520536#6 482520536#7 482520536#8 482520536#9 482520536#10 482520536#11 482520536#12 482520536#13 482520536#14 482520536#15 -185203633#2 -185203633#1" />
+  <vehicle id="mansa-1" type="car" route="mansa" depart="10" departLane="1" departSpeed="0" />
+  <vehicle id="peninsula-carril-0-1" type="car" route="peninsula-carril-0" depart="17" departLane="0" departSpeed="0" />
+  <vehicle id="peninsula-carril-1-1" type="car" route="peninsula-carril-1" depart="24" departLane="1" departSpeed="0" />
+  <vehicle id="salida-sader-1" type="car" route="salida-sader" depart="31" departLane="1" departSpeed="0" />
+  <vehicle id="entrada-miami-1" type="car" route="entrada-miami" depart="38" departLane="0" departSpeed="0" />
+  <vehicle id="salida-miami-1" type="car" route="salida-miami" depart="45" departLane="1" departSpeed="0" />
+  <vehicle id="miami-entre-calzadas-1" type="car" route="miami-entre-calzadas" depart="52" departLane="0" departSpeed="0" />
+  <vehicle id="entrada-pinar-1" type="car" route="entrada-pinar" depart="59" departLane="0" departSpeed="0" />
+  <vehicle id="entrada-pirineos-1" type="car" route="entrada-pirineos" depart="66" departLane="0" departSpeed="0" />
+  <vehicle id="salida-pirineos-1" type="car" route="salida-pirineos" depart="73" departLane="1" departSpeed="0" />
+  <vehicle id="entrada-servicio-1" type="car" route="entrada-servicio" depart="80" departLane="0" departSpeed="0" />
+  <vehicle id="salida-servicio-1" type="car" route="salida-servicio" depart="87" departLane="1" departSpeed="0" />
+  <vehicle id="mansa-2" type="car" route="mansa" depart="110" departLane="1" departSpeed="0" />
+  <vehicle id="peninsula-carril-0-2" type="car" route="peninsula-carril-0" depart="117" departLane="0" departSpeed="0" />
+  <vehicle id="peninsula-carril-1-2" type="car" route="peninsula-carril-1" depart="124" departLane="1" departSpeed="0" />
+  <vehicle id="salida-sader-2" type="car" route="salida-sader" depart="131" departLane="1" departSpeed="0" />
+  <vehicle id="entrada-miami-2" type="car" route="entrada-miami" depart="138" departLane="0" departSpeed="0" />
+  <vehicle id="salida-miami-2" type="car" route="salida-miami" depart="145" departLane="1" departSpeed="0" />
+  <vehicle id="miami-entre-calzadas-2" type="car" route="miami-entre-calzadas" depart="152" departLane="0" departSpeed="0" />
+  <vehicle id="entrada-pinar-2" type="car" route="entrada-pinar" depart="159" departLane="0" departSpeed="0" />
+  <vehicle id="entrada-pirineos-2" type="car" route="entrada-pirineos" depart="166" departLane="0" departSpeed="0" />
+  <vehicle id="salida-pirineos-2" type="car" route="salida-pirineos" depart="173" departLane="1" departSpeed="0" />
+  <vehicle id="entrada-servicio-2" type="car" route="entrada-servicio" depart="180" departLane="0" departSpeed="0" />
+  <vehicle id="salida-servicio-2" type="car" route="salida-servicio" depart="187" departLane="1" departSpeed="0" />
+  <vehicle id="mansa-3" type="car" route="mansa" depart="210" departLane="1" departSpeed="0" />
+  <vehicle id="peninsula-carril-0-3" type="car" route="peninsula-carril-0" depart="217" departLane="0" departSpeed="0" />
+  <vehicle id="peninsula-carril-1-3" type="car" route="peninsula-carril-1" depart="224" departLane="1" departSpeed="0" />
+  <vehicle id="salida-sader-3" type="car" route="salida-sader" depart="231" departLane="1" departSpeed="0" />
+  <vehicle id="entrada-miami-3" type="car" route="entrada-miami" depart="238" departLane="0" departSpeed="0" />
+  <vehicle id="salida-miami-3" type="car" route="salida-miami" depart="245" departLane="1" departSpeed="0" />
+  <vehicle id="miami-entre-calzadas-3" type="car" route="miami-entre-calzadas" depart="252" departLane="0" departSpeed="0" />
+  <vehicle id="entrada-pinar-3" type="car" route="entrada-pinar" depart="259" departLane="0" departSpeed="0" />
+  <vehicle id="entrada-pirineos-3" type="car" route="entrada-pirineos" depart="266" departLane="0" departSpeed="0" />
+  <vehicle id="salida-pirineos-3" type="car" route="salida-pirineos" depart="273" departLane="1" departSpeed="0" />
+  <vehicle id="entrada-servicio-3" type="car" route="entrada-servicio" depart="280" departLane="0" departSpeed="0" />
+  <vehicle id="salida-servicio-3" type="car" route="salida-servicio" depart="287" departLane="1" departSpeed="0" />
+</routes>

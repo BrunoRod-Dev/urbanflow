@@ -1,0 +1,12 @@
+# Datos de ejecución y recuperación
+
+El Sector 01 usa la corrida certificada `01c5b202611140000000000000000001`. El repositorio conserva su replay, red, recorte OSM, estado y catálogo bajo `results/etapa1c5-sector01/candidata/<id>/`. El manifiesto de procedencia y `sector01.geojson` están en el directorio padre. El lanzador `python probar_sector01.py` también lee `results/etapa1c5-sector01/qa/qa-events.json` y requiere Chrome en Program Files. Las huellas de los artefactos incluidos coinciden con las del manifiesto. El manifiesto conserva las referencias de la certificación completa.
+
+## Reconstruir un entorno de certificación local
+
+- Restaurá el árbol `results/etapa1c5-sector01/` íntegro desde el respaldo certificado si necesitás la evidencia completa. Verificá cada archivo contra `candidata/manifest.json`. La red y el replay que usa el visor están en Git. El ZIP QA 1C.5 contiene el replay y evidencia seleccionada de la candidata bajo `review/`, con su propio manifiesto de archivo, y deja afuera parte de los XML de la candidata.
+- El manifiesto también referencia los insumos de `results/etapa1c3b-sector01/candidato/a/`. Restaurá esa carpeta desde el respaldo para verificar `sourceFiles`. Las herramientas anteriores del Sector 01 requieren sus directorios de etapa bajo `results/`, incluidos `etapa1c-sector01-validacion`, `etapa1c3-sector01` y `baseline-v001-cert-10114794`. La política de almacenamiento y los informes de etapa describen los insumos y comandos históricos.
+- Para recuperar el experimento ya finalizado de Roosevelt–Honduras, copiá desde el respaldo `results/studies/298c6613a70a42ea926f6c46931bbf9a/`, `results/signal-variants/4bdf75d2f0804ca6b03058ace01e6aa5.json` y los directorios `results/signal-runs/52c85940a8784f9ab08fe05a86541c20/` (control) y `results/signal-runs/3de0b16b50bc400f8ea7e5340a058707/` (variante). Los demás estudios y proyectos locales se restauran en sus rutas originales bajo `results/studies/` y `results/projects/`.
+- Las pruebas de baseline, comparaciones publicadas y auditorías de etapa pueden requerir otros estudios y fixtures locales. Para la reproducción histórica, recuperá SUMO 1.26.0 según la política de almacenamiento. Conservá los respaldos en almacenamiento privado. Parte de los XML de evidencia incluye rutas absolutas de la máquina donde se ejecutaron.
+
+[Política de almacenamiento](POLITICA_ALMACENAMIENTO.md) · [Certificación del Sector 01](ETAPA1C5_CERTIFICACION_INTEGRAL.md)

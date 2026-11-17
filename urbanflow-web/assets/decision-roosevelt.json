@@ -1,0 +1,101 @@
+{
+  "experimental": true,
+  "calibrated": false,
+  "title": "Comparación experimental",
+  "intro": "Roosevelt y Honduras, dentro de la corrida guardada de la rotonda. Misma red, misma demanda, un parámetro semafórico distinto.",
+  "notice": "Escenario experimental. No está calibrado con conteos reales de Maldonado ni con el plan semafórico de la Intendencia.",
+  "variants": {
+    "a": {
+      "label": "A · Referencia",
+      "detail": "Programa guardado. Primera fase: duración 39 s, mínimo 13 s, máximo 50 s."
+    },
+    "b": {
+      "label": "B · Máximo de 15 s",
+      "detail": "Solo el máximo de esa fase pasa de 50 s a 15 s. Duración nominal, mínimo y estado quedan igual."
+    }
+  },
+  "metrics": {
+    "meanTravel": {
+      "label": "Tiempo medio de viaje, quienes llegaron",
+      "unit": "s",
+      "decimals": 2,
+      "a": 61.31,
+      "b": 61.62,
+      "absolute": 0.31,
+      "percent": 0.5
+    },
+    "meanWait": {
+      "label": "Tiempo medio de espera, quienes llegaron",
+      "unit": "s",
+      "decimals": 2,
+      "a": 9.47,
+      "b": 9.8,
+      "absolute": 0.33,
+      "percent": 3.5
+    },
+    "meanTravelSame": {
+      "label": "Tiempo medio de viaje, mismos 37 vehículos",
+      "unit": "s",
+      "decimals": 2,
+      "a": 61.31,
+      "b": 61.23,
+      "absolute": -0.08,
+      "percent": -0.1
+    },
+    "meanWaitSame": {
+      "label": "Tiempo medio de espera, mismos 37 vehículos",
+      "unit": "s",
+      "decimals": 2,
+      "a": 9.47,
+      "b": 9.42,
+      "absolute": -0.05,
+      "percent": -0.5
+    },
+    "completed": {
+      "label": "Vehículos que completaron",
+      "unit": "",
+      "decimals": null,
+      "a": 37,
+      "b": 38,
+      "absolute": 1,
+      "percent": 2.7
+    },
+    "inserted": {
+      "label": "Vehículos insertados",
+      "unit": "",
+      "decimals": null,
+      "a": 45,
+      "b": 45,
+      "absolute": 0,
+      "percent": 0.0
+    }
+  },
+  "queues": {
+    "measured": false,
+    "note": "No hay cola en metros. En este proyecto esa medida sale de la trayectoria completa, y esta comparación no vuelve a guardarla."
+  },
+  "phase0MaxSeconds": {
+    "a": 17.0,
+    "b": 15.0
+  },
+  "limitation": "La primera fase se abrió 7 veces en A y 7 veces en B. En 6 de esas aperturas las dos la cortaron a los 13 s, el mínimo guardado. El máximo fue 17,0 s en A y 15,0 s en B. Los 37 vehículos que llegan en las dos corridas cambian -0,08 s el viaje medio y -0,05 s la espera. B también completa el viaje f6.2, de 76,00 s, que en A no llega a terminar. Por eso el promedio de todos los que llegan no coincide con el promedio de los mismos vehículos. La demanda de muestra, 45 autos en 4 minutos, no produce una diferencia relevante de operación.",
+  "method": [
+    "Las dos corridas usan la red, las rutas, la demanda de 45 autos, la semilla 42, el paso de 0,5 s y los 240 s de la corrida guardada de la rotonda de Roosevelt y Camacho. Esa corrida incluye el cruce semaforizado de Roosevelt y Honduras. La demo esquemática de la rotonda no tiene semáforos.",
+    "A lee network.net.xml de esa corrida, sin modificarlo. B usa una copia temporal en la que el único cambio es maxDur de la primera fase de joinedS_1360014840_13966777057_13966777058_2375592994: de 50 s a 15 s. El estado de la fase sigue siendo GGGrrrrGGGrrrGGGGrrGGG. Los demás controladores no cambian.",
+    "Ese programa lo armó SUMO al construir la red. No es un plan de la Intendencia de Maldonado.",
+    "El tiempo de viaje y la espera salen de trips.xml. La espera es el waitingTime de SUMO, el tiempo por debajo de 0,1 m/s. El promedio usa solo los vehículos que llegan.",
+    "En A la primera fase llegó a 17,0 s. En B llegó a 15,0 s.",
+    "Eclipse SUMO sumo 1.26.0. Las salidas están en results/_tmp/etapa1f1 y no reemplazan la corrida guardada."
+  ],
+  "sources": {
+    "run": "results/studies/c44da2efd14c48569d6a9ce276916ba5",
+    "sha256": {
+      "network.net.xml": "22b09c429f62c60619800df95d5f759b38d02a3b73e53c8f0ef58da408a61c20",
+      "routes.rou.xml": "7d529677114260b52d47b9d38eeff1023a9ed2ec87e74c8b1c38d2e5c2e00dc3",
+      "trips.xml": "67a2aa7181db838334cdb193d8db3d6c64e3313b3f2803e4b81380137d0ae22f",
+      "replay.json": "bd75b13051d5714df8aa99125e0e879ec356ee55d15bd4ebc32d6bce49065568",
+      "trajectories.xml": "fd39b21afc4437a62c10d08a8f9481deb358ddd5c984e65c125842d13b3edb85",
+      "summary.xml": "f55eae1af7592227dbfdfba7d0ca97f0c409313a4e357f2f08a2b618c368a88e"
+    }
+  }
+}

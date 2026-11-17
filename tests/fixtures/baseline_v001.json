@@ -1,0 +1,67 @@
+{
+  "commit": "ee500585b44fe1433dc43170acdd50477d635f83",
+  "snapshot": "2026-11-10T21:21:39Z",
+  "snapshotSha256": "868b473a814999649af1d03ba164be232320c9dd82a229d5514315c0afc3a272",
+  "references": {
+    "honduras": {
+      "path": "results/studies/39f2fd082e4941339942760498206531",
+      "hashes": {
+        "network.net.xml": "6c34840d7d7efe199abc7706883c5813b9e5d19c6f067befc731b157fd089bf0",
+        "recorte.osm.xml": "08c8e8604ee362f556cc1370c07e3e6ac28a133c597e3351554b634193c91bdf",
+        "map.netccfg": "edf305472b4ad9501dc7314e2dfd0f6d527b92528b29a4c784a1117a26d689b2",
+        "map.nod.xml": "a5d758d52488ced61a86d8f81f8a995c469d37961a9c92435c33be6e2bb8ca6f",
+        "crossing-programs.tll.xml": "c91376c32c866ceaf535fe91627fd363a3014672088537548755368ca3575115",
+        "metadata.json": "7bd3efcb052892a935ca90a61b2536fe9314bc776f43e373f94ba5eb5fc35529",
+        "routes.rou.xml": "fbee94f2b5d4b5a01849792af5bb6c19536eff1f2abc4c89cd0ff9e24bbd18e1",
+        "signal-states.xml": "7775ab876d15dcd979c0188a77255146e7b84380313d815c0fbab08c071b8cf4"
+      }
+    },
+    "camacho": {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de",
+      "hashes": {
+        "network.net.xml": "cc8138424fc56bdd490185fb9ced9abd97105d28ca28504508e5a333aeceb41d",
+        "recorte.osm.xml": "28eb58fa8821cb837f12125ac86dc1c5c2ac4b1f2af0075a1da54beb50121443",
+        "map.netccfg": "2206a589b24be2ccaa57cff624d0895444e412449e4d53cda4f2b7c2ca2e0609",
+        "map.nod.xml": "ef97626ef73a38e939ce980a3823d0a541fd1f0e709bb5f68683d8a6ffd6c65c",
+        "routes.rou.xml": "e77488f60256199830593b24a4458b6603b17b812cc54835d925c374e4953597",
+        "metadata.json": "9dd554f7fa1296c040234aebff6e4b16a41a0df615961b086e953bcd872ee66d"
+      }
+    },
+    "honduras_historico_fisico": {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c",
+      "hashes": {
+        "network.net.xml": "dcb6d2ebba25ef15a70f22151fc151fa3df8e0aaabe8d9e6a6d8456f365a006e",
+        "replay.json": "38e3203de399ed528b8a96be22c708c3051d0e99f20a370baec32acd332e5aea"
+      }
+    },
+    "honduras_historico_logico": {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a",
+      "hashes": {
+        "network.net.xml": "d7ea25168e629005c3ab0662c5799095922bc8eb8f141231275b1702a7cc8c49",
+        "replay.json": "ff2f9835fe25583c997606a0ef5e9240bad300e89d88c46e92d1af415b373777"
+      }
+    }
+  },
+  "honduras": {
+    "osmNodes": ["1360014840", "13966777057", "13966777058", "2375592994"],
+    "durationsSeconds": [20, 3, 4, 20, 3, 4, 20, 3, 4],
+    "movements": {
+      "1532518649#0_0>181384674#0_0": ["r", "rrrGyrGyr"],
+      "1532518649#0_0>1532518651#0_0": ["s", "rrrrrrGyr"],
+      "1532518649#0_0>228612646#0_0": ["l", "rrrrrrgyr"],
+      "1532518649#0_0>228612646#0_1": ["l", "rrrrrrgyr"],
+      "1532518650#0_0>228612646#0_0": ["r", "rrrrrrGyr"],
+      "1532518650#0_0>1532518648#0_0": ["s", "rrrrrrGyr"],
+      "1532518650#0_0>181384674#0_0": ["l", "rrrrrrgyr"],
+      "1532518650#0_0>181384674#0_1": ["l", "rrrrrrgyr"],
+      "426635855#0_0>1532518648#0_0": ["r", "Gyrrrrrrr"],
+      "426635855#0_0>181384674#0_0": ["s", "Gyrrrrrrr"],
+      "426635855#0_1>181384674#0_1": ["s", "Gyrrrrrrr"],
+      "426635855#0_2>1532518651#0_0": ["l", "rrrGyrrrr"],
+      "426635857_0>1532518651#0_0": ["r", "Gyrrrrrrr"],
+      "426635857_0>228612646#0_0": ["s", "Gyrrrrrrr"],
+      "426635857_1>228612646#0_1": ["s", "Gyrrrrrrr"],
+      "426635857_2>1532518648#0_0": ["l", "rrrGyrrrr"]
+    }
+  }
+}

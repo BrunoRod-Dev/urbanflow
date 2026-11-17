@@ -1,28 +1,5 @@
 "use strict";
 
-const rooseveltPilotScene = {
-  bounds: [-54.96200, -34.91665, -54.95815, -34.91395],
-  streetLane: "783169882#0_0",
-  signals: {
-    controller: "joinedS_1360014840_13966777057_13966777058_2375592994",
-    center: [-54.9614, -34.91426],
-    approach: "1532518649#0_0",
-  },
-  references: [
-    { label: "A", location: [-54.9589550, -34.9162702] },
-    { label: "B", location: [-54.9593847, -34.9158082] },
-  ],
-};
-
-function sceneFor(data) {
-  if (!data?.geographic || !data.laneMotion?.projection) return null;
-  const crossing = data.pedestrianReplay?.crossing?.location;
-  if (crossing) return { ...rooseveltPilotScene, pilot: true, crossing, bounds: [-54.962, -34.91665, -54.95675, -34.91395] };
-  if (data.junctionId === "r1161502532") return { ...rooseveltPilotScene, pilot: true };
-  if (!data.bounds || !data.location) return null;
-  return { bounds: data.bounds, references: [] };
-}
-
 function createReferenceBadges(host, references = []) {
   const badges = references.map(({ label }) => {
     const badge = document.createElement("span");
@@ -48,6 +25,8 @@ function createReplayViews(geographicMap, redraw) {
   const sceneButton = document.querySelector("#use-3d-view");
   const oblique = document.querySelector("#camera-oblique");
   const street = document.querySelector("#camera-street");
+  const chaseButton = document.querySelector("#camera-chase");
+  const freeButton = document.querySelector("#camera-free");
   const signalsCamera = document.querySelector("#camera-signals");
   const crossingCamera = document.querySelector("#camera-crossing");
   const pedestrianStatus = document.querySelector("#scene-pedestrians");
@@ -71,6 +50,52 @@ function createReplayViews(geographicMap, redraw) {
   let sceneActive = false;
   let camera = "oblique";
   let request = 0;
+  let qa;
+  let outside = 0;
+  let comfort = false;
+  let previewFollow = null;
+  let previewClose = false;
+  let userCamera = null;
+  let vehicleSelect = null;
+  let signalSelect = null;
+  let signalMark = null;
+  let sectorReady = Promise.resolve(null);
+
+  function applyChrome() {
+    const references = config?.references ?? [];
+    legend.replaceChildren(...references.map(item => {
+      const span = document.createElement("span");
+      const mark = document.createElement("b");
+      mark.textContent = item.label ?? "";
+      span.append(mark, document.createTextNode(item.title ? ` ${item.title}` : ""));
+      return span;
+    }));
+    const reference = config?.signals?.center ?? data?.location;
+    if (reference) {
+      const [lon, lat] = reference;
+      streetReference.href = `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${lat},${lon}`;
+    }
+    streetReference.hidden = true;
+    switcher.hidden = !config;
+    legend.hidden = !references.length;
+    signalsCamera.textContent = config?.cameras?.signalsLabel || "Semáforos";
+    crossingCamera.textContent = config?.cameras?.crossing?.label || "Cruce peatonal";
+    curbCamera.textContent = config?.cameras?.curb?.label || "Cordón";
+    showFeedback(config?.projectionError || config?.sectorError || config?.catalogError || "");
+  }
+
+  function openingCamera() {
+    if (comfort) return config.cameras?.beforeFollow || "street";
+    if (config.crossing) return config.cameras?.crossing?.preset || "crossing";
+    return config.cameras?.initial || "oblique";
+  }
+
+  function configureQa() {
+    if (!qa || !viewer) return;
+    viewer.qaConfigure(qa.connections);
+    viewer.qaPoint(qa.point);
+    for (const [key, visible] of Object.entries(qa.layers)) viewer.qaLayer(key, visible);
+  }
 
   function showFeedback(message) {
     feedback.textContent = message;
@@ -84,6 +109,7 @@ function createReplayViews(geographicMap, redraw) {
     pedestrianStatus.hidden = !crossing;
     curbPanel.hidden = !curb;
     legend.hidden = !config?.references.length || crossing || curb || sceneActive && camera === "signals";
+    signalAssumptions.textContent = signalProgramCaption(config?.signalControllers);
     signalControl.hidden = signalAssumptions.hidden = !showSignals;
     signalLegend.hidden = !showSignals || !signalToggle.checked;
     streetReference.hidden = !sceneActive || camera !== "signals";
@@ -98,6 +124,28 @@ function createReplayViews(geographicMap, redraw) {
     showCameraControls();
   }
 
+  function syncCameraButtons(followable) {
+    chaseButton.disabled = !followable;
+    chaseButton.setAttribute("aria-pressed", String(userCamera === "chase" && followable));
+    freeButton.setAttribute("aria-pressed", String(userCamera === "free"));
+    if (userCamera === "chase") {
+      oblique.setAttribute("aria-pressed", "false");
+      street.setAttribute("aria-pressed", "false");
+      signalsCamera.setAttribute("aria-pressed", "false");
+      crossingCamera.setAttribute("aria-pressed", "false");
+      curbCamera.setAttribute("aria-pressed", "false");
+    }
+  }
+
+  function holdPreset(preset) {
+    comfort = false;
+    previewFollow = null;
+    previewClose = false;
+    userCamera = "free";
+    viewer?.setCameraMode("free");
+    setCamera(preset);
+  }
+
   function setCamera(preset) {
     camera = preset;
     oblique.setAttribute("aria-pressed", String(preset === "oblique"));
@@ -106,7 +154,10 @@ function createReplayViews(geographicMap, redraw) {
     crossingCamera.setAttribute("aria-pressed", String(preset === "crossing"));
     curbCamera.setAttribute("aria-pressed", String(preset === "curb"));
     showCameraControls();
+    viewer?.setComfort(comfort);
     viewer?.setCamera(preset);
+    if (qa?.followed != null) qa.close = true;
+    if (previewFollow != null) previewClose = true;
     redraw();
   }
 
@@ -147,7 +198,8 @@ function createReplayViews(geographicMap, redraw) {
 
   function setCurbDistance(distance) {
     curbDistance.value = distance;
-    curbDistance.setAttribute("aria-valuetext", `${Math.round(distance)} m desde 18 de Julio`);
+    const origin = config?.cameras?.curb?.origin || "el inicio";
+    curbDistance.setAttribute("aria-valuetext", `${Math.round(distance)} m desde ${origin}`);
   }
 
   function loadCurbControls() {
@@ -161,68 +213,124 @@ function createReplayViews(geographicMap, redraw) {
   }
 
   mapButton.addEventListener("click", () => {
+    const center = sceneActive && qa ? viewer.qaCenter() : null;
     request++;
     sceneButton.disabled = false;
     showFeedback("");
     selectView(false);
     geographicMap.resize();
+    if (center) geographicMap.qaFocus(center);
     redraw();
   });
-  sceneButton.addEventListener("click", async () => {
-    if (!config || sceneActive) return;
+  async function openScene() {
+    if (sceneActive) return true;
     const version = ++request;
     sceneButton.disabled = true;
-    showFeedback("Cargando la vista 3D…");
     try {
+      const pending = sectorReady;
+      const ready = await pending;
+      if (version !== request) return false;
+      if (ready?.config) config = ready.config;
+      applyChrome();
+      if (config?.projectionError || config?.sectorError) {
+        showFeedback(config.projectionError || config.sectorError);
+        return false;
+      }
+      if (!config) return false;
+      showFeedback("Cargando la vista 3D…");
       const firstOpen = !viewer;
       if (firstOpen) {
-        const [{ createViewer3D }, street, buildings, curbSurvey] = await Promise.all([
-          import("./viewer3d.js?v=2"),
+        const [{ createViewer3D }, street] = await Promise.all([
+          import("./viewer3d.js?v=16"),
           studyRequest(`/${runId}/street-scene`),
-          config.pilot ? fetch("./assets/pilot-roosevelt-buildings.geojson").then(response => {
-            if (!response.ok) throw new Error("No se pudo cargar el contorno de los edificios.");
-            return response.json();
-          }) : { features: [] },
-          config.pilot ? fetch("./assets/terminal-curb-survey.geojson")
-            .then(response => response.ok ? response.json() : null).catch(() => null) : null,
         ]);
-        if (version !== request) return;
+        if (version !== request) return false;
+        const assets = ready?.assets ?? { buildings: [], survey: null, geography: null };
         const badges = createReferenceBadges(referenceHost, config.references);
-        const nextViewer = await createViewer3D(canvasHost, data, config, badges, street, buildings.features, createLaneMotion, curbSurvey);
+        const nextViewer = await createViewer3D(canvasHost, data, config, badges, street, assets.buildings, assets.survey, assets.geography);
+        nextViewer.setVehiclePick(target => {
+          if (target?.kind === "signal") signalSelect?.(target);
+          else if (Number.isInteger(target?.index)) vehicleSelect?.(target.index);
+        });
+        nextViewer.setCameraMode(userCamera);
         if (version !== request) {
           nextViewer.dispose();
-          return;
+          return false;
         }
         viewer = nextViewer;
-        survey = curbSurvey;
+        viewer.setComfort(comfort);
+        const geographyNote = document.querySelector("#geography-note");
+        if (geographyNote) {
+          geographyNote.hidden = !viewer.hasGeography;
+          geographyNote.textContent = viewer.hasGeography ? (config.dressing?.note || "Suelo según OpenStreetMap") : "";
+          if (viewer.geographySummary) geographyNote.dataset.summary = JSON.stringify(viewer.geographySummary);
+        }
+        survey = assets.survey;
+        configureQa();
+        viewer.finishQaSetup();
         if (survey) loadCurbControls();
       }
+      const center = qa ? geographicMap.qaCenter() : null;
       selectView(true);
       signalsCamera.hidden = !viewer.signalsAvailable;
       crossingCamera.hidden = !config.crossing;
       curbCamera.hidden = !survey;
       viewer.resize();
-      if (firstOpen) setCamera(config.crossing ? "crossing" : "oblique");
-      else redraw();
-      showFeedback("");
+      if (firstOpen) setCamera(openingCamera());
+      if (qa && !comfort) {
+        if (qa.fitPending) setCamera("oblique");
+        else if (qa.point || !firstOpen) viewer.qaFocus(center, qa.locatePending);
+        qa.fitPending = qa.locatePending = false;
+      }
+      redraw();
+      showFeedback(config.catalogError || "");
+      return true;
     } catch (error) {
       console.warn("UrbanFlow: no se pudo iniciar el visor 3D.", error);
-      if (version !== request) return;
+      if (version === request && data?.geographic) sectorReady = prepareStudySector(data);
+      if (version !== request) return false;
       viewer?.dispose();
       viewer = null;
+      const geographyNote = document.querySelector("#geography-note");
+      if (geographyNote) geographyNote.hidden = true;
       selectView(false);
       geographicMap.resize();
       redraw();
-      showFeedback("La vista 3D no pudo cargar. Podés seguir usando el mapa 2D o reintentar Vista 3D.");
+      showFeedback(error instanceof Error && error.message
+        ? error.message
+        : "La vista 3D no pudo cargar. Podés seguir usando el mapa 2D o reintentar Vista 3D.");
+      return false;
     } finally {
       if (version === request) sceneButton.disabled = false;
     }
+  }
+  sceneButton.addEventListener("click", () => { openScene(); });
+  oblique.addEventListener("click", () => holdPreset("oblique"));
+  street.addEventListener("click", () => holdPreset("street"));
+  signalsCamera.addEventListener("click", () => holdPreset("signals"));
+  crossingCamera.addEventListener("click", () => holdPreset("crossing"));
+  curbCamera.addEventListener("click", () => holdPreset("curb"));
+  chaseButton.addEventListener("click", () => {
+    if (chaseButton.disabled) return;
+    comfort = false;
+    previewFollow = null;
+    previewClose = false;
+    userCamera = "chase";
+    viewer?.setComfort(false);
+    viewer?.setCameraMode("chase");
+    syncCameraButtons(true);
+    redraw();
   });
-  oblique.addEventListener("click", () => setCamera("oblique"));
-  street.addEventListener("click", () => setCamera("street"));
-  signalsCamera.addEventListener("click", () => setCamera("signals"));
-  crossingCamera.addEventListener("click", () => setCamera("crossing"));
-  curbCamera.addEventListener("click", () => setCamera("curb"));
+  freeButton.addEventListener("click", () => {
+    comfort = false;
+    previewFollow = null;
+    previewClose = false;
+    userCamera = "free";
+    viewer?.setComfort(false);
+    viewer?.setCameraMode("free");
+    syncCameraButtons(!chaseButton.disabled);
+    redraw();
+  });
   curbDistance.addEventListener("input", () => {
     const distance = Number(curbDistance.value);
     curbFeature.value = "";
@@ -240,9 +348,13 @@ function createReplayViews(geographicMap, redraw) {
     showCameraControls();
     viewer?.setSignalOverlay(signalToggle.checked);
   });
-  document.querySelector("#camera-reset").addEventListener("click", () => setCamera(camera));
-  document.querySelector("#camera-zoom-in").addEventListener("click", () => viewer?.zoom(.8));
-  document.querySelector("#camera-zoom-out").addEventListener("click", () => viewer?.zoom(1.25));
+  function zoom(factor) {
+    viewer?.zoom(factor);
+    if (qa && sceneActive) redraw();
+  }
+  document.querySelector("#camera-reset").addEventListener("click", () => holdPreset(camera));
+  document.querySelector("#camera-zoom-in").addEventListener("click", () => zoom(.8));
+  document.querySelector("#camera-zoom-out").addEventListener("click", () => zoom(1.25));
   frame.addEventListener("keydown", event => {
     if (event.target !== frame || !viewer) return;
     const directions = { ArrowLeft: [-.12, 0], ArrowRight: [.12, 0], ArrowUp: [0, -.1], ArrowDown: [0, .1] };
@@ -250,40 +362,161 @@ function createReplayViews(geographicMap, redraw) {
     else if (event.key === "+" || event.key === "=") viewer.zoom(.8);
     else if (event.key === "-") viewer.zoom(1.25);
     else return;
+    if (qa && sceneActive) redraw();
     event.preventDefault();
   });
 
   return {
+    get active() { return sceneActive; },
+    get outside() { return sceneActive ? outside : 0; },
+    qaConfigure(connections) {
+      qa = connections ? { connections, point: null, followed: null,
+        close: false, fitPending: false, locatePending: false,
+        layers: { roads: true, connections: true, signals: true, cars: true } } : null;
+      configureQa();
+    },
+    qaFollow(id) {
+      if (!qa) return;
+      qa.followed = id;
+      qa.close = id != null;
+      if (id != null) {
+        userCamera = null;
+        viewer?.setCameraMode(null);
+        syncCameraButtons(!chaseButton.disabled);
+      }
+    },
+    qaFit() {
+      if (!qa) return;
+      qa.point = null;
+      qa.locatePending = false;
+      qa.fitPending = !sceneActive;
+      viewer?.qaPoint(null);
+      if (sceneActive) {
+        if (userCamera === "chase") {
+          userCamera = "free";
+          viewer?.setCameraMode("free");
+        }
+        setCamera("oblique");
+        syncCameraButtons(!chaseButton.disabled);
+      }
+    },
+    qaLocate(point) {
+      if (!qa) return;
+      qa.point = point;
+      qa.fitPending = false;
+      qa.locatePending = !sceneActive;
+      viewer?.qaPoint(point);
+      if (sceneActive) {
+        viewer.qaFocus(point, true);
+        redraw();
+      }
+    },
+    qaLayer(key, visible) {
+      if (!qa) return;
+      qa.layers[key] = visible;
+      viewer?.qaLayer(key, visible);
+      if (sceneActive) redraw();
+    },
     configure(next, identifier) {
       request++;
+      comfort = false;
+      previewFollow = null;
+      previewClose = false;
+      userCamera = null;
+      syncCameraButtons(false);
       if (sceneActive) selectView(false);
       viewer?.dispose();
       viewer = null;
       survey = null;
+      qa = null;
       data = next;
+      config = null;
       runId = identifier;
-      config = sceneFor(next);
-      const reference = config?.signals?.center ?? next?.location;
-      if (reference) {
-        const [lon, lat] = reference;
-        streetReference.href = `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${lat},${lon}`;
+      const geographyNote = document.querySelector("#geography-note");
+      if (geographyNote) {
+        geographyNote.hidden = true;
+        geographyNote.textContent = "";
       }
+      legend.replaceChildren();
+      legend.hidden = true;
       streetReference.hidden = true;
-      switcher.hidden = !config;
-      legend.hidden = !config?.references.length;
-      signalsCamera.textContent = config?.pilot ? "Roosevelt y Honduras" : "Semáforos del cruce";
+      switcher.hidden = !next?.geographic;
+      signalsCamera.textContent = "Semáforos";
+      crossingCamera.textContent = "Cruce peatonal";
+      curbCamera.textContent = "Cordón";
       signalsCamera.hidden = signalControl.hidden = signalLegend.hidden = signalAssumptions.hidden = true;
       crossingCamera.hidden = pedestrianStatus.hidden = true;
       curbCamera.hidden = curbPanel.hidden = true;
       signalToggle.checked = false;
       sceneButton.disabled = false;
       showFeedback("");
+      const token = next;
+      sectorReady = next?.geographic ? prepareStudySector(next) : Promise.resolve(null);
+      sectorReady.then(result => {
+        if (data !== token) return;
+        config = result?.config ?? null;
+        applyChrome();
+      }).catch(error => {
+        if (data !== token) return;
+        config = {
+          bounds: next?.bounds, references: [],
+          sectorError: error instanceof Error ? error.message : "No se pudo leer la configuración del sector.",
+        };
+        applyChrome();
+      });
     },
-    draw(cars, highlightStopped, time, snapshot) {
+    setApproachMarkers(visible) { viewer?.setApproachMarkers(visible); },
+    setVehicleSelect(handler) { vehicleSelect = handler; },
+    setSignalSelect(handler) { signalSelect = handler; },
+    noteSignal(selection) { signalMark = selection; },
+    noteSelection(index, present) {
+      const followable = Number.isInteger(index) && present;
+      if (userCamera === "chase" && !followable) {
+        userCamera = "free";
+        viewer?.setCameraMode("free");
+      }
+      syncCameraButtons(followable);
+    },
+    releaseFollow() {
+      if (userCamera === "chase") {
+        userCamera = "free";
+        viewer?.setCameraMode("free");
+      }
+      syncCameraButtons(false);
+    },
+    async openPreview(vehicleIndex) {
+      userCamera = null;
+      comfort = true;
+      previewFollow = vehicleIndex;
+      const select = document.querySelector("#qa-vehicle");
+      if (select && [...select.options].some(option => option.value === String(vehicleIndex))) {
+        select.value = String(vehicleIndex);
+        select.dispatchEvent(new Event("change"));
+      }
+      const opened = await openScene();
+      if (opened) {
+        viewer.setCameraMode(null);
+        syncCameraButtons(false);
+        const follow = viewer.hasGeography
+          ? (config.cameras?.followWithDressing || "oblique")
+          : (config.cameras?.followWithoutDressing || "street");
+        setCamera(follow);
+      }
+      return opened;
+    },
+    draw(cars, highlightStopped, time, snapshot, marked) {
       if (!sceneActive) return false;
-      const people = viewer.draw(cars, highlightStopped, time, snapshot);
+      const followedId = qa?.followed ?? previewFollow;
+      const followed = followedId == null ? null : cars.find(car => car[0] === followedId);
+      const close = Boolean(qa?.close || previewClose);
+      const result = viewer.draw(cars, highlightStopped, time, snapshot, followed, close, marked ?? null, signalMark);
+      if (followed) {
+        if (qa) qa.close = false;
+        previewClose = false;
+      }
+      outside = result.outside;
       if (!pedestrianStatus.hidden) {
-        const status = people?.join("  •  ") || "Cebra despejada";
+        const status = result.statuses?.join("  •  ") || "Cebra despejada";
         if (pedestrianStatus.textContent !== status) pedestrianStatus.textContent = status;
       }
       return true;

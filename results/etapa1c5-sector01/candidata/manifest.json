@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "replayId": "01c5b202611140000000000000000001",
+  "sourceFiles": {
+    "results/etapa1c3b-sector01/candidato/a/network.net.xml": "05889e643344613c7af6fd0d354f9bffc5323ab064364f8456edc3e032de4a37",
+    "results/etapa1c3b-sector01/candidato/a/final.nod.xml": "b8aeab2a92f1e3118080528c8d2f7c4a10310cca92589876c5c5929941dfb010",
+    "results/etapa1c3b-sector01/candidato/a/final.edg.xml": "7319d579a432e95f22584b684d3baa4a858f8155f0b85d618e8c5e014975b5a4",
+    "results/etapa1c3b-sector01/candidato/a/same-demand/trajectories.xml": "d6f15df05917c5325861291ff93b7025181d32a525fadfec1961d863dc269d4c",
+    "results/etapa1c3b-sector01/candidato/a/same-demand/routes.rou.xml": "f34741d86140eb4ec780ce12eb97d4c5181fe1a28b8671af58df8852a145655b",
+    "results/etapa1c3b-sector01/candidato/a/same-demand/signal-states.xml": "5616f966d633acf5421ce0b87b75b1563f3d01bbfc2c1a0724da60ba1b8cac68",
+    "results/etapa1c3b-sector01/candidato/a/same-demand/summary.xml": "f225db773645de85560200d5d8f52521607e04274eeca4cc6cdfe5530ed3d882",
+    "results/etapa1c3b-sector01/candidato/a/same-demand/collisions.xml": "01294ad97782e0a0661a90d914af4ae4efd18c6aa350f1d1ae2eb3d124f78439",
+    "results/etapa1c3b-sector01/candidato/a/same-demand/trips.xml": "3a69c8f20edaf79aa0f896bb5104061c574141ac61befee319147d40ac2bb081",
+    "results/etapa1c3b-sector01/candidato/a/same-demand/sumo.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/etapa1c3b-sector01/candidato/a/recorte.osm.xml": "33d5750cd247cac4301558ad7e7d5eef51a3efac7a0c79d9ca3f3335636736df"
+  },
+  "revision": "1C.3b service-notch",
+  "fieldValidated": false,
+  "sumoRerun": false,
+  "artifacts": {
+    "01c5b202611140000000000000000001/collisions.xml": "01294ad97782e0a0661a90d914af4ae4efd18c6aa350f1d1ae2eb3d124f78439",
+    "01c5b202611140000000000000000001/map.edg.xml": "7319d579a432e95f22584b684d3baa4a858f8155f0b85d618e8c5e014975b5a4",
+    "01c5b202611140000000000000000001/map.nod.xml": "b8aeab2a92f1e3118080528c8d2f7c4a10310cca92589876c5c5929941dfb010",
+    "01c5b202611140000000000000000001/metadata.json": "3bacd15ef1fab219107a32548f44210a5d52773a8f3843862751cbaa80aea96f",
+    "01c5b202611140000000000000000001/network.net.xml": "05889e643344613c7af6fd0d354f9bffc5323ab064364f8456edc3e032de4a37",
+    "01c5b202611140000000000000000001/replay.json": "03b534e910cd373360eb595fa463dff5e7ee9f743368b67378c7e6aca141080b",
+    "01c5b202611140000000000000000001/routes.rou.xml": "f34741d86140eb4ec780ce12eb97d4c5181fe1a28b8671af58df8852a145655b",
+    "01c5b202611140000000000000000001/signal-states.xml": "5616f966d633acf5421ce0b87b75b1563f3d01bbfc2c1a0724da60ba1b8cac68",
+    "01c5b202611140000000000000000001/status.json": "95f357f78a7478f79d9f4d5c5ad3322fa6ba55cf0762fab16f08af80152237a0",
+    "01c5b202611140000000000000000001/summary.xml": "f225db773645de85560200d5d8f52521607e04274eeca4cc6cdfe5530ed3d882",
+    "01c5b202611140000000000000000001/sumo.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "01c5b202611140000000000000000001/traffic-catalog.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "01c5b202611140000000000000000001/trajectories.xml": "d6f15df05917c5325861291ff93b7025181d32a525fadfec1961d863dc269d4c",
+    "01c5b202611140000000000000000001/trips.xml": "3a69c8f20edaf79aa0f896bb5104061c574141ac61befee319147d40ac2bb081",
+    "sector01.geojson": "b84641760c5aa7c9280a1d4399b0c641ca51f1865069b546b590861ad938f41b",
+    "01c5b202611140000000000000000001/recorte.osm.xml": "33d5750cd247cac4301558ad7e7d5eef51a3efac7a0c79d9ca3f3335636736df"
+  }
+}

@@ -91,7 +91,15 @@ def geographic_transform(network, node_file):
 
 
 def replay_geometry(network, node_file):
-    projection = geographic_transform(network, node_file)
-    if projection is None:
-        return None
+    """Lane geometry plus the single UTM projection declared by the network.
+
+    Callers still pass the plain-node file. The projection is read from the
+    location element, so a new replay does not also store an affine fit.
+    """
+    del node_file
+    from .geo_projection import ProjectionError, projection_from_network
+    try:
+        projection = projection_from_network(network)
+    except ProjectionError as error:
+        return {'projection': None, 'projectionError': str(error), 'lanes': {}, 'links': {}}
     return {'projection': projection, 'lanes': lane_shapes(network), 'links': lane_links(network)}

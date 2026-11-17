@@ -34,7 +34,10 @@ function createLaneMotion({ lanes, links, projection }) {
     return first.map((coordinate, axis) => mix(coordinate, lane.points[last][axis], progress));
   }
 
+  const utm = projection?.type === "utm" ? createSumoProjection(projection) : null;
+
   function toGeo([x, y]) {
+    if (utm) return utm.toGeo(x, y);
     const [ox, oy] = projection.origin;
     return projection.location.map((coordinate, axis) =>
       coordinate + (x - ox) * projection.east[axis] + (y - oy) * projection.north[axis]);
@@ -49,21 +52,8 @@ function createLaneMotion({ lanes, links, projection }) {
       (angle + 360) % 360, car[4], car[5]];
   }
 
-  function place(car, point, before, after) {
-    const front = toGeo(point);
-    const [lng0, lat0] = toGeo(before);
-    const [lng1, lat1] = toGeo(after);
-    const east = (lng1 - lng0) * Math.cos(front[1] * radians);
-    const north = lat1 - lat0;
-    const angle = Math.hypot(east, north) > 1e-8 ? Math.atan2(east, north) / radians : car[3];
-    return centered(car, front, angle);
-  }
-
-  function sample(car) {
-    const lane = shape(car[6]);
-    if (!lane || !Number.isFinite(car[7]) || car[4] < .1) return centered(car, [car[1], car[2]], car[3]);
-    const position = car[7];
-    return place(car, pointOn(lane, position), pointOn(lane, position - .65), pointOn(lane, position + .65));
+  function recordedCenter(car) {
+    return centered(car, [car[1], car[2]], car[3]);
   }
 
   function connectedPath(first, last, limit) {
@@ -126,22 +116,43 @@ function createLaneMotion({ lanes, links, projection }) {
     } };
   }
 
-  function between(car, next, fraction, seconds) {
-    if (car[4] < .1 && next[4] < .1 && car[6] === next[6] && Math.abs(car[7] - next[7]) < .1) {
-      return sample(car);
+  function anchoredPath(car, next, seconds) {
+    const first = recordedCenter(car);
+    const last = recordedCenter(next);
+    const turn = ((last[3] - first[3] + 540) % 360) - 180;
+    const path = pathFor(car, next, seconds);
+    const longitudeScale = Math.cos((first[2] + last[2]) / 2 * radians);
+    const east = (last[1] - first[1]) * longitudeScale;
+    const north = last[2] - first[2];
+    const chord = Math.hypot(east, north);
+    let lateral = [0, 0];
+    if (path && path.length >= .01 && chord > 0 && longitudeScale > 0) {
+      const start = toGeo(path.pointAt(0));
+      const middle = toGeo(path.pointAt(path.length / 2));
+      const end = toGeo(path.pointAt(path.length));
+      const normal = [-north / chord, east / chord];
+      const bow = normal[0] * (middle[0] - (start[0] + end[0]) / 2) * longitudeScale
+        + normal[1] * (middle[1] - (start[1] + end[1]) / 2);
+      // Use the lane's curvature sideways, with forward progress set by the FCD endpoints.
+      const offset = clamp(bow, -chord / 4, chord / 4);
+      lateral = [normal[0] * offset / longitudeScale, normal[1] * offset];
     }
-    if (!transitions.has(car)) transitions.set(car, pathFor(car, next, seconds));
-    const path = transitions.get(car);
-    if (!path || path.length < .01) {
-      const turn = ((next[3] - car[3] + 540) % 360) - 180;
-      return centered(car, [mix(car[1], next[1], fraction), mix(car[2], next[2], fraction)], car[3] + turn * fraction);
-    }
-    const distance = path.length * fraction;
-    return place(car, path.pointAt(distance), path.pointAt(Math.max(0, distance - .65)),
-      path.pointAt(Math.min(path.length, distance + .65)));
+    return fraction => {
+      if (fraction <= 0) return first;
+      if (fraction >= 1) return last;
+      const weight = 4 * fraction * (1 - fraction);
+      return [car[0], mix(first[1], last[1], fraction) + weight * lateral[0],
+        mix(first[2], last[2], fraction) + weight * lateral[1],
+        (first[3] + turn * fraction + 360) % 360, car[4], car[5]];
+    };
   }
 
-  return { sample, between, beginFrame(cars) {
+  function between(car, next, fraction, seconds) {
+    if (!transitions.has(car)) transitions.set(car, anchoredPath(car, next, seconds));
+    return transitions.get(car)(fraction);
+  }
+
+  return { sample: recordedCenter, between, beginFrame(cars) {
     if (frame !== cars) {
       transitions.clear();
       frame = cars;

@@ -1,0 +1,45 @@
+{
+  "revision": "v002",
+  "auditBoundary": true,
+  "corridors": [
+    {"id":"mansa", "nodes":["840834919","1761803594","1761794826"], "preferred":["claudio williman","interbalnearia","rambla general artigas"]},
+    {"id":"brava", "nodes":["840834919","841517226","321554949"], "preferred":["lorenzo batlle","rambla general artigas","puente leonel viera","el remanso","resalsero"]},
+    {"id":"interior", "nodes":["321554949","1164319605","7316611215","1762766287"], "preferred":["puente leonel viera","eduardo víctor haedo","aparicio saravia","luis alberto de herrera"], "simple":true},
+    {"id":"lussich", "nodes":["1762766287","1886195541","1307973068","1946371568","1307973218","1307973260","2367503408","1761794826"], "preferred":["luis alberto de herrera","camino lussich","avenida antonio lussich","interbalnearia"], "simple":true},
+    {"id":"lussich-avenida-alternativa", "nodes":["1762766287","2719569743","2367503408","1761794826"], "preferred":["luis alberto de herrera","avenida antonio lussich","interbalnearia"], "exclude":["lussich (vieja)"]},
+    {"id":"solanas-sur", "nodes":["1761794826","1893553623","1893553732","1761794826"], "preferred":["bonet","zorrilla","lucero del alba","del pescador","del portezuelo","interbalnearia"], "simple":true},
+    {"id":"solanas-norte", "nodes":["1761794826","1893553112","1893553119","1761794832","1761794826"], "preferred":["interbalnearia","calle 3","bahía algeciras","bahía portezuelo","cabo polonio","laguna del diario","laguna del sauce","ruta 12","laguna merín","laguna de castillo","lago de baygorria","lago brasiano","lago ness"], "simple":true}
+  ],
+  "boundary": ["brava", "interior", "lussich", "mansa"],
+  "boundaryCircuits": ["solanas-sur", "solanas-norte"],
+  "junctions": [
+    {"id":"punta-del-este-a-la-barra", "from":"brava", "to":"brava", "node":"321554873"},
+    {"id":"cabecera-este-leonel-viera", "from":"brava", "to":"interior", "node":"321554949"},
+    {"id":"la-barra-a-punta-del-este", "from":"interior", "to":"interior", "node":"1164319460"},
+    {"id":"cabecera-oeste-leonel-viera", "from":"interior", "to":"interior", "node":"1164319591"},
+    {"id":"saravia-al-anillo", "from":"interior", "to":"interior", "node":"1164319605"},
+    {"id":"anillo-a-herrera", "from":"interior", "to":"interior", "node":"3906651726"},
+    {"id":"lussich-a-interbalnearia", "from":"lussich", "to":"lussich", "node":"1761803455"},
+    {"id":"mansa-a-solanas-sur", "from":"mansa", "to":"solanas-sur", "node":"1761794826"},
+    {"id":"lussich-a-solanas-sur", "from":"lussich", "to":"solanas-sur", "node":"1761794826"},
+    {"id":"rampa-a-bonet", "from":"solanas-sur", "to":"solanas-sur", "node":"1761794833"},
+    {"id":"solanas-sur-a-interbalnearia", "from":"solanas-sur", "to":"solanas-sur", "node":"1761794864"},
+    {"id":"mansa-a-solanas-norte", "from":"mansa", "to":"solanas-norte", "node":"1761794826"},
+    {"id":"lussich-a-solanas-norte", "from":"lussich", "to":"solanas-norte", "node":"1761794826"},
+    {"id":"solanas-oeste-acceso-local", "from":"solanas-norte", "to":"solanas-norte", "node":"1893553112"},
+    {"id":"solanas-norte-ruta-12", "from":"solanas-norte", "to":"solanas-norte", "node":"1761794832"},
+    {"id":"solanas-norte-a-sur", "from":"solanas-norte", "to":"solanas-sur", "node":"1761794826"},
+    {"id":"solanas-sur-a-norte", "from":"solanas-sur", "to":"solanas-norte", "node":"1761794826"}
+  ],
+  "sectors": [
+    {"id":"punta-mansa", "seed":"1957626365"},
+    {"id":"mansa-oeste-solanas", "seed":"1761803594"},
+    {"id":"brava-la-barra", "seed":"321554874"},
+    {"id":"saravia", "seed":"1919675885"},
+    {"id":"ruta39-herrera", "seed":"1762766287"},
+    {"id":"lussich-maldonado", "seed":"2719569743"},
+    {"id":"lussich-arboretum", "seed":"2367503408"},
+    {"id":"solanas-sur", "seed":"1893553623"},
+    {"id":"solanas-norte", "seed":"1893553119"}
+  ]
+}

@@ -72,8 +72,9 @@ def publish_replay(base, output, network, pedestrians):
     catalog, _ = saved_catalog(base, metadata)
     approaches = {movement["entry"]: movement["from"] for movement in catalog}
     motion = replay_geometry(network, output / "map.nod.xml")
-    if motion is None:
-        raise StudyError("SUMO no produjo la proyección necesaria para abrir la corrida en el visor.")
+    if not motion.get("projection"):
+        raise StudyError(motion.get("projectionError")
+                         or "SUMO no produjo la proyección necesaria para abrir la corrida en el visor.")
     vehicles = []
     frames = fcd_frames(output / "trajectories.xml", {"incoming": {key: key for key in approaches}},
                         geographic=True, vehicle_lengths={**VEHICLE_LENGTHS, "auto-ensayo": VEHICLE_LENGTHS["car"]},

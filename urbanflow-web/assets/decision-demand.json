@@ -1,0 +1,199 @@
+{
+  "experimental": true,
+  "calibrated": false,
+  "seasonal": false,
+  "title": "Sensibilidad a la demanda",
+  "note": "Misma red, mismas rutas, misma semilla 42 y mismos 240 s en A y en B. Solo cambia el máximo de la primera fase, de 50 s a 15 s. Cada nivel multiplica por igual los 15 flujos de la muestra.",
+  "criterion": "SUMO reparte las salidas de cada flujo entre su begin original y los 240 s, con separación (240 − begin) / número. Con 3, 6 y 9 vehículos por flujo, los horarios de la muestra de 45 quedan dentro de las grillas de 90 y de 135. La cohorte de tiempos es la de los viajes que terminan en las dos variantes. Quienes siguen en la red a los 240 s se cuentan aparte y no entran al promedio. Si son al menos el 30 % de los insertados, el nivel queda cortado por el horizonte. La última fase abierta al segundo 240 no se cuenta como verde terminada.",
+  "levels": [
+    {
+      "demand": 45,
+      "perFlow": 3,
+      "zeroBeginSpacingSeconds": 80.0,
+      "planned": 45,
+      "inserted": {
+        "a": 45,
+        "b": 45
+      },
+      "completed": {
+        "a": 37,
+        "b": 38
+      },
+      "unfinished": {
+        "a": 8,
+        "b": 7
+      },
+      "unfinishedWaitSeconds": {
+        "a": 439.5,
+        "b": 413.0
+      },
+      "onlyFinishedA": 0,
+      "onlyFinishedB": 1,
+      "cohort": {
+        "count": 37,
+        "departMin": 0.0,
+        "departMax": 162.5,
+        "meanTravel": {
+          "a": 61.31,
+          "b": 61.23,
+          "absolute": -0.08,
+          "percent": -0.1
+        },
+        "meanWait": {
+          "a": 9.47,
+          "b": 9.42,
+          "absolute": -0.05,
+          "percent": -0.5
+        }
+      },
+      "cap": {
+        "openingsA": 7,
+        "openingsB": 7,
+        "paired": true,
+        "cutByCap": 1,
+        "bAtCap": 1,
+        "aAbove15": 1,
+        "aAtReferenceMax": 0,
+        "maxA": 17.0,
+        "maxB": 15.0,
+        "censoredPhase0": null
+      },
+      "horizonLimited": false,
+      "evidence": {
+        "routes": "results/studies/c44da2efd14c48569d6a9ce276916ba5/routes.rou.xml",
+        "routesSha256": "7d529677114260b52d47b9d38eeff1023a9ed2ec87e74c8b1c38d2e5c2e00dc3",
+        "tripsA": "results/_tmp/etapa1f1/a/trips.xml",
+        "tripsB": "results/_tmp/etapa1f1/b/trips.xml",
+        "signalsA": "results/_tmp/etapa1f1/a/signal-states.xml",
+        "signalsB": "results/_tmp/etapa1f1/b/signal-states.xml"
+      }
+    },
+    {
+      "demand": 90,
+      "perFlow": 6,
+      "zeroBeginSpacingSeconds": 40.0,
+      "planned": 90,
+      "inserted": {
+        "a": 90,
+        "b": 90
+      },
+      "completed": {
+        "a": 58,
+        "b": 61
+      },
+      "unfinished": {
+        "a": 32,
+        "b": 29
+      },
+      "unfinishedWaitSeconds": {
+        "a": 1441.0,
+        "b": 1088.5
+      },
+      "onlyFinishedA": 0,
+      "onlyFinishedB": 3,
+      "cohort": {
+        "count": 58,
+        "departMin": 0.0,
+        "departMax": 200.5,
+        "meanTravel": {
+          "a": 59.82,
+          "b": 59.02,
+          "absolute": -0.8,
+          "percent": -1.3
+        },
+        "meanWait": {
+          "a": 7.24,
+          "b": 6.19,
+          "absolute": -1.05,
+          "percent": -14.5
+        }
+      },
+      "cap": {
+        "openingsA": 6,
+        "openingsB": 7,
+        "paired": false,
+        "cutByCap": 1,
+        "bAtCap": 2,
+        "aAbove15": 1,
+        "aAtReferenceMax": 1,
+        "maxA": 50.0,
+        "maxB": 15.0,
+        "censoredPhase0": null
+      },
+      "horizonLimited": true,
+      "evidence": {
+        "routes": "results/_tmp/etapa1f2/routes-90.rou.xml",
+        "routesSha256": "c639409ca241bee6494bbb39988e260b4ed5f7006f1b604f045ba52e31fb3900",
+        "tripsA": "results/_tmp/etapa1f2/d90/a/trips.xml",
+        "tripsB": "results/_tmp/etapa1f2/d90/b/trips.xml",
+        "signalsA": "results/_tmp/etapa1f2/d90/a/signal-states.xml",
+        "signalsB": "results/_tmp/etapa1f2/d90/b/signal-states.xml"
+      }
+    },
+    {
+      "demand": 135,
+      "perFlow": 9,
+      "zeroBeginSpacingSeconds": 26.6667,
+      "planned": 135,
+      "inserted": {
+        "a": 135,
+        "b": 135
+      },
+      "completed": {
+        "a": 69,
+        "b": 71
+      },
+      "unfinished": {
+        "a": 66,
+        "b": 64
+      },
+      "unfinishedWaitSeconds": {
+        "a": 3081.5,
+        "b": 2821.5
+      },
+      "onlyFinishedA": 3,
+      "onlyFinishedB": 5,
+      "cohort": {
+        "count": 66,
+        "departMin": 0.0,
+        "departMax": 188.0,
+        "meanTravel": {
+          "a": 67.95,
+          "b": 67.55,
+          "absolute": -0.4,
+          "percent": -0.6
+        },
+        "meanWait": {
+          "a": 14.34,
+          "b": 13.89,
+          "absolute": -0.45,
+          "percent": -3.1
+        }
+      },
+      "cap": {
+        "openingsA": 5,
+        "openingsB": 6,
+        "paired": false,
+        "cutByCap": 1,
+        "bAtCap": 1,
+        "aAbove15": 1,
+        "aAtReferenceMax": 1,
+        "maxA": 50.0,
+        "maxB": 15.0,
+        "censoredPhase0": 10.0
+      },
+      "horizonLimited": true,
+      "evidence": {
+        "routes": "results/_tmp/etapa1f2/routes-135.rou.xml",
+        "routesSha256": "341c909054ae759e0edb6e529221d02760c1d6b5cd1837f8fafe66f6d095222a",
+        "tripsA": "results/_tmp/etapa1f2/d135/a/trips.xml",
+        "tripsB": "results/_tmp/etapa1f2/d135/b/trips.xml",
+        "signalsA": "results/_tmp/etapa1f2/d135/a/signal-states.xml",
+        "signalsB": "results/_tmp/etapa1f2/d135/b/signal-states.xml"
+      }
+    }
+  ],
+  "conclusion": "90 y 135 vehículos son el doble y el triple de cada uno de los 15 recorridos de la muestra. No son una temporada de Maldonado. Entran todos los vehículos pedidos. La verde cerrada más larga de A es 17,0 s con 45, 50,0 s con 90, 50,0 s con 135. El tope de 15 s corta esa verde una vez en cada nivel. B queda en 15 s en 1, 2 y 1 verdes cerradas. Si hay una de más, ocurre después de que los ciclos dejan de coincidir y no se cuenta como el mismo corte. Las demás verdes cerradas de esa fase terminan en 13 o 14 s. A los 240 s siguen sin terminar 90: 32 en A y 29 en B; 135: 66 en A y 64 en B. El promedio de quienes llegan no mide a toda la demanda en esos niveles. En la cohorte que termina en las dos variantes, el cambio de viaje es -0,08 s, -0,80 s, -0,40 s. No es una diferencia estable de operación. El programa de referencia sigue siendo el que SUMO infirió, no un plan de la Intendencia.",
+  "network": "results/_tmp/etapa1f1/b-network.net.xml",
+  "sumo": "Eclipse SUMO sumo 1.26.0"
+}

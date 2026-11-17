@@ -1,0 +1,512 @@
+{
+  "stage": "1G.1",
+  "experimental": true,
+  "calibrated": false,
+  "seasonal": false,
+  "comparison": null,
+  "simulated": null,
+  "queues": {
+    "measured": false,
+    "reason": "La comparación se detuvo antes de simular."
+  },
+  "summary": "La comparación quedó detenida. El desvío por Pedragosa Sierra y Avenida del Mar depende de las vías 101195613 y 252069937, sin sentido explícito.",
+  "roundabouts": [
+    {
+      "id": "100089298",
+      "name": null,
+      "closed": true,
+      "counterclockwise": true,
+      "accepted": true,
+      "entries": [
+        "100089295",
+        "101105029",
+        "228982144",
+        "230376874",
+        "311824968"
+      ],
+      "exits": [
+        "29235087",
+        "100089299",
+        "101105003",
+        "230376885",
+        "482520532"
+      ],
+      "unverifiedApproaches": [],
+      "contradictions": [],
+      "review": [],
+      "oneway": null,
+      "lanes": "1",
+      "maxspeed": null
+    },
+    {
+      "id": "70521182",
+      "name": "Rotonda Parada 5",
+      "closed": true,
+      "counterclockwise": true,
+      "accepted": true,
+      "entries": [
+        "100089299",
+        "185203622",
+        "252069936",
+        "983235081"
+      ],
+      "exits": [
+        "100089295",
+        "100522079",
+        "100522082",
+        "449294015"
+      ],
+      "unverifiedApproaches": [
+        "185219449"
+      ],
+      "contradictions": [],
+      "review": [],
+      "oneway": null,
+      "lanes": "1",
+      "maxspeed": null
+    },
+    {
+      "id": "100473811",
+      "name": null,
+      "closed": true,
+      "counterclockwise": true,
+      "accepted": true,
+      "entries": [
+        "100522083",
+        "101195648",
+        "230376902",
+        "252069933"
+      ],
+      "exits": [
+        "100473830",
+        "100473846",
+        "100522077",
+        "100522118"
+      ],
+      "unverifiedApproaches": [],
+      "contradictions": [],
+      "review": [],
+      "oneway": null,
+      "lanes": null,
+      "maxspeed": null
+    }
+  ],
+  "routes": {
+    "origin": {
+      "node": "1155355178",
+      "place": "Artigas en el cruce con Francia"
+    },
+    "destination": {
+      "node": "3175611488",
+      "place": "Empalme de Artigas y Avenida del Mar"
+    },
+    "through": {
+      "legal": true,
+      "ways": [
+        "983235082",
+        "983235081",
+        "70521182",
+        "100089295",
+        "100089298",
+        "29235087",
+        "983236122"
+      ],
+      "ringArcNodes": 11,
+      "paradaArcNodes": 12
+    },
+    "avoid": {
+      "legal": false,
+      "ways": [],
+      "diagnosticConnects": true,
+      "diagnosticAccepted": false,
+      "blockedBy": [
+        {
+          "id": "101195613",
+          "name": "Avenida Orlando Pedragosa Sierra",
+          "oneway": null,
+          "lanes": "2",
+          "from": "1162020617",
+          "to": "1167219966",
+          "usedByDiagnostic": true
+        },
+        {
+          "id": "252069937",
+          "name": "Avenida Orlando Pedragosa Sierra",
+          "oneway": null,
+          "lanes": "2",
+          "from": "2581914976",
+          "to": "1162020098",
+          "usedByDiagnostic": true
+        }
+      ]
+    }
+  },
+  "francia": {
+    "joinsArtigasToPedragosa": false,
+    "openEnd": "1156825106",
+    "nearestArtigasNode": "1155354703",
+    "gapMeters": 20.2
+  },
+  "blockage": {
+    "comparison": true,
+    "summary": "La comparación quedó detenida. El desvío por Pedragosa Sierra y Avenida del Mar depende de las vías 101195613 y 252069937, sin sentido explícito.",
+    "ways": [
+      {
+        "id": "101195613",
+        "name": "Avenida Orlando Pedragosa Sierra",
+        "oneway": null,
+        "lanes": "2",
+        "from": "1162020617",
+        "to": "1167219966",
+        "usedByDiagnostic": true
+      },
+      {
+        "id": "252069937",
+        "name": "Avenida Orlando Pedragosa Sierra",
+        "oneway": null,
+        "lanes": "2",
+        "from": "2581914976",
+        "to": "1162020098",
+        "usedByDiagnostic": true
+      }
+    ]
+  },
+  "mappedSignals": [
+    "1155355178",
+    "1167219966",
+    "1185880977",
+    "1918169796",
+    "1918169798",
+    "1918169806",
+    "2376255073",
+    "2376296727",
+    "2378134702",
+    "2388871076",
+    "3175611471",
+    "3175611488",
+    "3175611492"
+  ],
+  "yieldNodes": [
+    {
+      "id": "1156825053",
+      "highway": "stop"
+    },
+    {
+      "id": "1162020646",
+      "highway": "give_way"
+    },
+    {
+      "id": "1162020701",
+      "highway": "give_way"
+    },
+    {
+      "id": "2376278102",
+      "highway": "give_way"
+    },
+    {
+      "id": "2376278103",
+      "highway": "give_way"
+    },
+    {
+      "id": "2376278105",
+      "highway": "give_way"
+    },
+    {
+      "id": "2376278106",
+      "highway": "give_way"
+    },
+    {
+      "id": "2376278107",
+      "highway": "give_way"
+    },
+    {
+      "id": "2376278108",
+      "highway": "give_way"
+    },
+    {
+      "id": "2376278109",
+      "highway": "give_way"
+    },
+    {
+      "id": "2376296723",
+      "highway": "give_way"
+    },
+    {
+      "id": "2376296724",
+      "highway": "give_way"
+    },
+    {
+      "id": "2376296725",
+      "highway": "give_way"
+    },
+    {
+      "id": "2515650626",
+      "highway": "give_way"
+    },
+    {
+      "id": "2555061445",
+      "highway": "stop"
+    },
+    {
+      "id": "2588574284",
+      "highway": "give_way"
+    },
+    {
+      "id": "2588574285",
+      "highway": "give_way"
+    }
+  ],
+  "notes": [
+    "El recorrido por la rotonda sale de Artigas en Francia, cruza Parada 5 y el anillo, y llega al empalme de Artigas con Avenida del Mar. El anillo está cerrado y recorrido en sentido antihorario, de acuerdo con los accesos de sentido explícito.",
+    "El desvío por Pedragosa Sierra y Avenida del Mar depende de las vías 101195613 y 252069937. Ninguna trae oneway. Ese sentido no entra a la red transitable.",
+    "Recorridas en ambos sentidos, esas vías conectarían el desvío dentro del recorte. El caso no acepta ese sentido y no lo simula.",
+    "Avenida Francia no forma un tramo vehicular continuo entre Artigas y Pedragosa: el extremo 1156825106 queda a 20 m del nodo de Artigas más cercano.",
+    "Las vías sin maxspeed o sin carriles quedan con el valor de tipo de SUMO. Ese valor es un predeterminado del compilador.",
+    "Los giros tomados del snapshot son las relaciones restriction incluidas en el recorte. La compilación activa no-turnarounds para no agregar giros en U.",
+    "Los semáforos son los nodos highway=traffic_signals del snapshot. El programa horario es el estático de SUMO.",
+    "Las colas por acceso quedan sin medir: la comparación se detuvo antes de simular."
+  ],
+  "pendingLocalObservations": [
+    "El pico de las 18:00 a 20:00 en temporada alta sigue sin aforos, giros medidos ni horarios de ómnibus.",
+    "La rotonda no tiene nombre en el snapshot. Novillo Alegre y la Parada 8 identifican el lugar por una dirección comercial externa.",
+    "Queda pendiente de validar si la rotonda reparte la congestión entre Roosevelt y Artigas."
+  ],
+  "legend": [
+    {
+      "street": "anillo",
+      "label": "Rotonda",
+      "color": "#9f1239"
+    },
+    {
+      "street": "parada5",
+      "label": "Parada 5",
+      "color": "#8a4b08"
+    },
+    {
+      "street": "roosevelt",
+      "label": "Roosevelt",
+      "color": "#1d4e89"
+    },
+    {
+      "street": "artigas",
+      "label": "Artigas",
+      "color": "#0f6e56"
+    },
+    {
+      "street": "pedragosa",
+      "label": "Pedragosa",
+      "color": "#9a3412"
+    },
+    {
+      "street": "delmar",
+      "label": "Avenida del Mar",
+      "color": "#0e7490"
+    },
+    {
+      "street": "francia",
+      "label": "Francia",
+      "color": "#6b3fa0"
+    },
+    {
+      "street": "paso",
+      "label": "Paso de la Cadena",
+      "color": "#64748b"
+    },
+    {
+      "street": "cordoba",
+      "label": "Boca de Córdoba",
+      "color": "#64748b"
+    }
+  ],
+  "turns": {
+    "source": "relaciones restriction del snapshot cuyos miembros están en el recorte",
+    "noTurnarounds": true,
+    "turnLanesImported": false
+  },
+  "restrictions": {
+    "clip": [
+      "4176368",
+      "6890665",
+      "6890666",
+      "13211345",
+      "13211365"
+    ],
+    "verified": [
+      "4176368",
+      "6890665",
+      "6890666",
+      "13211345",
+      "13211365"
+    ]
+  },
+  "clip": {
+    "ways": 48,
+    "nodes": 441
+  },
+  "network": {
+    "edges": 82,
+    "ringPresent": true,
+    "paradaPresent": true,
+    "unverifiedPresent": [],
+    "excludedPresent": [],
+    "waysWithMappedSpeed": [
+      "29235087",
+      "100089299",
+      "100473846",
+      "230376874",
+      "230376885",
+      "230376902",
+      "311824968",
+      "983236122"
+    ],
+    "waysWithSumoDefaultSpeed": [
+      "70521182",
+      "100070316",
+      "100089295",
+      "100089298",
+      "100473811",
+      "100522069",
+      "100522073",
+      "100522077",
+      "100522079",
+      "100522082",
+      "100522083",
+      "100522092",
+      "100522100",
+      "100522118",
+      "100522122",
+      "101105003",
+      "101105024",
+      "101105029",
+      "101195648",
+      "185203622",
+      "185203623",
+      "228982144",
+      "252069935",
+      "252069936",
+      "311824950",
+      "311824952",
+      "311824953",
+      "311824954",
+      "311824960",
+      "311824964",
+      "449294015",
+      "454567064",
+      "482520532",
+      "482520534",
+      "983235081",
+      "983235082",
+      "983235083",
+      "983236123"
+    ],
+    "waysWithSumoDefaultLanes": [
+      "100070316",
+      "100473811",
+      "100522069",
+      "100522073",
+      "100522079",
+      "100522082",
+      "100522092",
+      "100522100",
+      "100522118",
+      "100522122",
+      "101195648",
+      "185203622",
+      "252069935",
+      "252069936",
+      "311824950",
+      "311824952",
+      "311824953",
+      "454567064",
+      "983235083",
+      "983236123"
+    ],
+    "examples": [
+      {
+        "way": "100089298",
+        "edge": "100089298#0",
+        "laneSpeed": "27.78",
+        "priority": "11",
+        "type": "highway.secondary",
+        "lanes": 1
+      },
+      {
+        "way": "29235087",
+        "edge": "29235087#0",
+        "laneSpeed": "16.67",
+        "priority": "11",
+        "type": "highway.secondary",
+        "lanes": 2
+      }
+    ],
+    "ringLengthMeters": 67.3,
+    "ringEdgesShorterThanOneMeter": 5,
+    "artigasEntry": [
+      {
+        "from": "100089295",
+        "to": "100089298#10",
+        "dir": "r",
+        "state": "m"
+      }
+    ],
+    "signalPrograms": [
+      {
+        "id": "1185880977",
+        "type": "static"
+      },
+      {
+        "id": "1918169806",
+        "type": "static"
+      },
+      {
+        "id": "2376255073",
+        "type": "static"
+      },
+      {
+        "id": "2376296727",
+        "type": "static"
+      },
+      {
+        "id": "2378134702",
+        "type": "static"
+      },
+      {
+        "id": "2388871076",
+        "type": "static"
+      },
+      {
+        "id": "3175611488",
+        "type": "static"
+      },
+      {
+        "id": "3175611492",
+        "type": "static"
+      }
+    ],
+    "prioritySource": "clase highway del tipo SUMO; el estado del enlace lo asigna netconvert",
+    "speedSource": "maxspeed de OSM cuando existe; si no, el tipo SUMO",
+    "signalProgram": "estático de SUMO donde el nodo etiquetado quedó como cruce",
+    "signalsKeptAsPrograms": [
+      "1185880977",
+      "1918169806",
+      "2376255073",
+      "2376296727",
+      "2378134702",
+      "2388871076",
+      "3175611488",
+      "3175611492"
+    ],
+    "signalsWithoutProgram": [
+      "1155355178",
+      "1167219966",
+      "1918169796",
+      "1918169798",
+      "3175611471"
+    ],
+    "notes": [
+      "Artigas 29235087 trae maxspeed 60 y el carril compilado queda en 16.67 m/s.",
+      "El anillo no trae maxspeed. El tipo secondary de SUMO le asigna 27.78 m/s.",
+      "El anillo compilado suma 67.3 m en tramos visibles y 5 miden menos de 1 m. El mapa usa la geometría del snapshot."
+    ]
+  }
+}

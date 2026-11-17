@@ -1,0 +1,19 @@
+{
+  "corridors": [
+    {"id":"mansa", "nodes":["840834919","1761803594","1761794826"], "preferred":["claudio williman","interbalnearia","rambla general artigas"]},
+    {"id":"brava", "nodes":["840834919","841517226","321554949"], "preferred":["lorenzo batlle","rambla general artigas","puente leonel viera","el remanso","resalsero"]},
+    {"id":"interior", "nodes":["321554949","321554874","1919675885","1762766287"], "preferred":["puente leonel viera","eduardo víctor haedo","aparicio saravia","luis alberto de herrera"]},
+    {"id":"lussich", "nodes":["1762766287","2719569743","2367503408","1761794826"], "preferred":["luis alberto de herrera","avenida antonio lussich","interbalnearia"], "exclude":["lussich (vieja)"]},
+    {"id":"lussich-camino-alternativo", "nodes":["1762766287","1886195541","1307973260","2367503408","1761794826"], "preferred":["luis alberto de herrera","camino lussich","avenida antonio lussich","interbalnearia"]}
+  ],
+  "boundary": ["brava", "interior", "lussich", "mansa"],
+  "sectors": [
+    {"id":"punta-mansa", "seed":"1957626365"},
+    {"id":"mansa-oeste-solanas", "seed":"1761803594"},
+    {"id":"brava-la-barra", "seed":"321554874"},
+    {"id":"saravia", "seed":"1919675885"},
+    {"id":"ruta39-herrera", "seed":"1762766287"},
+    {"id":"lussich-maldonado", "seed":"2719569743"},
+    {"id":"lussich-arboretum", "seed":"2367503408"}
+  ]
+}

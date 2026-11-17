@@ -1,0 +1,56 @@
+{
+  "id": "sector01",
+  "title": "Sector 01 · Punta del Este → Mansa",
+  "bounds": [-54.94415, -34.9608, -54.9364, -34.9437],
+  "frame": "study",
+  "scene": "network",
+  "match": {"bounds": true},
+  "features": [],
+  "cameras": {
+    "initial": "oblique",
+    "beforeFollow": "street",
+    "followWithDressing": "oblique",
+    "followWithoutDressing": "street",
+    "signalsLabel": "Semáforos del cruce"
+  },
+  "landmarks": [],
+  "dressing": {
+    "geography": "assets/sector01-williman-geography.json?v=2",
+    "note": "Piloto Williman · suelo según OpenStreetMap · con plantas, altura estimada · sin plantas, solo la huella",
+    "group": "geography"
+  },
+  "signals": [
+    {"id": "1155355178", "program": "inferred"},
+    {"id": "1761803371", "program": "inferred"},
+    {"id": "1761803376", "program": "inferred"},
+    {"id": "2376278112", "program": "inferred"},
+    {"id": "2376278113", "program": "inferred"},
+    {"id": "2376278115", "program": "inferred"},
+    {"id": "2480679871", "program": "inferred"},
+    {"id": "2480679872", "program": "inferred"},
+    {"id": "2535807410", "program": "inferred"},
+    {"id": "2804978501", "program": "inferred"},
+    {"id": "2804978502", "program": "inferred"},
+    {"id": "4462688320", "program": "inferred"},
+    {"id": "840834656", "program": "inferred"},
+    {"id": "840834748", "program": "inferred"},
+    {"id": "840834856", "program": "inferred"},
+    {"id": "840835188", "program": "inferred"},
+    {"id": "840835262", "program": "inferred"},
+    {"id": "GS_1156780565", "program": "inferred"},
+    {"id": "GS_1761803556", "program": "inferred"},
+    {"id": "joinedS_1918169992_2480679880", "program": "inferred"},
+    {"id": "joinedS_1957626365_2480679875_2535807399_2626589240", "program": "inferred"},
+    {"id": "joinedS_2376296722_840834919", "program": "inferred"},
+    {"id": "joinedS_2392290784_2480679878_2480679879_2535807404", "program": "inferred"}
+  ],
+  "data": {
+    "replayId": "01c5b202611140000000000000000001",
+    "candidate": "results/etapa1c5-sector01/candidata",
+    "fieldValidated": false,
+    "osmExtract": "urbanflow-web/assets/sector01-williman-osm.xml",
+    "osmExtractSha256": "b33e3fa74b56859f1df9822fe6baba9e3498f01e662bfdfe1d4e6a60e8e74f50",
+    "geography": "urbanflow-web/assets/sector01-williman-geography.json",
+    "geographySha256": "f1017d58aa9b63ff15d5707893b5b9c64c88716f405a431301f2261537071124"
+  }
+}

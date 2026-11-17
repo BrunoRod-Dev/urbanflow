@@ -138,7 +138,10 @@ export function addSignals3D(scene, data, links, controller, coordinates, roadHe
   const box = new THREE.BoxGeometry(.52, 1.12, .24);
   const lens = new THREE.CircleGeometry(.16, 16);
   const plaque = new THREE.PlaneGeometry(.47, .47);
+  const selectionMaterial = new THREE.MeshBasicMaterial({ color: 0x214dc5, wireframe: true, toneMapped: false });
+  const selectionGeometry = new THREE.BoxGeometry(.68, 1.3, .4);
   const movements = [];
+  const housingIds = [];
   const paint = Object.fromEntries(Object.entries({ priority: 0x0fd879, yield: 0x38c5e0, "after-stop": 0xffc04d })
     .map(([key, color]) => [key, new THREE.MeshBasicMaterial({ color, opacity: .85, transparent: true,
       side: THREE.DoubleSide, depthWrite: false, toneMapped: false })]));
@@ -188,6 +191,13 @@ export function addSignals3D(scene, data, links, controller, coordinates, roadHe
           head.rotation.y = Math.atan2(-forward.x, -forward.z);
           head.updateMatrix();
           boxes.push(head.matrix);
+          housingIds.push({ controllerId: controller, fromLane: laneId, index: link.index });
+          const mark = new THREE.Mesh(selectionGeometry, selectionMaterial);
+          mark.name = "signal-selection";
+          mark.visible = false;
+          mark.userData.controllerId = controller;
+          mark.userData.fromLane = laneId;
+          head.add(mark);
           const at = y => head.matrix.clone().multiply(new THREE.Matrix4().makeTranslation(0, y, .124));
           bulbs = off.map((_, index) => at(.34 - index * .34));
           const glyph = glyphs[link.direction] ?? "↑";
@@ -223,11 +233,16 @@ export function addSignals3D(scene, data, links, controller, coordinates, roadHe
     }
   }
 
-  signalBatch(heads, box, housing, boxes);
-  signalBatch(heads, poleGeometry, steel, poles);
-  for (const [glyph, matrices] of signs) signalBatch(heads, plaque, makeArrowMaterial(glyph), matrices);
+  if (boxes.length) {
+    const housings = signalBatch(heads, box, housing, boxes);
+    housings.name = "signal-housings";
+    housings.userData.identities = housingIds;
+  }
+  if (poles.length) signalBatch(heads, poleGeometry, steel, poles).name = "signal-poles";
+  for (const [glyph, matrices] of signs) signalBatch(heads, plaque, makeArrowMaterial(glyph), matrices).name = "signal-signs";
   const lenses = [...off, ...on].map(material => {
-    const mesh = new THREE.InstancedMesh(lens, material, movements.length);
+    const mesh = new THREE.InstancedMesh(lens, material, Math.max(movements.length, 1));
+    mesh.name = "signal-lens";
     mesh.count = 0;
     mesh.frustumCulled = false;
     mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -238,7 +253,19 @@ export function addSignals3D(scene, data, links, controller, coordinates, roadHe
   let renderedPhase;
   let renderedBlink;
   return {
-    materials: [...on, ...off, ...Object.values(paint)],
+    materials: [...on, ...off, selectionMaterial, ...Object.values(paint)],
+    signalAt(object, instanceId) {
+      if (object?.name !== "signal-housings" || !Number.isInteger(instanceId) || instanceId < 0) return null;
+      return object.userData.identities?.[instanceId] ?? null;
+    },
+    setSelected(controllerId, fromLane) {
+      heads.traverse(object => {
+        if (object.name !== "signal-selection") return;
+        object.visible = Boolean(controllerId && fromLane)
+          && object.userData.controllerId === controllerId
+          && object.userData.fromLane === fromLane;
+      });
+    },
     setOverlay(visible) {
       overlays.visible = visible;
     },

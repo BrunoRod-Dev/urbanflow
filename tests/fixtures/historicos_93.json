@@ -1,0 +1,379 @@
+{
+  "description": "93 archivos históricos de las cuatro corridas de referencia. No mover ni sobrescribir.",
+  "source": "results/camacho-0c-d0025f9d/integridad-historicos.json",
+  "count": 93,
+  "files": [
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/crossing-connections.con.xml",
+      "sha256": "c0dcaa81daa011155fea20ff41d4589d10a0b45d98830d8b915b24490f8cb2c1"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/crossing-joins.nod.xml",
+      "sha256": "651d9f5a7685655d6f8095c93236a52a59fe63d8db0dfb48c5e1cd415c92299f"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/crossing-programs.tll.xml",
+      "sha256": "9457f421983f2dab1df774f00ab6b3f304b2c404cfc9e7fa3997bffbfed084bf"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/crossings-joined.net.xml",
+      "sha256": "3cfceab9eb518990cb75d9af9945f4abf49c8afcc567b4d1289b58ae80e56e63"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/map.con.xml",
+      "sha256": "616651f16f11ee4f1857b78a6035cf60ad36bebc18e2900ab5d5143ef5cd812b"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/map.edg.xml",
+      "sha256": "ce9fc466afee146e9ae798cb6c5910bcaeda7c36028dc94658755fc1ebbdd4ee"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/map.netccfg",
+      "sha256": "129912c6f54ae85b8ccada8179884bffbd32a401d876eb351814ff80477be017"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/map.nod.xml",
+      "sha256": "01b9c07fce1d2ec66a5a076cab878f1099b98732191cde281ceb1ed88ee69d0f"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/map.tll.xml",
+      "sha256": "acc940ecffa164ff646ba49bb69af9b82de14d7d89c03a12b462354b305e2233"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/map.typ.xml",
+      "sha256": "0e45cb0c4ab647fc9a236d527994d71d1ccfe181b9be490146e39c6ab26068fb"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/metadata.json",
+      "sha256": "bf33984a2d1decc660db0d869c434134de321744c5baa7919cf0b3a9662b0559"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/network-diagnostics.json",
+      "sha256": "5184852cf0b0b20052db3a34e4468b12abaf2c9d4ca4126b31b7c2efeebd1663"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/network.net.xml",
+      "sha256": "dcb6d2ebba25ef15a70f22151fc151fa3df8e0aaabe8d9e6a6d8456f365a006e"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/recorte.osm.xml",
+      "sha256": "08c8e8604ee362f556cc1370c07e3e6ac28a133c597e3351554b634193c91bdf"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/replay.json",
+      "sha256": "38e3203de399ed528b8a96be22c708c3051d0e99f20a370baec32acd332e5aea"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/routes.rou.xml",
+      "sha256": "fbee94f2b5d4b5a01849792af5bb6c19536eff1f2abc4c89cd0ff9e24bbd18e1"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/run-info.json",
+      "sha256": "7a397788e1bbb62b925307646e5e1a530a641b62e58d33dcac291149c66c3b3a"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/signal-states.xml",
+      "sha256": "3788af2c9c0e961dde96d956cc6c362e9e08b947f55f9ecbe81b4ad180d912c9"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/signals.add.xml",
+      "sha256": "2542092403e276bfab61ba4fcbd2424feef897118fdd9f3fdb7865eb97d72e05"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/status.json",
+      "sha256": "613ff447c35abdefb087f0229439bd01d796e6ce8bf9fd64514879459b27c901"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/summary.xml",
+      "sha256": "081d1a16ad427a53d11a3bf496d036cb09b9d6d5d84b8f3288d2f9a06e4a4d39"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/sumo.log",
+      "sha256": "bcad4655adc8a77b1afcd700779baf1d839e1d580a3865726cfd29d45cc079ab"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/traffic-catalog.json",
+      "sha256": "503116e8f9f5b350f733db27144a048a493f8cf6e69a20ac705537d093ba6423"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/trajectories.xml",
+      "sha256": "3d7986e09019e8aa9d8a7242292102221fd326ebdde0b1a02436e00316126e81"
+    },
+    {
+      "path": "results/studies/32f97a5d36954c94a02793eea5892e9c/trips.xml",
+      "sha256": "b7b4ee649a0aa3ee78d4b97f067a42a456045ade57d5dd02720888265a2fce1c"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/crossing-connections.con.xml",
+      "sha256": "a5cabe896ab325ca91891327183a9213d3569172e8e0ec682a54373aa0a18b7e"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/crossing-joins.nod.xml",
+      "sha256": "651d9f5a7685655d6f8095c93236a52a59fe63d8db0dfb48c5e1cd415c92299f"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/crossing-programs.tll.xml",
+      "sha256": "c91376c32c866ceaf535fe91627fd363a3014672088537548755368ca3575115"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/crossings-joined.net.xml",
+      "sha256": "f7600b8408a8176c2fb846560cec442ce6f78c28a427762ad1f4166e7a745cb3"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/crossings-lanes.net.xml",
+      "sha256": "56784eef133027397cf4b7f64f1bda20b75ac26da306606a297ceb51aa1ae329"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/map.con.xml",
+      "sha256": "cf72e0eb60d97bef804887878112b0abf9daeb318589f0faea721f9aeec8da48"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/map.edg.xml",
+      "sha256": "777a1882e3583219def44a4ca6bbff28a074e0674d66629a669c242b9d1133e6"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/map.netccfg",
+      "sha256": "edf305472b4ad9501dc7314e2dfd0f6d527b92528b29a4c784a1117a26d689b2"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/map.nod.xml",
+      "sha256": "a5d758d52488ced61a86d8f81f8a995c469d37961a9c92435c33be6e2bb8ca6f"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/map.tll.xml",
+      "sha256": "019cb09044818d98f6f9e460e44d497dd502441a5b53afd65753307b23c493f1"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/map.typ.xml",
+      "sha256": "4fdeeb4aa5b8df498619f5aa5a03c3ad26aa65dea786cf32a345cfc3750a9714"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/metadata.json",
+      "sha256": "7bd3efcb052892a935ca90a61b2536fe9314bc776f43e373f94ba5eb5fc35529"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/network-diagnostics.json",
+      "sha256": "5184852cf0b0b20052db3a34e4468b12abaf2c9d4ca4126b31b7c2efeebd1663"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/network.net.xml",
+      "sha256": "6c34840d7d7efe199abc7706883c5813b9e5d19c6f067befc731b157fd089bf0"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/recorte.osm.xml",
+      "sha256": "08c8e8604ee362f556cc1370c07e3e6ac28a133c597e3351554b634193c91bdf"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/replay.json",
+      "sha256": "0d2c4d408d2eff54b57817a8cf4872ff34cf796198e15c900ea33081e2beb767"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/routes.rou.xml",
+      "sha256": "fbee94f2b5d4b5a01849792af5bb6c19536eff1f2abc4c89cd0ff9e24bbd18e1"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/run-info.json",
+      "sha256": "5d19d697ca294255457aad2e3d349979844e645b0182dc8b611cd747b5299c19"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/signal-states.xml",
+      "sha256": "7775ab876d15dcd979c0188a77255146e7b84380313d815c0fbab08c071b8cf4"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/signals.add.xml",
+      "sha256": "2542092403e276bfab61ba4fcbd2424feef897118fdd9f3fdb7865eb97d72e05"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/status.json",
+      "sha256": "613ff447c35abdefb087f0229439bd01d796e6ce8bf9fd64514879459b27c901"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/summary.xml",
+      "sha256": "8b449c58f3f55ed213fc56cfd0d9b7642eb420fe87c41d1fe923eea129cc2f49"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/sumo.log",
+      "sha256": "e8b4ab2d439d43c7c0b992b042595a162c84bad18f4898677adfb7747c9d9f4b"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/traffic-catalog.json",
+      "sha256": "503116e8f9f5b350f733db27144a048a493f8cf6e69a20ac705537d093ba6423"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/trajectories.xml",
+      "sha256": "8bb53f65c81453be4d5b27e94116500526434f8fe1b88d4945634167638f756c"
+    },
+    {
+      "path": "results/studies/39f2fd082e4941339942760498206531/trips.xml",
+      "sha256": "7f5e2be375039497d64a8f2ba3d76170aa626805363d1076ea50a28669c893a1"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/map.con.xml",
+      "sha256": "b464598389476f71b1f7d78af7d0b028eeb4f6b0f3a31f6015a13a244c0b9814"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/map.edg.xml",
+      "sha256": "a2fef0077dbd8db1f5a92c01fe2a27d3f4a37f75d8fea9e26fe0c65e1f28254f"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/map.netccfg",
+      "sha256": "55a9ea32472ca3d63aedd24eeb198c8cddc39059402ba68f53cd78d27559f337"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/map.nod.xml",
+      "sha256": "c0a5ac3829db7aa16d3dd3d446a051daf4d59de22985185f7205c682d1cb0332"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/map.tll.xml",
+      "sha256": "8fd375e824b9ae75f0e8375bbd722dd1c761d53086d29d5c80d57b7f6e2aba11"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/map.typ.xml",
+      "sha256": "7563167b04a2f63d954f6c2ff2ced928d40398154dcfd0910de09ac3cf979bd4"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/metadata.json",
+      "sha256": "c12e1f9c969fbf1a4460866a2e101ce378db778b9859f27f76883dcc408b83be"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/network-diagnostics.json",
+      "sha256": "5184852cf0b0b20052db3a34e4468b12abaf2c9d4ca4126b31b7c2efeebd1663"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/network.net.xml",
+      "sha256": "d7ea25168e629005c3ab0662c5799095922bc8eb8f141231275b1702a7cc8c49"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/recorte.osm.xml",
+      "sha256": "08c8e8604ee362f556cc1370c07e3e6ac28a133c597e3351554b634193c91bdf"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/replay.json",
+      "sha256": "ff2f9835fe25583c997606a0ef5e9240bad300e89d88c46e92d1af415b373777"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/routes.rou.xml",
+      "sha256": "3e6325b98963de60667ae39d1812f4ff3eb8df225b592a058abd9e2d25347a28"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/run-info.json",
+      "sha256": "22c78e4ba97207bf161d6e0ea26c1737cbd7496514a431b7fd15256477452e71"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/signal-states.xml",
+      "sha256": "849b57f9dacb3ec923782094c02716624e4bc5a30d1c8b408706dfb6ae0eb0b3"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/signals.add.xml",
+      "sha256": "2542092403e276bfab61ba4fcbd2424feef897118fdd9f3fdb7865eb97d72e05"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/status.json",
+      "sha256": "613ff447c35abdefb087f0229439bd01d796e6ce8bf9fd64514879459b27c901"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/summary.xml",
+      "sha256": "9a9e65844b56c6522bcb6bdf387455239e14bd8402aadd2568c8e45fcf22f780"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/sumo.log",
+      "sha256": "b8bcac3ff977b5e79f01777d0824a557a25f2319c2293c36a6e4de91b74128e7"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/traffic-catalog.json",
+      "sha256": "e2afb0ba4ff0bab332de4e6992e2ee9893b741b6491fb51e1a64d2badf306a06"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/trajectories.xml",
+      "sha256": "c4cc291a37ac4c90b567e9d6b743c6c7c1ad19260fe222de943d5ff2d6598986"
+    },
+    {
+      "path": "results/studies/7aa8eace2961434d9446b0eb77fe3d0a/trips.xml",
+      "sha256": "fd2a2a46b6e5275c3015aea7f8ce2ed4df799c7f87f281c0d8d624f1704a1cc0"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/map.con.xml",
+      "sha256": "2e1911730a2e465720c30743ed4e61cd1e9fd1e1a32765968987428156a6e4f0"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/map.edg.xml",
+      "sha256": "c0efa5510f4ab58c2fadc5d31e28434ba33a17d0816e361dd902034c74ffecec"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/map.netccfg",
+      "sha256": "2206a589b24be2ccaa57cff624d0895444e412449e4d53cda4f2b7c2ca2e0609"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/map.nod.xml",
+      "sha256": "ef97626ef73a38e939ce980a3823d0a541fd1f0e709bb5f68683d8a6ffd6c65c"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/map.tll.xml",
+      "sha256": "ae7de41332223f80537de68a6a985a625abdd6e51422f3616ab3c808eeb9f2a3"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/map.typ.xml",
+      "sha256": "79fddf6efb2e2f7ef1fd538614b4f2eee13622ee4e65828d7b41254c7fbfebea"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/metadata.json",
+      "sha256": "9dd554f7fa1296c040234aebff6e4b16a41a0df615961b086e953bcd872ee66d"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/network-diagnostics.json",
+      "sha256": "5184852cf0b0b20052db3a34e4468b12abaf2c9d4ca4126b31b7c2efeebd1663"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/network.net.xml",
+      "sha256": "cc8138424fc56bdd490185fb9ced9abd97105d28ca28504508e5a333aeceb41d"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/recorte.osm.xml",
+      "sha256": "28eb58fa8821cb837f12125ac86dc1c5c2ac4b1f2af0075a1da54beb50121443"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/replay.json",
+      "sha256": "36b12e8b955322556dbef13beac481f7f6a5fbbf64252c263f2d92ed91fa8ec1"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/routes.rou.xml",
+      "sha256": "e77488f60256199830593b24a4458b6603b17b812cc54835d925c374e4953597"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/run-info.json",
+      "sha256": "3591b99d4ea5c95ad54f20eae7d6b9de62ee50b16acab4d394ab29d8712eedf4"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/signal-states.xml",
+      "sha256": "77931957c688ecdb2131f93c584e25e49f2902b8227168c4e5ddd24f32f92fd7"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/signals.add.xml",
+      "sha256": "2542092403e276bfab61ba4fcbd2424feef897118fdd9f3fdb7865eb97d72e05"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/status.json",
+      "sha256": "8795cf408fb82f118f8e031c93c63573a6fbb73bdbbd19887b6705ae48d00e44"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/summary.xml",
+      "sha256": "f51169979e7c1b0e998a06c230f4f6b2822eca3795746fc9b71465b46267d769"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/sumo.log",
+      "sha256": "014d0e5979f52dcc4570f826cdb3ba31a119db6a1a10b1a686c7253480357b59"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/traffic-catalog.json",
+      "sha256": "237af15074cb9575cb027ace7aa5b2b63fb763df20b34222e7d80c76b8691166"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/trajectories.xml",
+      "sha256": "9d815deab7a59a1c025555c1a7f4d9bb34327a039252727056961a73d6e6162d"
+    },
+    {
+      "path": "results/studies/f2cac09376554d76991d90888016e4de/trips.xml",
+      "sha256": "60333f75e2b93940f589c4d21f91468c25b1c25daa688a46d090a0a30b7422f3"
+    }
+  ]
+}

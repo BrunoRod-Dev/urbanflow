@@ -1,0 +1,311 @@
+{
+  "experimental": true,
+  "calibrated": false,
+  "seasonal": false,
+  "title": "Despeje de la demanda",
+  "note": "La demanda se genera hasta el segundo 240 y la simulación sigue hasta el segundo 2400. A y B comparten rutas, horarios, semilla 42 y red. Solo cambia el máximo de la primera fase, de 50 s a 15 s.",
+  "criterion": "Completaron al 240 son los que llegan hasta ese segundo. Pendientes al 240 son los que ya salieron y todavía no llegan. El despeje es el instante de la última llegada cuando no queda nadie, ni sin salir ni sin llegar. La cohorte de tiempos excluye a quien no llega en las dos variantes y a quien sale después del 240. El límite de 2400 s es 10 veces la ventana de generación. Los programas son los que SUMO infirió y la demanda es sintética, sin calibración municipal.",
+  "levels": [
+    {
+      "demand": 45,
+      "perFlow": 3,
+      "generationEnd": 240,
+      "clearanceEnd": 2400,
+      "completedAtGeneration": {
+        "a": 37,
+        "b": 38
+      },
+      "pendingAtGeneration": {
+        "a": 8,
+        "b": 7
+      },
+      "enteredAfterGeneration": {
+        "a": 0,
+        "b": 0
+      },
+      "notEntered": {
+        "a": 0,
+        "b": 0
+      },
+      "clearanceSeconds": {
+        "a": 453.0,
+        "b": 451.0
+      },
+      "stillUnfinished": {
+        "a": 0,
+        "b": 0
+      },
+      "cohort": {
+        "count": 45,
+        "departMin": 0.0,
+        "departMax": 162.5,
+        "meanTravel": {
+          "a": 86.71,
+          "b": 86.27,
+          "absolute": -0.44,
+          "percent": -0.5
+        },
+        "meanWait": {
+          "a": 30.76,
+          "b": 30.37,
+          "absolute": -0.39,
+          "percent": -1.3
+        }
+      },
+      "medianTravelChange": 0.0,
+      "travelShape": {
+        "unchanged": 35,
+        "atLeast60sSlowerInA": 0
+      },
+      "horizonAgrees": true,
+      "evidence": {
+        "routes": "results/studies/c44da2efd14c48569d6a9ce276916ba5/routes.rou.xml",
+        "routesSha256": "7d529677114260b52d47b9d38eeff1023a9ed2ec87e74c8b1c38d2e5c2e00dc3",
+        "tripsA": "results/_tmp/etapa1f3/d45/a/trips.xml",
+        "tripsB": "results/_tmp/etapa1f3/d45/b/trips.xml",
+        "logA": "results/_tmp/etapa1f3/d45/a/sumo.log",
+        "logB": "results/_tmp/etapa1f3/d45/b/sumo.log"
+      }
+    },
+    {
+      "demand": 90,
+      "perFlow": 6,
+      "generationEnd": 240,
+      "clearanceEnd": 2400,
+      "completedAtGeneration": {
+        "a": 58,
+        "b": 61
+      },
+      "pendingAtGeneration": {
+        "a": 32,
+        "b": 29
+      },
+      "enteredAfterGeneration": {
+        "a": 0,
+        "b": 0
+      },
+      "notEntered": {
+        "a": 0,
+        "b": 0
+      },
+      "clearanceSeconds": {
+        "a": 1171.0,
+        "b": 888.5
+      },
+      "stillUnfinished": {
+        "a": 0,
+        "b": 0
+      },
+      "cohort": {
+        "count": 90,
+        "departMin": 0.0,
+        "departMax": 203.0,
+        "meanTravel": {
+          "a": 189.68,
+          "b": 141.14,
+          "absolute": -48.54,
+          "percent": -25.6
+        },
+        "meanWait": {
+          "a": 116.53,
+          "b": 69.22,
+          "absolute": -47.31,
+          "percent": -40.6
+        }
+      },
+      "medianTravelChange": 0.0,
+      "travelShape": {
+        "unchanged": 53,
+        "atLeast60sSlowerInA": 18
+      },
+      "horizonAgrees": true,
+      "evidence": {
+        "routes": "results/_tmp/etapa1f2/routes-90.rou.xml",
+        "routesSha256": "c639409ca241bee6494bbb39988e260b4ed5f7006f1b604f045ba52e31fb3900",
+        "tripsA": "results/_tmp/etapa1f3/d90/a/trips.xml",
+        "tripsB": "results/_tmp/etapa1f3/d90/b/trips.xml",
+        "logA": "results/_tmp/etapa1f3/d90/a/sumo.log",
+        "logB": "results/_tmp/etapa1f3/d90/b/sumo.log"
+      }
+    },
+    {
+      "demand": 135,
+      "perFlow": 9,
+      "generationEnd": 240,
+      "clearanceEnd": 2400,
+      "completedAtGeneration": {
+        "a": 69,
+        "b": 71
+      },
+      "pendingAtGeneration": {
+        "a": 66,
+        "b": 64
+      },
+      "enteredAfterGeneration": {
+        "a": 0,
+        "b": 0
+      },
+      "notEntered": {
+        "a": 0,
+        "b": 0
+      },
+      "clearanceSeconds": {
+        "a": 1980.0,
+        "b": 1344.5
+      },
+      "stillUnfinished": {
+        "a": 0,
+        "b": 0
+      },
+      "cohort": {
+        "count": 135,
+        "departMin": 0.0,
+        "departMax": 221.5,
+        "meanTravel": {
+          "a": 326.5,
+          "b": 220.85,
+          "absolute": -105.65,
+          "percent": -32.4
+        },
+        "meanWait": {
+          "a": 227.96,
+          "b": 123.63,
+          "absolute": -104.33,
+          "percent": -45.8
+        }
+      },
+      "medianTravelChange": 0.0,
+      "travelShape": {
+        "unchanged": 61,
+        "atLeast60sSlowerInA": 35
+      },
+      "horizonAgrees": true,
+      "evidence": {
+        "routes": "results/_tmp/etapa1f2/routes-135.rou.xml",
+        "routesSha256": "341c909054ae759e0edb6e529221d02760c1d6b5cd1837f8fafe66f6d095222a",
+        "tripsA": "results/_tmp/etapa1f3/d135/a/trips.xml",
+        "tripsB": "results/_tmp/etapa1f3/d135/b/trips.xml",
+        "logA": "results/_tmp/etapa1f3/d135/a/sumo.log",
+        "logB": "results/_tmp/etapa1f3/d135/b/sumo.log"
+      }
+    }
+  ],
+  "detector": {
+    "controller": "joinedS_1360014840_13966777057_13966777058_2375592994",
+    "warning": "has no controlling detector",
+    "linkIndexes": [
+      3,
+      4,
+      8,
+      9,
+      10,
+      11,
+      12,
+      21
+    ],
+    "identicalBetweenVariants": true,
+    "movements": [
+      {
+        "linkIndex": 3,
+        "from": "426635860",
+        "fromName": "Honduras",
+        "to": "1532518651#0",
+        "toName": "Zelmar Michelini",
+        "direction": "de frente",
+        "fromLane": 0,
+        "laneLength": 0.1,
+        "greenInCappedPhase": false
+      },
+      {
+        "linkIndex": 4,
+        "from": "426635860",
+        "fromName": "Honduras",
+        "to": "1532518646",
+        "toName": "Avenida Franklin Delano Roosevelt",
+        "direction": "a la izquierda",
+        "fromLane": 0,
+        "laneLength": 0.1,
+        "greenInCappedPhase": false
+      },
+      {
+        "linkIndex": 8,
+        "from": "1532518646",
+        "fromName": "Avenida Franklin Delano Roosevelt",
+        "to": "228612646#0",
+        "toName": "Avenida Franklin Delano Roosevelt",
+        "direction": "de frente",
+        "fromLane": 1,
+        "laneLength": 0.2,
+        "greenInCappedPhase": true
+      },
+      {
+        "linkIndex": 9,
+        "from": "1532518646",
+        "fromName": "Avenida Franklin Delano Roosevelt",
+        "to": "1532518647",
+        "toName": "Honduras",
+        "direction": "a la izquierda",
+        "fromLane": 1,
+        "laneLength": 0.2,
+        "greenInCappedPhase": true
+      },
+      {
+        "linkIndex": 10,
+        "from": "1532518647",
+        "fromName": "Honduras",
+        "to": "1532518648#0",
+        "toName": "Honduras",
+        "direction": "de frente",
+        "fromLane": 0,
+        "laneLength": 1.19,
+        "greenInCappedPhase": false
+      },
+      {
+        "linkIndex": 11,
+        "from": "1532518647",
+        "fromName": "Honduras",
+        "to": "1532518645",
+        "toName": "Avenida Franklin Delano Roosevelt",
+        "direction": "a la izquierda",
+        "fromLane": 0,
+        "laneLength": 1.19,
+        "greenInCappedPhase": false
+      },
+      {
+        "linkIndex": 12,
+        "from": "1532518647",
+        "fromName": "Honduras",
+        "to": "1532518645",
+        "toName": "Avenida Franklin Delano Roosevelt",
+        "direction": "a la izquierda",
+        "fromLane": 0,
+        "laneLength": 1.19,
+        "greenInCappedPhase": false
+      },
+      {
+        "linkIndex": 21,
+        "from": "1532518645",
+        "fromName": "Avenida Franklin Delano Roosevelt",
+        "to": "426635860",
+        "toName": "Honduras",
+        "direction": "a la izquierda",
+        "fromLane": 2,
+        "laneLength": 0.2,
+        "greenInCappedPhase": true
+      }
+    ],
+    "cappedPhaseWithoutDetector": [
+      8,
+      9,
+      21
+    ],
+    "cappedPhaseDetectedApproaches": [
+      "Avenida Franklin Delano Roosevelt"
+    ],
+    "conditionsInterpretation": true,
+    "interpretation": "SUMO avisa has no controlling detector en joinedS_1360014840_13966777057_13966777058_2375592994 para los linkIndex 3, 4, 8, 9, 10, 11, 12, 21. Son movimientos internos del cruce unido. Los tramos miden 0,10 m, 0,20 m y 1,19 m. En la fase cuyo máximo pasa de 50 s a 15 s quedan sin detector 8 (Avenida Franklin Delano Roosevelt, carril 1, de frente hacia Avenida Franklin Delano Roosevelt), 9 (Avenida Franklin Delano Roosevelt, carril 1, a la izquierda hacia Honduras), 21 (Avenida Franklin Delano Roosevelt, carril 2, a la izquierda hacia Honduras). En la otra fase verde quedan sin detector 3 (Honduras, carril 0, de frente hacia Zelmar Michelini), 4 (Honduras, carril 0, a la izquierda hacia Avenida Franklin Delano Roosevelt), 10 (Honduras, carril 0, de frente hacia Honduras), 11 (Honduras, carril 0, a la izquierda hacia Avenida Franklin Delano Roosevelt), 12 (Honduras, carril 0, a la izquierda hacia Avenida Franklin Delano Roosevelt). SUMO no usa esos enlaces para alargar la verde. Los accesos con detector en la fase modificada son Avenida Franklin Delano Roosevelt. A y B comparten el aviso. Los detectores y el programa quedan como están en la red guardada. La comparación aísla el máximo de esa fase con el programa inferido y la demanda sintética."
+  },
+  "conclusion": "Las salidas quedan definidas entre el begin de cada flujo y el segundo 240. La simulación sigue hasta el segundo 2400, diez veces esa ventana, y no agrega flujos. 45, 90 y 135 vehículos son la muestra y sus múltiplos enteros sobre los mismos 15 recorridos. La demanda es sintética. El programa es el que SUMO infirió, no un plan de la Intendencia. Al segundo 240 siguen pendientes 45: 8 y 7; 90: 32 y 29; 135: 66 y 64. La demanda termina de despejarse en 45 a los 453,00 s en A y 451,00 s en B; 90 a los 1171,00 s en A y 888,50 s en B; 135 a los 1980,00 s en A y 1344,50 s en B. Ningún vehículo sale después del segundo 240. La cohorte junta los viajes que salen dentro de la ventana y llegan en las dos variantes. El cambio medio de viaje es -0,44 s, -48,54 s, -105,65 s. A se vacía más tarde: 2,00 s con 45, 282,50 s con 90, 635,50 s con 135. La mediana del cambio de viaje es 0,00 s, 0,00 s, 0,00 s. En 45, 35 de 45 no cambian. En 90, 53 de 90 no cambian y 18 duran al menos 60 s más en A. En 135, 61 de 135 no cambian y 35 duran al menos 60 s más en A. En 90 y 135 el promedio lo arrastran esos viajes largos, y el despeje es la última de esas llegadas. El cambio medio de espera es -0,39 s, -47,31 s, -104,33 s. En los tres niveles la cohorte incluye a todos los vehículos que salieron. El aviso de detectores es el mismo en las seis corridas.",
+  "network": "results/_tmp/etapa1f1/b-network.net.xml",
+  "sumo": "Eclipse SUMO sumo 1.26.0"
+}

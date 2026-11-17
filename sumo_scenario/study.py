@@ -501,7 +501,8 @@ def simulate_study(directory, sumo, env, target, catalog, traffic, seconds, upda
     motion = replay_geometry(network, directory / 'map.nod.xml')
     vehicles = []
     frames = fcd_frames(directory / 'trajectories.xml', {'incoming': {key: key for key in approaches}},
-                        geographic=True, vehicle_lengths=VEHICLE_LENGTHS if motion else None, vehicle_index=vehicles)
+                        geographic=True, vehicle_lengths=VEHICLE_LENGTHS if motion.get('projection') else None,
+                        vehicle_index=vehicles)
     geo_network = map_network(directory, used)
     diagnostics = {'reversedStraightConnections': reversed_straights(network)}
     write_json(directory / 'network-diagnostics.json', diagnostics)
